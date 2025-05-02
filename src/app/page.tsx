@@ -153,14 +153,14 @@ function HeroSection() {
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center text-center">
           <div className="max-w-3xl mx-auto space-y-4">
-            <h1 className="text-5xl font-bold tracking-tighter sm:text-4xl md:text-6xl lg:text-7xl">
+            <h1 className="text-5xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">
               Get your application read by{" "}
-              <span className="number-box">1000</span> Admissions Officers at{" "}
-              <TypedText />
+              <span className="number-box">1000</span>
+              Admissions Officers at <TypedText />
             </h1>
-            <p className="max-w-[800px] mx-auto text-muted-foreground md:text-xl">
-              The all-in-one platform that helps teams collaborate, automate,
-              and deliver results faster than ever before.
+            <p className="max-w-[400px] mx-auto text-muted-foreground md:text-xl">
+              Multi-agent prediction model that predicts your chances of getting
+              in. 
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
               <Button
