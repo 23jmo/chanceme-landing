@@ -13,20 +13,20 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function LandingPage() {
   return (
-    <div className="flex min-h-screen flex-col" data-oid="0icltgn">
-      <Header data-oid="1q:uc2f" />
-      <main className="flex-1" data-oid="aye:c7b">
-        <HeroSection data-oid="jtjr-r6" />
-        <FeaturesSection data-oid="hqp73zy" />
-        <TestimonialsSection data-oid="d4m4y:s" />
-        <PricingSection data-oid="62cfrr7" />
-        <CtaSection data-oid="d0-p0cm" />
+    <div className="flex min-h-screen flex-col" data-oid="s38r_9t">
+      <Header data-oid="iowl1fm" />
+      <main className="flex-1" data-oid=".tm9brk">
+        <HeroSection data-oid="69h5c__" />
+        <FeaturesSection data-oid="tmos1o." />
+        <TestimonialsSection data-oid="a3z1nav" />
+        <PricingSection data-oid="_-q:8nq" />
+        <CtaSection data-oid="3:hjip1" />
       </main>
-      <Footer data-oid="d15mtmk" />
+      <Footer data-oid="ovw5i6l" />
     </div>
   );
 }
@@ -37,24 +37,24 @@ function Header() {
   return (
     <header
       className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
-      data-oid="5eopmhb"
+      data-oid="h6znl6b"
     >
       <div
         className="container flex h-16 items-center justify-between"
-        data-oid=":8jhjj-"
+        data-oid="dwj3avt"
       >
-        <div className="flex items-center gap-2" data-oid="xb2rvn_">
-          <Link href="/" className="flex items-center gap-2" data-oid="7vww410">
+        <div className="flex items-center gap-2" data-oid="rf0udaz">
+          <Link href="/" className="flex items-center gap-2" data-oid="_fxa9_b">
             <Image
               src="/placeholder.svg?height=32&width=32"
               alt="StreamLine Logo"
               width={32}
               height={32}
               className="rounded"
-              data-oid="c-zk_nd"
+              data-oid="wid:p9_"
             />
 
-            <span className="text-xl font-bold" data-oid="4afyidu">
+            <span className="text-xl font-bold" data-oid="-gaxsb5">
               chance-me
             </span>
           </Link>
@@ -64,47 +64,47 @@ function Header() {
         <button
           className="block md:hidden"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          data-oid="b:2t-g9"
+          data-oid="wk2y00b"
         >
           {isMenuOpen ? (
-            <X className="h-6 w-6" data-oid="er:rk9-" />
+            <X className="h-6 w-6" data-oid="87wr3bp" />
           ) : (
-            <Menu className="h-6 w-6" data-oid="j41.dqw" />
+            <Menu className="h-6 w-6" data-oid="px9xvml" />
           )}
         </button>
 
         {/* Desktop navigation */}
-        <nav className="hidden md:flex items-center gap-6" data-oid="duhals0">
+        <nav className="hidden md:flex items-center gap-6" data-oid="pnq8q9d">
           <Link
             href="#features"
             className="text-sm font-medium hover:text-primary"
-            data-oid=".j7jo6c"
+            data-oid="a7rc5sf"
           >
             Features
           </Link>
           <Link
             href="#testimonials"
             className="text-sm font-medium hover:text-primary"
-            data-oid="kl.49bc"
+            data-oid="4wdu2uo"
           >
             Testimonials
           </Link>
           <Link
             href="#pricing"
             className="text-sm font-medium hover:text-primary"
-            data-oid="k_firv6"
+            data-oid="eqduqdh"
           >
             Pricing
           </Link>
           <Link
             href="#contact"
             className="text-sm font-medium hover:text-primary"
-            data-oid=":tr.46b"
+            data-oid=":m12kyb"
           >
             Contact
           </Link>
-          <Button asChild data-oid="chcr0ea">
-            <Link href="#get-started" data-oid="jm9xec6">
+          <Button asChild data-oid="ksbirvc">
+            <Link href="#get-started" data-oid="5e9ktpu">
               Get Started
             </Link>
           </Button>
@@ -114,14 +114,14 @@ function Header() {
         {isMenuOpen && (
           <div
             className="absolute top-16 left-0 right-0 bg-background border-b md:hidden"
-            data-oid="k5rhjyr"
+            data-oid="p-ckrmy"
           >
-            <nav className="container flex flex-col py-4" data-oid="n4235cy">
+            <nav className="container flex flex-col py-4" data-oid="r5uzwnp">
               <Link
                 href="#features"
                 className="py-2 text-sm font-medium hover:text-primary"
                 onClick={() => setIsMenuOpen(false)}
-                data-oid="4g-:3q4"
+                data-oid="jj._hbd"
               >
                 Features
               </Link>
@@ -129,7 +129,7 @@ function Header() {
                 href="#testimonials"
                 className="py-2 text-sm font-medium hover:text-primary"
                 onClick={() => setIsMenuOpen(false)}
-                data-oid="9yst0xp"
+                data-oid="tunapwt"
               >
                 Testimonials
               </Link>
@@ -137,7 +137,7 @@ function Header() {
                 href="#pricing"
                 className="py-2 text-sm font-medium hover:text-primary"
                 onClick={() => setIsMenuOpen(false)}
-                data-oid="fx8lhy:"
+                data-oid="8g5sij1"
               >
                 Pricing
               </Link>
@@ -145,7 +145,7 @@ function Header() {
                 href="#contact"
                 className="py-2 text-sm font-medium hover:text-primary"
                 onClick={() => setIsMenuOpen(false)}
-                data-oid="ry46:9d"
+                data-oid="mg0vqtr"
               >
                 Contact
               </Link>
@@ -153,9 +153,9 @@ function Header() {
                 asChild
                 className="mt-2"
                 onClick={() => setIsMenuOpen(false)}
-                data-oid="x6ws3hg"
+                data-oid="39e9m6e"
               >
-                <Link href="#get-started" data-oid="xtrqs3y">
+                <Link href="#get-started" data-oid="uf1_7_a">
                   Get Started
                 </Link>
               </Button>
@@ -168,86 +168,47 @@ function Header() {
 }
 
 function HeroSection() {
-  const [currentSchool, setCurrentSchool] = useState(0);
-  const schools = [
-    "Harvard",
-    "Columbia",
-    "Princeton",
-    "University of Michigan",
-    "UC Davis",
-    "UC Berkeley",
-    "Stanford",
-    "Cornell",
-    "Dartmouth",
-    "UChicago",
-    "Georgia Tech",
-    "MIT",
-    "Yale",
-    "Duke",
-    "UCLA",
-  ];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSchool((prev) => (prev + 1) % schools.length);
-    }, 2000);
-
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <section
       id="hero"
       className="w-full py-12 md:py-24 lg:py-32 xl:py-48"
-      data-oid=":9hif2v"
+      data-oid="3bessn3"
     >
-      <div className="container px-4 md:px-6" data-oid="1rlec:3">
+      <div className="container px-4 md:px-6" data-oid="aa_5w7_">
         <div
           className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]"
-          data-oid="775dlnk"
+          data-oid="0m270hi"
         >
           <div
             className="flex flex-col justify-center space-y-4"
-            data-oid="r-apgj-"
+            data-oid="_qyiqon"
           >
-            <div className="space-y-2" data-oid="v5w_b1c">
+            <div className="space-y-2" data-oid="po8s.lf">
               <h1
                 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none"
-                data-oid="lqrvckv"
+                data-oid="7b0ykv9"
               >
-                Get your application read by 1000{" "}
-                <span
-                  className="animate-pulse text-amber-500 font-bold"
-                  style={{
-                    textShadow:
-                      "0 0 10px rgba(245, 158, 11, 0.5), 0 0 20px rgba(245, 158, 11, 0.3)",
-                  }}
-                  data-oid="oyk_sfq"
-                >
-                  {schools[currentSchool]}
-                </span>
-                <br data-oid="d1q13d8" />
-                Admissions Officers
+                chance-me Your Workflow, Amplify Your Productivity
               </h1>
               <p
                 className="max-w-[600px] text-muted-foreground md:text-xl"
-                data-oid="q6zl5i2"
+                data-oid="ct5.-x."
               >
-                Multi-agent prediction to determine your true chances at getting
-                into college.
+                The all-in-one platform that helps teams collaborate, automate,
+                and deliver results faster than ever before.
               </p>
             </div>
             <div
               className="flex flex-col gap-2 min-[400px]:flex-row"
-              data-oid=":hyq.u5"
+              data-oid="h_88:3u"
             >
-              <Button asChild size="lg" data-oid="-j75r4f">
-                <Link href="#get-started" data-oid="kq0dqw:">
+              <Button asChild size="lg" data-oid="xp3egd3">
+                <Link href="#get-started" data-oid="z5x7oh3">
                   Get Started for Free
                 </Link>
               </Button>
-              <Button variant="outline" size="lg" data-oid="1dczcqa">
-                <Link href="#demo" data-oid=":avd8t0">
+              <Button variant="outline" size="lg" data-oid="99lndsm">
+                <Link href="#demo" data-oid="t6sa-5y">
                   Request Demo
                 </Link>
               </Button>
@@ -259,7 +220,7 @@ function HeroSection() {
             height={550}
             alt="StreamLine Dashboard"
             className="mx-auto aspect-video overflow-hidden rounded-xl object-cover sm:w-full lg:order-last"
-            data-oid="fzwqc08"
+            data-oid="zofhxu2"
           />
         </div>
       </div>
@@ -299,29 +260,29 @@ function FeaturesSection() {
     <section
       id="features"
       className="w-full py-12 md:py-24 lg:py-32 bg-muted"
-      data-oid="_oze_fd"
+      data-oid="gz11g5z"
     >
-      <div className="container px-4 md:px-6" data-oid="8po5upc">
+      <div className="container px-4 md:px-6" data-oid="6_qu9io">
         <div
           className="flex flex-col items-center justify-center space-y-4 text-center"
-          data-oid=".xrlcno"
+          data-oid="klzzjx:"
         >
-          <div className="space-y-2" data-oid="n27ou6s">
+          <div className="space-y-2" data-oid="2bqe.iu">
             <div
               className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground"
-              data-oid="3-o45i."
+              data-oid="g9bufsz"
             >
               Features
             </div>
             <h2
               className="text-3xl font-bold tracking-tighter sm:text-5xl"
-              data-oid="7a53uv:"
+              data-oid="wamn7el"
             >
               Everything You Need to Succeed
             </h2>
             <p
               className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
-              data-oid="-dhzyxt"
+              data-oid=".qp0o7w"
             >
               chance-me provides powerful tools designed to help your team work
               smarter, not harder.
@@ -330,13 +291,13 @@ function FeaturesSection() {
         </div>
         <div
           className="mx-auto grid max-w-5xl grid-cols-1 gap-6 py-12 md:grid-cols-2 lg:gap-12"
-          data-oid="o8a90ht"
+          data-oid="atx8n::"
         >
           {features.map((feature, index) => (
             <div
               key={index}
               className="flex flex-col items-start gap-4 rounded-lg border p-6 bg-background shadow-sm"
-              data-oid="kb49g1w"
+              data-oid="2:is466"
             >
               <Image
                 src={feature.icon || "/placeholder.svg"}
@@ -344,14 +305,14 @@ function FeaturesSection() {
                 height={48}
                 alt={feature.title}
                 className="rounded-md"
-                data-oid="uwpvhrq"
+                data-oid="k7k_h:4"
               />
 
-              <div className="space-y-2" data-oid="v93291z">
-                <h3 className="text-xl font-bold" data-oid=".veok6x">
+              <div className="space-y-2" data-oid="gnc1.qs">
+                <h3 className="text-xl font-bold" data-oid="as.v2ex">
                   {feature.title}
                 </h3>
-                <p className="text-muted-foreground" data-oid="sc.ps2p">
+                <p className="text-muted-foreground" data-oid="n-__skf">
                   {feature.description}
                 </p>
               </div>
@@ -392,29 +353,29 @@ function TestimonialsSection() {
     <section
       id="testimonials"
       className="w-full py-12 md:py-24 lg:py-32"
-      data-oid="srlgjjz"
+      data-oid="dj2q-08"
     >
-      <div className="container px-4 md:px-6" data-oid=".6m-8bj">
+      <div className="container px-4 md:px-6" data-oid="qxka_t7">
         <div
           className="flex flex-col items-center justify-center space-y-4 text-center"
-          data-oid="6zw6ny0"
+          data-oid="yw:.s_-"
         >
-          <div className="space-y-2" data-oid="2hamel:">
+          <div className="space-y-2" data-oid="4nngfam">
             <div
               className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground"
-              data-oid="059i.d0"
+              data-oid="vis.a2f"
             >
               Testimonials
             </div>
             <h2
               className="text-3xl font-bold tracking-tighter sm:text-5xl"
-              data-oid="9mj:67-"
+              data-oid="xfv_2is"
             >
               Trusted by Teams Worldwide
             </h2>
             <p
               className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
-              data-oid="50nz6pp"
+              data-oid="k2hm.2h"
             >
               Don't just take our word for it. See what our customers have to
               say about chance-me.
@@ -423,35 +384,35 @@ function TestimonialsSection() {
         </div>
         <div
           className="mx-auto grid max-w-5xl grid-cols-1 gap-6 py-12 md:grid-cols-3"
-          data-oid="a01o835"
+          data-oid="p1b08i4"
         >
           {testimonials.map((testimonial, index) => (
             <div
               key={index}
               className="flex flex-col justify-between rounded-lg border p-6 shadow-sm"
-              data-oid="zgm9e4m"
+              data-oid="w--ja6u"
             >
-              <div className="space-y-4" data-oid="tbfmrre">
-                <p className="text-muted-foreground italic" data-oid="okdnn5e">
+              <div className="space-y-4" data-oid="q2v6ltd">
+                <p className="text-muted-foreground italic" data-oid="aoj5fjy">
                   "{testimonial.quote}"
                 </p>
-                <div className="flex items-center gap-4" data-oid="fwrf-lf">
+                <div className="flex items-center gap-4" data-oid="e7e.:-j">
                   <Image
                     src={testimonial.avatar || "/placeholder.svg"}
                     width={64}
                     height={64}
                     alt={testimonial.author}
                     className="rounded-full"
-                    data-oid="2ol:8uk"
+                    data-oid="6bm6pz9"
                   />
 
-                  <div data-oid="z.ho9u:">
-                    <h4 className="font-semibold" data-oid="rapc.v:">
+                  <div data-oid="uqgl_:j">
+                    <h4 className="font-semibold" data-oid="u:o-to7">
                       {testimonial.author}
                     </h4>
                     <p
                       className="text-sm text-muted-foreground"
-                      data-oid="_zeg89y"
+                      data-oid="_0rn5ey"
                     >
                       {testimonial.role}
                     </p>
@@ -515,29 +476,29 @@ function PricingSection() {
     <section
       id="pricing"
       className="w-full py-12 md:py-24 lg:py-32 bg-muted"
-      data-oid="p92syg_"
+      data-oid=".nyvt8q"
     >
-      <div className="container px-4 md:px-6" data-oid="je5wdcp">
+      <div className="container px-4 md:px-6" data-oid="y1xt-xv">
         <div
           className="flex flex-col items-center justify-center space-y-4 text-center"
-          data-oid="88_pxyv"
+          data-oid="u16tfbq"
         >
-          <div className="space-y-2" data-oid="zt5ok4r">
+          <div className="space-y-2" data-oid="h09izsd">
             <div
               className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground"
-              data-oid="u3nh-my"
+              data-oid="1ms::42"
             >
               Pricing
             </div>
             <h2
               className="text-3xl font-bold tracking-tighter sm:text-5xl"
-              data-oid="cvsu3__"
+              data-oid="vyhjd1f"
             >
               Simple, Transparent Pricing
             </h2>
             <p
               className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
-              data-oid="i0_t1iy"
+              data-oid="hv6s35s"
             >
               Choose the plan that's right for your team. All plans include a
               14-day free trial.
@@ -546,7 +507,7 @@ function PricingSection() {
         </div>
         <div
           className="mx-auto grid max-w-5xl grid-cols-1 gap-6 py-12 md:grid-cols-3"
-          data-oid="nev45vk"
+          data-oid="j1j:5bi"
         >
           {plans.map((plan, index) => (
             <div
@@ -556,46 +517,46 @@ function PricingSection() {
                   ? "border-primary bg-background relative"
                   : "bg-background"
               }`}
-              data-oid="vpy3iax"
+              data-oid="25dlob6"
             >
               {plan.popular && (
                 <div
                   className="absolute -top-3 left-0 right-0 mx-auto w-fit rounded-full bg-primary px-3 py-1 text-xs text-primary-foreground"
-                  data-oid="e8-oa_1"
+                  data-oid="cq5r3b_"
                 >
                   Most Popular
                 </div>
               )}
-              <div className="space-y-4" data-oid="6bslla-">
-                <h3 className="text-2xl font-bold" data-oid="5l7jprp">
+              <div className="space-y-4" data-oid="4iiay44">
+                <h3 className="text-2xl font-bold" data-oid="x_fx8i4">
                   {plan.name}
                 </h3>
-                <div className="flex items-baseline gap-1" data-oid="u6jkjik">
-                  <span className="text-4xl font-bold" data-oid=":q.w4b_">
+                <div className="flex items-baseline gap-1" data-oid="o0lnc15">
+                  <span className="text-4xl font-bold" data-oid="k9jxj55">
                     {plan.price}
                   </span>
-                  <span className="text-muted-foreground" data-oid="nsuzsrj">
+                  <span className="text-muted-foreground" data-oid="6if2y9n">
                     /month
                   </span>
                 </div>
-                <p className="text-muted-foreground" data-oid="sqbwgho">
+                <p className="text-muted-foreground" data-oid="h-z33zz">
                   {plan.description}
                 </p>
               </div>
-              <div className="mt-6 space-y-4" data-oid="cltg8st">
-                <ul className="space-y-2" data-oid="lt0tj0x">
+              <div className="mt-6 space-y-4" data-oid="k6cscr0">
+                <ul className="space-y-2" data-oid="-gm0280">
                   {plan.features.map((feature, featureIndex) => (
                     <li
                       key={featureIndex}
                       className="flex items-center gap-2"
-                      data-oid="28g27bt"
+                      data-oid="vs_jimj"
                     >
                       <CheckCircle2
                         className="h-4 w-4 text-primary"
-                        data-oid="wk4x:sc"
+                        data-oid="dfn3ayk"
                       />
 
-                      <span data-oid="1wvpw2-">{feature}</span>
+                      <span data-oid="clhx.gb">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -604,7 +565,7 @@ function PricingSection() {
                     plan.popular ? "bg-primary text-primary-foreground" : ""
                   }`}
                   variant={plan.popular ? "default" : "outline"}
-                  data-oid="5mm4gz_"
+                  data-oid=":j0da_8"
                 >
                   Get Started
                 </Button>
@@ -622,23 +583,23 @@ function CtaSection() {
     <section
       id="get-started"
       className="w-full py-12 md:py-24 lg:py-32"
-      data-oid="tatk69j"
+      data-oid="bpwqg9a"
     >
-      <div className="container px-4 md:px-6" data-oid="mhoskbz">
+      <div className="container px-4 md:px-6" data-oid="-9e1ixn">
         <div
           className="flex flex-col items-center justify-center space-y-4 text-center"
-          data-oid="4u2s46q"
+          data-oid="332vu4f"
         >
-          <div className="space-y-2" data-oid="uj7ykej">
+          <div className="space-y-2" data-oid="8w4kyni">
             <h2
               className="text-3xl font-bold tracking-tighter sm:text-5xl"
-              data-oid="okbcm1f"
+              data-oid="ie2g6ug"
             >
               Ready to Transform Your Workflow?
             </h2>
             <p
               className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
-              data-oid="znm57ch"
+              data-oid="hov21oi"
             >
               Join thousands of teams that use chance-me to boost productivity
               and streamline collaboration.
@@ -646,13 +607,13 @@ function CtaSection() {
           </div>
           <div
             className="flex flex-col gap-2 min-[400px]:flex-row"
-            data-oid="8d9mbur"
+            data-oid="r9rynoe"
           >
-            <Button size="lg" className="gap-1" data-oid="4gnbhw2">
+            <Button size="lg" className="gap-1" data-oid="zydkakj">
               Get Started Now
-              <ArrowRight className="h-4 w-4" data-oid="xilmw3d" />
+              <ArrowRight className="h-4 w-4" data-oid="ow._8y1" />
             </Button>
-            <Button variant="outline" size="lg" data-oid="3iyq7y0">
+            <Button variant="outline" size="lg" data-oid="2nfjgvm">
               Contact Sales
             </Button>
           </div>
@@ -666,18 +627,18 @@ function Footer() {
   return (
     <footer
       className="w-full border-t bg-background py-6 md:py-12"
-      data-oid="4wm2s9f"
+      data-oid="ijgu3_a"
     >
-      <div className="container px-4 md:px-6" data-oid="w8o5gsm">
+      <div className="container px-4 md:px-6" data-oid="v7m49.p">
         <div
           className="grid grid-cols-1 gap-8 md:grid-cols-4"
-          data-oid="402tdcb"
+          data-oid="2b0-lh9"
         >
-          <div className="space-y-4" data-oid="nms_64x">
+          <div className="space-y-4" data-oid="-.vw2nk">
             <Link
               href="/"
               className="flex items-center gap-2"
-              data-oid="p9:awq."
+              data-oid="5s.1ds_"
             >
               <Image
                 src="/placeholder.svg?height=32&width=32"
@@ -685,195 +646,195 @@ function Footer() {
                 width={32}
                 height={32}
                 className="rounded"
-                data-oid="emdv_p6"
+                data-oid="uoikti4"
               />
 
-              <span className="text-xl font-bold" data-oid="cz.ll52">
+              <span className="text-xl font-bold" data-oid="070w--6">
                 chance-me
               </span>
             </Link>
-            <p className="text-sm text-muted-foreground" data-oid="hvck7s3">
+            <p className="text-sm text-muted-foreground" data-oid="0h86oob">
               Empowering teams to work smarter, not harder.
             </p>
-            <div className="flex gap-4" data-oid="ie3u82e">
+            <div className="flex gap-4" data-oid="mb1a0wf">
               <Link
                 href="#"
                 className="text-muted-foreground hover:text-foreground"
-                data-oid="f-4hnn1"
+                data-oid="mo5wr7s"
               >
-                <Twitter className="h-5 w-5" data-oid="z43pf8b" />
+                <Twitter className="h-5 w-5" data-oid="jf:.fis" />
 
-                <span className="sr-only" data-oid="8__j_b1">
+                <span className="sr-only" data-oid="-9kpby0">
                   Twitter
                 </span>
               </Link>
               <Link
                 href="#"
                 className="text-muted-foreground hover:text-foreground"
-                data-oid="0xl6yyo"
+                data-oid="m:t0.bq"
               >
-                <Facebook className="h-5 w-5" data-oid="rbcr.fe" />
+                <Facebook className="h-5 w-5" data-oid="u81hukj" />
 
-                <span className="sr-only" data-oid="yd9cmdn">
+                <span className="sr-only" data-oid="xbvb08y">
                   Facebook
                 </span>
               </Link>
               <Link
                 href="#"
                 className="text-muted-foreground hover:text-foreground"
-                data-oid="ritt5k9"
+                data-oid=".vuvfzj"
               >
-                <Instagram className="h-5 w-5" data-oid="a66.mnw" />
+                <Instagram className="h-5 w-5" data-oid="l1-znne" />
 
-                <span className="sr-only" data-oid="d8q9n9:">
+                <span className="sr-only" data-oid="-j7021x">
                   Instagram
                 </span>
               </Link>
               <Link
                 href="#"
                 className="text-muted-foreground hover:text-foreground"
-                data-oid="p:8kgg6"
+                data-oid="2rj1emp"
               >
-                <Linkedin className="h-5 w-5" data-oid="17xqxgg" />
+                <Linkedin className="h-5 w-5" data-oid="eq-ukwb" />
 
-                <span className="sr-only" data-oid="95bxhgy">
+                <span className="sr-only" data-oid="oagg34w">
                   LinkedIn
                 </span>
               </Link>
             </div>
           </div>
-          <div className="space-y-4" data-oid="sjv.3-f">
+          <div className="space-y-4" data-oid="9x-sdl:">
             <h4
               className="text-sm font-bold uppercase tracking-wider"
-              data-oid="hl8h_uc"
+              data-oid="u1.tub7"
             >
               Product
             </h4>
-            <ul className="space-y-2" data-oid="20-yydm">
-              <li data-oid="_7l8ci8">
+            <ul className="space-y-2" data-oid="p.p3w8l">
+              <li data-oid="ath1x2a">
                 <Link
                   href="#"
                   className="text-sm text-muted-foreground hover:text-foreground"
-                  data-oid="mm824v."
+                  data-oid="kt9__8d"
                 >
                   Features
                 </Link>
               </li>
-              <li data-oid="w3gscfl">
+              <li data-oid="gbtlxzf">
                 <Link
                   href="#"
                   className="text-sm text-muted-foreground hover:text-foreground"
-                  data-oid="gksk8_k"
+                  data-oid="u9bhdlk"
                 >
                   Pricing
                 </Link>
               </li>
-              <li data-oid="5gn8hgk">
+              <li data-oid="k0gzio2">
                 <Link
                   href="#"
                   className="text-sm text-muted-foreground hover:text-foreground"
-                  data-oid="4u5h3.l"
+                  data-oid="2vym5xd"
                 >
                   Integrations
                 </Link>
               </li>
-              <li data-oid="hb5jzbv">
+              <li data-oid="oz73pfg">
                 <Link
                   href="#"
                   className="text-sm text-muted-foreground hover:text-foreground"
-                  data-oid=":x-fzp3"
+                  data-oid="pygdvtf"
                 >
                   Changelog
                 </Link>
               </li>
             </ul>
           </div>
-          <div className="space-y-4" data-oid="hhn:j.q">
+          <div className="space-y-4" data-oid="cvoxvgd">
             <h4
               className="text-sm font-bold uppercase tracking-wider"
-              data-oid="vyd4ybc"
+              data-oid=":op3l74"
             >
               Company
             </h4>
-            <ul className="space-y-2" data-oid="gas.5k6">
-              <li data-oid="hi:er__">
+            <ul className="space-y-2" data-oid="okt.tg3">
+              <li data-oid=".fqkm9-">
                 <Link
                   href="#"
                   className="text-sm text-muted-foreground hover:text-foreground"
-                  data-oid="qp8zld5"
+                  data-oid="hkh.3ip"
                 >
                   About
                 </Link>
               </li>
-              <li data-oid="j3xhay0">
+              <li data-oid="alksi6f">
                 <Link
                   href="#"
                   className="text-sm text-muted-foreground hover:text-foreground"
-                  data-oid="8yphmdi"
+                  data-oid="zo7alov"
                 >
                   Blog
                 </Link>
               </li>
-              <li data-oid="intzgrf">
+              <li data-oid="jwwzryi">
                 <Link
                   href="#"
                   className="text-sm text-muted-foreground hover:text-foreground"
-                  data-oid="-v_6zu2"
+                  data-oid="axc-pt2"
                 >
                   Careers
                 </Link>
               </li>
-              <li data-oid="wv91esm">
+              <li data-oid="ch7zrti">
                 <Link
                   href="#"
                   className="text-sm text-muted-foreground hover:text-foreground"
-                  data-oid="fjzok9."
+                  data-oid="85niy0j"
                 >
                   Contact
                 </Link>
               </li>
             </ul>
           </div>
-          <div className="space-y-4" data-oid="jcobsvl">
+          <div className="space-y-4" data-oid="hel0cd5">
             <h4
               className="text-sm font-bold uppercase tracking-wider"
-              data-oid="j9fik45"
+              data-oid="uxpl0jk"
             >
               Legal
             </h4>
-            <ul className="space-y-2" data-oid="n6oq07g">
-              <li data-oid="rkcsf9u">
+            <ul className="space-y-2" data-oid="0trqfa_">
+              <li data-oid="1u3w-.i">
                 <Link
                   href="#"
                   className="text-sm text-muted-foreground hover:text-foreground"
-                  data-oid="cmdlmub"
+                  data-oid="mg:zr_b"
                 >
                   Terms
                 </Link>
               </li>
-              <li data-oid="zalsb5_">
+              <li data-oid="jkjcxy5">
                 <Link
                   href="#"
                   className="text-sm text-muted-foreground hover:text-foreground"
-                  data-oid="rp7m.tw"
+                  data-oid="q4f67ny"
                 >
                   Privacy
                 </Link>
               </li>
-              <li data-oid="1wtnhsw">
+              <li data-oid="ri2-cnu">
                 <Link
                   href="#"
                   className="text-sm text-muted-foreground hover:text-foreground"
-                  data-oid="4uzgq.3"
+                  data-oid="1_4g9k-"
                 >
                   Cookies
                 </Link>
               </li>
-              <li data-oid="1s4k4no">
+              <li data-oid="0:91qst">
                 <Link
                   href="#"
                   className="text-sm text-muted-foreground hover:text-foreground"
-                  data-oid="2:w71te"
+                  data-oid="t6l_zea"
                 >
                   Licenses
                 </Link>
@@ -883,7 +844,7 @@ function Footer() {
         </div>
         <div
           className="mt-8 border-t pt-8 text-center text-sm text-muted-foreground"
-          data-oid="-f37u3."
+          data-oid="dkzt4pz"
         >
           &copy; {new Date().getFullYear()} chance-me. All rights reserved.
         </div>
