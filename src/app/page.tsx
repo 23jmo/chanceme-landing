@@ -14,6 +14,7 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
+import TypedText from "@/components/TypedText";
 
 export default function LandingPage() {
   return (
@@ -38,15 +39,17 @@ function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
-          <Link href="/" className="flex items-center gap-2">
+          <Link
+            href="/"
+            className="flex items-center gap-2"
+          >
             <Image
               src="/placeholder.svg?height=32&width=32"
-              alt="StreamLine Logo"
+              alt="chance-me Logo"
               width={32}
               height={32}
               className="rounded"
             />
-
             <span className="text-xl font-bold">chance-me</span>
           </Link>
         </div>
@@ -143,13 +146,16 @@ function Header() {
 
 function HeroSection() {
   return (
-    <section id="hero" className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
+    <section
+      id="hero"
+      className="w-full py-12 md:py-24 lg:py-32 xl:py-48"
+    >
       <div className="container px-4 md:px-6">
         <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
           <div className="flex flex-col justify-center space-y-4">
             <div className="space-y-2">
               <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                chance-me Your Workflow, Amplify Your Productivity
+                <TypedText />
               </h1>
               <p className="max-w-[600px] text-muted-foreground md:text-xl">
                 The all-in-one platform that helps teams collaborate, automate,
@@ -157,10 +163,16 @@ function HeroSection() {
               </p>
             </div>
             <div className="flex flex-col gap-2 min-[400px]:flex-row">
-              <Button asChild size="lg">
+              <Button
+                asChild
+                size="lg"
+              >
                 <Link href="#get-started">Get Started for Free</Link>
               </Button>
-              <Button variant="outline" size="lg">
+              <Button
+                variant="outline"
+                size="lg"
+              >
                 <Link href="#demo">Request Demo</Link>
               </Button>
             </div>
@@ -207,7 +219,10 @@ function FeaturesSection() {
   ];
 
   return (
-    <section id="features" className="w-full py-12 md:py-24 lg:py-32 bg-muted">
+    <section
+      id="features"
+      className="w-full py-12 md:py-24 lg:py-32 bg-muted"
+    >
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
@@ -236,7 +251,6 @@ function FeaturesSection() {
                 alt={feature.title}
                 className="rounded-md"
               />
-
               <div className="space-y-2">
                 <h3 className="text-xl font-bold">{feature.title}</h3>
                 <p className="text-muted-foreground">{feature.description}</p>
@@ -275,7 +289,10 @@ function TestimonialsSection() {
   ];
 
   return (
-    <section id="testimonials" className="w-full py-12 md:py-24 lg:py-32">
+    <section
+      id="testimonials"
+      className="w-full py-12 md:py-24 lg:py-32"
+    >
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
@@ -309,7 +326,6 @@ function TestimonialsSection() {
                     alt={testimonial.author}
                     className="rounded-full"
                   />
-
                   <div>
                     <h4 className="font-semibold">{testimonial.author}</h4>
                     <p className="text-sm text-muted-foreground">
@@ -352,7 +368,6 @@ function PricingSection() {
         "10GB storage",
         "Advanced analytics",
       ],
-
       popular: true,
     },
     {
@@ -372,7 +387,10 @@ function PricingSection() {
   ];
 
   return (
-    <section id="pricing" className="w-full py-12 md:py-24 lg:py-32 bg-muted">
+    <section
+      id="pricing"
+      className="w-full py-12 md:py-24 lg:py-32 bg-muted"
+    >
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
@@ -414,9 +432,11 @@ function PricingSection() {
               <div className="mt-6 space-y-4">
                 <ul className="space-y-2">
                   {plan.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-center gap-2">
+                    <li
+                      key={featureIndex}
+                      className="flex items-center gap-2"
+                    >
                       <CheckCircle2 className="h-4 w-4 text-primary" />
-
                       <span>{feature}</span>
                     </li>
                   ))}
@@ -440,7 +460,10 @@ function PricingSection() {
 
 function CtaSection() {
   return (
-    <section id="get-started" className="w-full py-12 md:py-24 lg:py-32">
+    <section
+      id="get-started"
+      className="w-full py-12 md:py-24 lg:py-32"
+    >
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
@@ -449,15 +472,21 @@ function CtaSection() {
             </h2>
             <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
               Join thousands of teams that use chance-me to boost productivity
-              and streamline collaboration.
+              and chance-me collaboration.
             </p>
           </div>
           <div className="flex flex-col gap-2 min-[400px]:flex-row">
-            <Button size="lg" className="gap-1">
+            <Button
+              size="lg"
+              className="gap-1"
+            >
               Get Started Now
               <ArrowRight className="h-4 w-4" />
             </Button>
-            <Button variant="outline" size="lg">
+            <Button
+              variant="outline"
+              size="lg"
+            >
               Contact Sales
             </Button>
           </div>
@@ -473,7 +502,10 @@ function Footer() {
       <div className="container px-4 md:px-6">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="space-y-4">
-            <Link href="/" className="flex items-center gap-2">
+            <Link
+              href="/"
+              className="flex items-center gap-2"
+            >
               <Image
                 src="/placeholder.svg?height=32&width=32"
                 alt="chance-me Logo"
@@ -481,7 +513,6 @@ function Footer() {
                 height={32}
                 className="rounded"
               />
-
               <span className="text-xl font-bold">chance-me</span>
             </Link>
             <p className="text-sm text-muted-foreground">
@@ -493,7 +524,6 @@ function Footer() {
                 className="text-muted-foreground hover:text-foreground"
               >
                 <Twitter className="h-5 w-5" />
-
                 <span className="sr-only">Twitter</span>
               </Link>
               <Link
@@ -501,7 +531,6 @@ function Footer() {
                 className="text-muted-foreground hover:text-foreground"
               >
                 <Facebook className="h-5 w-5" />
-
                 <span className="sr-only">Facebook</span>
               </Link>
               <Link
@@ -509,7 +538,6 @@ function Footer() {
                 className="text-muted-foreground hover:text-foreground"
               >
                 <Instagram className="h-5 w-5" />
-
                 <span className="sr-only">Instagram</span>
               </Link>
               <Link
@@ -517,7 +545,6 @@ function Footer() {
                 className="text-muted-foreground hover:text-foreground"
               >
                 <Linkedin className="h-5 w-5" />
-
                 <span className="sr-only">LinkedIn</span>
               </Link>
             </div>

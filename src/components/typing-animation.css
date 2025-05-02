@@ -1,0 +1,52 @@
+/* Container styling */
+.typing-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+}
+
+/* Typed text styling */
+.typed-text {
+  font-weight: medium;
+  white-space: pre-wrap;
+}
+
+/* Wrapper for the animated content and cursor */
+.typed-content-wrapper {
+  position: relative;
+  display: inline-flex;
+  min-width: 20px; /* Ensure there's always space for cursor */
+  min-height: 1.2em;
+}
+
+/* College name styling with glow effect */
+.college-name {
+  color: #ffa500; /* Orange base color */
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(255, 165, 0, 0.7), 0 0 20px rgba(255, 165, 0, 0.5),
+    0 0 30px rgba(255, 165, 0, 0.3);
+}
+
+/* Blinking cursor styling */
+.cursor {
+  position: absolute;
+  right: -4px; /* Position it right after the text */
+  top: 0;
+  width: 3px;
+  height: 1.2em;
+  background-color: #ffa500;
+  margin-left: 2px;
+  animation: blink 1s step-end infinite;
+}
+
+/* Cursor blinking animation */
+@keyframes blink {
+  from,
+  to {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
