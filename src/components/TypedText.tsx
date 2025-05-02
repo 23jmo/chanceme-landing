@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import "./typing-animation.css";
 
 const colleges = [
@@ -34,7 +34,7 @@ export default function TypedText() {
   // Timing configuration
   const typingSpeed = 100; // ms per character for typing
   const deletingSpeed = 50; // ms per character for deleting
-  const pauseTime = 1500; // ms to wait after typing before deleting
+  const pauseTime = 2000; // ms to wait after typing before deleting
 
   // Effect to handle the typing animation
   useEffect(() => {
@@ -74,13 +74,12 @@ export default function TypedText() {
   }, [displayText, isDeleting, collegeIndex]);
 
   return (
-    <div className="typing-container flex flex-wrap">
-      <span className="typed-text">Get your application read by 1000 </span>
+    <span className="typing-container">
+      {" "}
       <span className="typed-content-wrapper">
         <span className="college-name">{displayText}</span>
         <span className="cursor"></span>
       </span>
-      <span className="typed-text"> Admissions Officers</span>
-    </div>
+    </span>
   );
 }

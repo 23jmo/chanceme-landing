@@ -151,39 +151,35 @@ function HeroSection() {
       className="w-full py-12 md:py-24 lg:py-32 xl:py-48"
     >
       <div className="container px-4 md:px-6">
-        <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
-          <div className="flex flex-col justify-center space-y-4">
-            <div className="space-y-2">
-              <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                <TypedText />
-              </h1>
-              <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                The all-in-one platform that helps teams collaborate, automate,
-                and deliver results faster than ever before.
-              </p>
-            </div>
-            <div className="flex flex-col gap-2 min-[400px]:flex-row">
+        <div className="flex flex-col items-center text-center">
+          <div className="max-w-3xl mx-auto space-y-4">
+            <h1 className="text-5xl font-bold tracking-tighter sm:text-4xl md:text-6xl lg:text-7xl">
+              Get your application read by{" "}
+              <span className="number-box">1000</span> Admissions Officers at{" "}
+              <TypedText />
+            </h1>
+            <p className="max-w-[800px] mx-auto text-muted-foreground md:text-xl">
+              The all-in-one platform that helps teams collaborate, automate,
+              and deliver results faster than ever before.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
               <Button
                 asChild
                 size="lg"
               >
-                <Link href="#get-started">Get Started for Free</Link>
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-              >
-                <Link href="#demo">Request Demo</Link>
+                <Link href="#get-started">Join Waitlist</Link>
               </Button>
             </div>
           </div>
-          <Image
-            src="/placeholder.svg?height=550&width=550"
-            width={550}
-            height={550}
-            alt="StreamLine Dashboard"
-            className="mx-auto aspect-video overflow-hidden rounded-xl object-cover sm:w-full lg:order-last"
-          />
+          <div className="mt-12">
+            <Image
+              src="/placeholder.svg?height=550&width=550"
+              width={550}
+              height={550}
+              alt="StreamLine Dashboard"
+              className="mx-auto aspect-video overflow-hidden rounded-xl object-cover"
+            />
+          </div>
         </div>
       </div>
     </section>
