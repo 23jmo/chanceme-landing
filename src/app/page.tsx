@@ -168,6 +168,33 @@ function Header() {
 }
 
 function HeroSection() {
+  const [currentSchool, setCurrentSchool] = useState(0);
+  const schools = [
+    "Harvard",
+    "Columbia",
+    "Princeton",
+    "University of Michigan",
+    "UC Davis",
+    "UC Berkeley",
+    "Stanford",
+    "Cornell",
+    "Dartmouth",
+    "UChicago",
+    "Georgia Tech",
+    "MIT",
+    "Yale",
+    "Duke",
+    "UCLA",
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSchool((prev) => (prev + 1) % schools.length);
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section
       id="hero"
@@ -188,13 +215,25 @@ function HeroSection() {
                 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none"
                 data-oid="lqrvckv"
               >
-                Streamline Your Workflow, Amplify Your Productivity
+                Get your application read by 1000{" "}
+                <span
+                  className="animate-pulse text-amber-500 font-bold"
+                  style={{
+                    textShadow:
+                      "0 0 10px rgba(245, 158, 11, 0.5), 0 0 20px rgba(245, 158, 11, 0.3)",
+                  }}
+                  data-oid="oyk_sfq"
+                >
+                  {schools[currentSchool]}
+                </span>
+                <br data-oid="d1q13d8" />
+                Admissions Officers
               </h1>
               <p
                 className="max-w-[600px] text-muted-foreground md:text-xl"
                 data-oid="q6zl5i2"
               >
-                Multi-agent prediction to determine your true chances at geting
+                Multi-agent prediction to determine your true chances at getting
                 into college.
               </p>
             </div>
