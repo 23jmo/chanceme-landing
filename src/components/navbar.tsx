@@ -91,7 +91,7 @@ export default function Navbar() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4, staggerChildren: 0.1 }}
             >
-              {["Process", "Get Started"].map((item, index) => (
+              {/* {["Process", "Get Started"].map((item, index) => (
                 <motion.div
                   key={item}
                   initial={{ opacity: 0, y: -20 }}
@@ -112,7 +112,7 @@ export default function Navbar() {
                     {item}
                   </ScrollLink>
                 </motion.div>
-              ))}
+              ))} */}
             </motion.div>
           </nav>
 
