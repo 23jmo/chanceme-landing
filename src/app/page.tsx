@@ -17,17 +17,17 @@ import {
 import { useState, useEffect, useCallback } from "react";
 import TypedText from "@/components/TypedText";
 import AdmissionDot, { TrialStatus, Officer } from "@/components/AdmissionDot";
-
+import Navbar from "@/components/navbar";
 export default function LandingPage() {
   return (
     <div
-      className="flex min-h-screen flex-col bg-cover bg-no-repeat"
+      className="flex min-h-screen flex-col bg-cover bg-no-repeat pt-16"
       style={{
         backgroundImage: "url('/bg.png')",
         backgroundPosition: "center 20%",
       }}
     >
-      <Header />
+      <Navbar />
       <main className="flex-1 mx-auto">
         <HeroSection />
         <AdmissionTrials />
@@ -42,109 +42,67 @@ function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Link
-            href="/"
-            className="flex items-center gap-2"
-          >
+    <header className="fixed top-0 z-50 w-full">
+      <div className="bg-[#c6bc91] py-5 px-6">
+        <div className="container mx-auto flex justify-between items-center">
+          <div className="flex items-center gap-3">
             <Image
               src="/placeholder.svg?height=32&width=32"
-              alt="chance-me Logo"
+              alt="Chance Me Logo"
               width={32}
               height={32}
               className="rounded"
             />
-            <span className="text-xl font-bold">Chance Me</span>
-          </Link>
-        </div>
-
-        {/* Mobile menu button */}
-        <button
-          className="block md:hidden"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          {isMenuOpen ? (
-            <X className="h-6 w-6" />
-          ) : (
-            <Menu className="h-6 w-6" />
-          )}
-        </button>
-
-        {/* Desktop navigation */}
-        <nav className="hidden md:flex items-center gap-6">
-          <Link
-            href="#features"
-            className="text-sm font-medium hover:text-primary"
-          >
-            Features
-          </Link>
-          <Link
-            href="#testimonials"
-            className="text-sm font-medium hover:text-primary"
-          >
-            Testimonials
-          </Link>
-          <Link
-            href="#pricing"
-            className="text-sm font-medium hover:text-primary"
-          >
-            Pricing
-          </Link>
-          <Link
-            href="#contact"
-            className="text-sm font-medium hover:text-primary"
-          >
-            Contact
-          </Link>
-          <Button asChild>
-            <Link href="#get-started">Get Started</Link>
-          </Button>
-        </nav>
-
-        {/* Mobile navigation */}
-        {isMenuOpen && (
-          <div className="absolute top-16 left-0 right-0 bg-background border-b md:hidden">
-            <nav className="container flex flex-col py-4">
-              <Link
-                href="#features"
-                className="py-2 text-sm font-medium hover:text-primary"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Features
-              </Link>
-              <Link
-                href="#testimonials"
-                className="py-2 text-sm font-medium hover:text-primary"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Testimonials
-              </Link>
-              <Link
-                href="#pricing"
-                className="py-2 text-sm font-medium hover:text-primary"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Pricing
-              </Link>
-              <Link
-                href="#contact"
-                className="py-2 text-sm font-medium hover:text-primary"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Contact
-              </Link>
-              <Button
-                asChild
-                className="mt-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <Link href="#get-started">Get Started</Link>
-              </Button>
-            </nav>
+            <span className="text-xl font-bold text-black">Chance Me</span>
           </div>
-        )}
+
+          {/* Mobile menu button */}
+          <button
+            className="block md:hidden text-black"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
+          </button>
+
+          <div className="hidden md:flex items-center space-x-6">
+            <Link
+              href="#admission-trials"
+              className="text-black font-medium hover:underline"
+            >
+              Simulation
+            </Link>
+            <Button className="bg-white text-black hover:bg-gray-100 rounded-md px-6">
+              <Link href="#get-started">Join Waitlist</Link>
+            </Button>
+          </div>
+
+          {/* Mobile navigation */}
+          {isMenuOpen && (
+            <div className="absolute top-full left-0 right-0 bg-[#c6bc91] md:hidden">
+              <nav className="container flex flex-col py-4 px-6">
+                <Link
+                  href="#admission-trials"
+                  className="py-2 text-black font-medium hover:underline"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Simulation
+                </Link>
+                <div className="mt-4">
+                  <Button
+                    className="w-full bg-white text-black hover:bg-gray-100 rounded-md"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <Link href="#get-started">Join Waitlist</Link>
+                  </Button>
+                </div>
+              </nav>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );
