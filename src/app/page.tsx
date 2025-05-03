@@ -8,7 +8,7 @@ import { useState, useEffect, useCallback } from "react";
 import TypedText from "@/components/TypedText";
 import AdmissionDot, { TrialStatus } from "@/components/AdmissionDot";
 import Navbar from "@/components/navbar";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   fadeInUp,
   staggerContainer,
@@ -402,17 +402,17 @@ function AdmissionTrials() {
               showDescription
                 ? "md:items-start"
                 : "md:items-center justify-center"
-            } gap-12 mt-8 w-full max-w-6xl mx-auto`}
+            } gap-12 mt-2 w-full max-w-6xl mx-auto`}
             variants={staggerContainer}
             animate={showDescription ? "visible" : { opacity: 1 }}
           >
-            {/* Grid of admission trial dots */}
+            {/* Main grid container - adding more spacing */}
             <motion.div
-              className={`grid grid-cols-5 gap-8 w-full ${
+              className={`w-full ${
                 showDescription
                   ? "md:w-2/3 mx-auto md:mx-0"
                   : "md:max-w-3xl mx-auto"
-              } p-10 bg-white/5 backdrop-blur-sm rounded-lg border border-gray-100/10 flex-shrink-0 place-items-center`}
+              } p-10 bg-white/5 backdrop-blur-sm rounded-lg border border-gray-100/10 flex-shrink-0`}
               variants={fadeInUp}
               initial="hidden"
               whileInView="visible"
@@ -422,50 +422,95 @@ function AdmissionTrials() {
                 delayChildren: 0.1,
                 staggerDirection: 1,
               }}
+              layout
             >
-              {trials.map((trial) => (
-                <motion.div
-                  key={trial.id}
-                  variants={{
-                    hidden: {
-                      opacity: 0,
-                      scale: 0.5,
-                      y: trial.id % 2 === 0 ? 20 : -20,
-                    },
-                    visible: {
-                      opacity: 1,
-                      scale: 1,
-                      y: 0,
-                      transition: {
-                        type: "spring",
-                        stiffness: 300 + (trial.id % 5) * 20,
-                        damping: 20,
-                        mass: 1 + (trial.id % 3) * 0.2,
-                      },
-                    },
-                  }}
-                  whileHover={{
-                    scale: 1.1,
-                    transition: { duration: 0.2 },
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <AdmissionDot
-                    id={trial.id}
-                    status={trial.status}
-                    firstRoundDecision={trial.firstRoundDecision}
-                    secondRoundDecision={trial.secondRoundDecision}
-                    firstRoundOfficer={trial.firstRoundOfficer}
-                    boardOfficers={trial.boardOfficers}
-                    officers={officers}
-                    isSelected={selectedTrialId === trial.id}
-                    onSelect={handleSelectDot}
-                    isOtherDotSelected={
-                      selectedTrialId !== null && selectedTrialId !== trial.id
-                    }
-                  />
-                </motion.div>
-              ))}
+              {/* Selected dot card */}
+              {selectedTrialId !== null && (
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={`selected-${selectedTrialId}`}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ type: "spring", damping: 20, stiffness: 300 }}
+                    className="w-full mb-8"
+                  >
+                    {trials
+                      .filter((trial) => trial.id === selectedTrialId)
+                      .map((trial) => (
+                        <AdmissionDot
+                          key={trial.id}
+                          id={trial.id}
+                          status={trial.status}
+                          firstRoundDecision={trial.firstRoundDecision}
+                          secondRoundDecision={trial.secondRoundDecision}
+                          firstRoundOfficer={trial.firstRoundOfficer}
+                          boardOfficers={trial.boardOfficers}
+                          officers={officers}
+                          isSelected={true}
+                          onSelect={handleSelectDot}
+                          isOtherDotSelected={false}
+                        />
+                      ))}
+                  </motion.div>
+                </AnimatePresence>
+              )}
+
+              {/* Dots grid with improved spacing */}
+              <motion.div
+                className={`w-full mx-auto ${
+                  selectedTrialId !== null ? "mt-8" : ""
+                }`}
+                style={{
+                  display: "grid",
+                  gridTemplateColumns:
+                    selectedTrialId !== null
+                      ? "repeat(10, minmax(0, 1fr))"
+                      : "repeat(8, minmax(0, 1fr))",
+                  gap:
+                    selectedTrialId !== null
+                      ? "0.75rem 0.75rem"
+                      : "1.5rem 1.25rem",
+                  justifyContent: "center",
+                  maxWidth: selectedTrialId !== null ? "100%" : "92%",
+                }}
+              >
+                {trials.map((trial) =>
+                  selectedTrialId === trial.id ? null : (
+                    <div
+                      key={trial.id}
+                      className="flex items-center justify-center"
+                      style={{ aspectRatio: "1/1" }}
+                    >
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{
+                          opacity: selectedTrialId !== null ? 0.7 : 1,
+                          scale: selectedTrialId !== null ? 0.85 : 1,
+                        }}
+                        whileHover={{
+                          scale: 1.1,
+                          transition: { duration: 0.2 },
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <AdmissionDot
+                          id={trial.id}
+                          status={trial.status}
+                          firstRoundDecision={trial.firstRoundDecision}
+                          secondRoundDecision={trial.secondRoundDecision}
+                          firstRoundOfficer={trial.firstRoundOfficer}
+                          boardOfficers={trial.boardOfficers}
+                          officers={officers}
+                          isSelected={selectedTrialId === trial.id}
+                          onSelect={handleSelectDot}
+                          isOtherDotSelected={selectedTrialId !== null}
+                        />
+                      </motion.div>
+                    </div>
+                  )
+                )}
+              </motion.div>
             </motion.div>
 
             {/* Description (Right side) */}
@@ -562,7 +607,7 @@ function CtaSection() {
   return (
     <motion.section
       id="get-started"
-      className="w-full py-12 md:py-24 lg:py-32"
+      className="w-full md:py-6 lg:py-12"
       variants={fadeInUp}
       viewport={{ once: true, margin: "-100px" }}
     >

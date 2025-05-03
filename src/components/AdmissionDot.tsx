@@ -129,8 +129,12 @@ export default function AdmissionDot({
   if (isSelected) {
     return (
       <div
-        className="col-span-5 p-6 bg-white rounded-xl shadow-xl transition-all duration-300 animate-in fade-in-0 zoom-in-95 w-full"
-        style={{ gridRow: "auto" }}
+        className="p-6 bg-white rounded-xl shadow-xl transition-all duration-300 w-full"
+        style={{
+          position: "relative",
+          zIndex: 50, // Higher z-index to appear above other elements
+        }}
+        onClick={(e) => e.stopPropagation()} // Prevent click from bubbling
       >
         <div className="flex flex-col h-full">
           <div className="flex justify-between items-center mb-6 border-b pb-4">
@@ -341,7 +345,10 @@ export default function AdmissionDot({
       className="relative"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={handleClick}
+      onClick={(e) => {
+        e.stopPropagation(); // Prevent event bubbling
+        handleClick();
+      }}
     >
       <div
         className={`
@@ -358,6 +365,16 @@ export default function AdmissionDot({
           ${isOtherDotSelected ? "transform scale-75 opacity-50" : ""}
         `}
       >
+        {/* ID number inside dot */}
+        <span
+          className={`${
+            isOtherDotSelected ? "text-[18px]" : "text-[12px]"
+          } font-semibold text-gray-600`}
+          style={{ opacity: isOtherDotSelected ? 1 : 0.8 }}
+        >
+          {id}
+        </span>
+
         {/* Wrapper for officer images with fade effect */}
         <div
           className={`
