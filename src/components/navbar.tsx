@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Github } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -21,9 +22,9 @@ export default function Navbar() {
   return (
     <header className="fixed top-0 z-50 w-full px-6 py-4">
       <div
-        className={`mx-auto rounded-xl border border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-all duration-200 ${
+        className={`mx-auto rounded-xl border border-border/40 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/90 transition-all duration-200 ${
           scrolled
-            ? "py-2 shadow-lg max-w-[95%] md:max-w-[90%]"
+            ? "py-2 max-w-[95%] md:max-w-[90%]"
             : "py-3 max-w-[98%] md:max-w-[96%]"
         }`}
       >
@@ -36,17 +37,23 @@ export default function Navbar() {
             duration={700}
             className="mr-6 flex cursor-pointer items-center space-x-2"
           >
+            <Image
+              src="/logo.png"
+              alt="Chance Me Logo"
+              width={48}
+              height={48}
+              className="object-contain"
+            />
             <span
-              className={`font-bold transition-all duration-200 ${
+              className={`font-bold text-black transition-all duration-200 ${
                 scrolled ? "text-sm md:text-base" : "text-base md:text-lg"
               }`}
             >
-              <span className="md:hidden">🎲</span>
-              <span className="hidden md:inline">Chance Me</span>
+              <span className="hidden font-medium md:inline">Chance Me</span>
             </span>
           </ScrollLink>
-          <nav className="flex flex-1 items-center space-x-8 text-sm font-medium md:block mx-4">
-            {["features", "Pricing"].map((section) => (
+          <nav className="flex flex-1 items-center space-x-8 text-sm font-medium text-gray-700 md:block mx-4">
+            {/* {["Simulation", "Pricing"].map((section) => (
               <ScrollLink
                 key={section}
                 to={section}
@@ -61,26 +68,23 @@ export default function Navbar() {
               >
                 {section}
               </ScrollLink>
-            ))}
+            ))} */}
           </nav>
           <div className="flex items-center space-x-4">
-            <Link
-              href="https://github.com/23jmo/DayReplay"
+            {/* <Link
+              href="https://github.com/23jmo/ChanceMe"
               target="_blank"
               rel="noreferrer"
             >
-              <Button
-                variant="ghost"
-                size="icon"
-              >
+              <Button variant="ghost" size="icon">
                 <Github className="md:block hidden h-4 w-4" />
                 <span className="sr-only">GitHub</span>
               </Button>
-            </Link>
+            </Link> */}
             <Button
               variant="ghost"
               size="sm"
-              className="md:block hidden"
+              className="md:block hidden hover:bg-yellow-400/10 text-gray-700"
               onClick={() => {
                 window.open("mailto:jym2117@columbia.edu", "_blank");
               }}
@@ -89,9 +93,10 @@ export default function Navbar() {
             </Button>
             <Button
               size="sm"
-              className="relative overflow-hidden hover:animate-shine hover:scale-105 hover:shadow-[0_0_15px_rgba(251,191,36,0.5)] transition-all duration-200"
+              className="relative overflow-hidden bg-yellow-400/50 text-black hover:shadow-[0_0_15px_rgba(255,255,255,0.7)] hover:bg-yellow-400/50 hover:scale-105 transition-all duration-200"
+              onClick={() => window.open("https://tally.so/r/nGk2jj", "_blank")}
             >
-              Download
+              Join Waitlist
             </Button>
           </div>
         </div>

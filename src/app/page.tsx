@@ -23,7 +23,7 @@ export default function LandingPage() {
     <div
       className="flex min-h-screen flex-col bg-cover bg-no-repeat pt-16"
       style={{
-        backgroundImage: "url('/bg.png')",
+        backgroundImage: "url('/absbg.png')",
         backgroundPosition: "center 20%",
       }}
     >
@@ -38,96 +38,48 @@ export default function LandingPage() {
   );
 }
 
-function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  return (
-    <header className="fixed top-0 z-50 w-full">
-      <div className="bg-[#c6bc91] py-5 px-6">
-        <div className="container mx-auto flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <Image
-              src="/placeholder.svg?height=32&width=32"
-              alt="Chance Me Logo"
-              width={32}
-              height={32}
-              className="rounded"
-            />
-            <span className="text-xl font-bold text-black">Chance Me</span>
-          </div>
-
-          {/* Mobile menu button */}
-          <button
-            className="block md:hidden text-black"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
-          </button>
-
-          <div className="hidden md:flex items-center space-x-6">
-            <Link
-              href="#admission-trials"
-              className="text-black font-medium hover:underline"
-            >
-              Simulation
-            </Link>
-            <Button className="bg-white text-black hover:bg-gray-100 rounded-md px-6">
-              <Link href="#get-started">Join Waitlist</Link>
-            </Button>
-          </div>
-
-          {/* Mobile navigation */}
-          {isMenuOpen && (
-            <div className="absolute top-full left-0 right-0 bg-[#c6bc91] md:hidden">
-              <nav className="container flex flex-col py-4 px-6">
-                <Link
-                  href="#admission-trials"
-                  className="py-2 text-black font-medium hover:underline"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Simulation
-                </Link>
-                <div className="mt-4">
-                  <Button
-                    className="w-full bg-white text-black hover:bg-gray-100 rounded-md"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <Link href="#get-started">Join Waitlist</Link>
-                  </Button>
-                </div>
-              </nav>
-            </div>
-          )}
-        </div>
-      </div>
-    </header>
-  );
-}
-
 function HeroSection() {
   return (
-    <section id="hero" className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
+    <section
+      id="hero"
+      className="w-full py-12 md:py-24 lg:py-32 xl:py-48"
+    >
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center text-center">
+          <div className="flex items-center gap-2">
+            <Image
+              src="/logo.png"
+              alt="Chance Me Logo"
+              width={150}
+              height={150}
+              className="object-contain hover:scale-110 transition-all duration-300 ease-in-out animate-float cursor-none"
+              style={{
+                filter: "drop-shadow(0 0 8px rgba(255, 215, 0, 0.3))",
+              }}
+            />
+          </div>
           <div className="max-w-3xl mx-auto space-y-4">
+            <div className="inline-flex items-center rounded-lg bg-yellow-400/10 backdrop-blur-sm border border-yellow-400/30 px-3 py-1 text-sm font-medium">
+              <span className="text-yellow-800">
+                Made by 2 Columbia Students
+              </span>
+            </div>
             <h1 className="text-5xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl text-center">
               Get your application read by 1000 Admissions Officers at{" "}
               <TypedText />
             </h1>
             <p className="max-w-[400px] mx-auto text-muted-foreground md:text-xl">
-              Multi-agent prediction model that predicts your chances of getting
-              in.
+              Multi-agent model that predicts your chances of getting in to your
+              dream college
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
               <Link
-                href="#get-started"
+                href="https://tally.so/r/nGk2jj"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="
-                  inline-flex items-center justify-center rounded-md text-sm font-bold 
-                  h-11 px-8 
+                  inline-flex items-center justify-center rounded-md text-md font-bold 
+                  h-14 px-10 
                   text-black 
                   bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-300
                   shadow-md shadow-yellow-500/30 
@@ -314,8 +266,11 @@ function AdmissionTrials() {
   }, [generateFakeTrials]);
 
   return (
-    <section id="admission-trials" className="w-full py-24 md:py-32">
-      <div className="container max-w-7xl">
+    <section
+      id="admission-trials"
+      className="w-full py-24 md:py-32"
+    >
+      <div className="container max-w-7xl mx-auto px-4">
         <div className="flex flex-col items-center mb-10 text-center">
           <div className="inline-flex items-center rounded-lg bg-muted px-3 py-1 text-sm font-medium">
             <span className="text-primary">Try Your Luck</span>
@@ -339,14 +294,24 @@ function AdmissionTrials() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 >
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                  <line
+                    x1="18"
+                    y1="6"
+                    x2="6"
+                    y2="18"
+                  ></line>
+                  <line
+                    x1="6"
+                    y1="6"
+                    x2="18"
+                    y2="18"
+                  ></line>
                 </svg>
               </button>
             ) : (
               <button
                 onClick={toggleDescription}
-                className="inline-flex w-5 h-5 rounded-full border border-current flex items-center justify-center text-xs font-medium hover:bg-white/20"
+                className="w-5 h-5 rounded-full border border-current flex items-center justify-center text-xs font-medium hover:bg-white/20"
                 aria-label="Show description"
               >
                 ?
@@ -357,7 +322,7 @@ function AdmissionTrials() {
 
         <div className="flex flex-col items-center">
           <div
-            className={`flex flex-col md:flex-row items-center ${
+            className={`flex flex-col md:flex-row ${
               showDescription
                 ? "md:items-start"
                 : "md:items-center justify-center"
@@ -366,8 +331,10 @@ function AdmissionTrials() {
             {/* Grid of admission trial dots */}
             <div
               className={`grid grid-cols-5 gap-8 w-full ${
-                showDescription ? "md:w-2/3" : "md:max-w-3xl mx-auto"
-              } p-10 bg-white/5 backdrop-blur-sm rounded-lg border border-gray-100/10 flex-shrink-0`}
+                showDescription
+                  ? "md:w-2/3 mx-auto md:mx-0"
+                  : "md:max-w-3xl mx-auto"
+              } p-10 bg-white/5 backdrop-blur-sm rounded-lg border border-gray-100/10 flex-shrink-0 place-items-center`}
             >
               {trials.map((trial) => (
                 <AdmissionDot
@@ -453,7 +420,10 @@ function AdmissionTrials() {
 
 function CtaSection() {
   return (
-    <section id="get-started" className="w-full py-12 md:py-24 lg:py-32">
+    <section
+      id="get-started"
+      className="w-full py-12 md:py-24 lg:py-32"
+    >
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
@@ -468,6 +438,7 @@ function CtaSection() {
             <Button
               size="lg"
               className="gap-1 text-black bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-300 hover:scale-105 transition-all duration-300 ease-in-out shadow-[0_0_15px_rgba(255,215,0,0.5)] hover:shadow-[0_0_20px_rgba(255,215,0,0.7)] animate-pulse"
+              onClick={() => window.open("https://tally.so/r/nGk2jj", "_blank")}
             >
               Join the Waitlist
               <ArrowRight className="h-4 w-4" />
@@ -481,118 +452,117 @@ function CtaSection() {
 
 function Footer() {
   return (
-    <footer className="w-full border-t bg-gradient-to-b from-background to-muted py-6 md:py-12">
-      <div className="container px-4 md:px-6">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
-          <div className="space-y-4">
-            <Link href="/" className="flex items-center gap-2">
-              <Image
-                src="/placeholder.svg?height=32&width=32"
-                alt="chance-me Logo"
-                width={32}
-                height={32}
-                className="rounded"
-              />
-              <span className="text-xl font-bold">chance-me</span>
-            </Link>
-            <p className="text-sm text-muted-foreground">
-              Empowering teams to work smarter, not harder.
-            </p>
-            <div className="flex gap-4">
-              <Link
-                href="#"
-                className="text-muted-foreground hover:text-foreground"
-              >
-                <Twitter className="h-5 w-5" />
-                <span className="sr-only">Twitter</span>
-              </Link>
-              <Link
-                href="#"
-                className="text-muted-foreground hover:text-foreground"
-              >
-                <Facebook className="h-5 w-5" />
-                <span className="sr-only">Facebook</span>
-              </Link>
-              <Link
-                href="#"
-                className="text-muted-foreground hover:text-foreground"
-              >
-                <Instagram className="h-5 w-5" />
-                <span className="sr-only">Instagram</span>
-              </Link>
-              <Link
-                href="#"
-                className="text-muted-foreground hover:text-foreground"
-              >
-                <Linkedin className="h-5 w-5" />
-                <span className="sr-only">LinkedIn</span>
-              </Link>
-            </div>
+    <footer className="w-full bg-[#121212] text-white py-12 rounded-t-3xl relative overflow-hidden">
+      {/* Subtle noise texture overlay */}
+      <div
+        className="absolute inset-0 opacity-5"
+        style={{
+          backgroundImage:
+            "url('data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E')",
+          backgroundPosition: "center",
+          mixBlendMode: "overlay",
+        }}
+      />
+
+      {/* Subtle gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] to-[#0c0c0c] opacity-90" />
+
+      <div className="container px-4 md:px-6 mx-auto relative z-10">
+        {/* Logo and info section */}
+        <div className="mb-12">
+          <div className="flex items-center gap-2 mb-4">
+            <Image
+              src="/logo.png"
+              alt="Chance Me Logo"
+              width={70}
+              height={70}
+              className="object-contain"
+            />
+            <span className="text-3xl font-bold">Chance Me</span>
           </div>
-          <div className="space-y-4">
-            <h4 className="text-sm font-bold uppercase tracking-wider">
-              Product
-            </h4>
-            <ul className="space-y-2">
+          <p className="text-gray-400 max-w-md">
+            Chance Me is a multi-agent prediction model that predicts your
+            chances of getting into your dream college.
+          </p>
+
+          {/* Social media */}
+          <div className="flex gap-6 mt-6">
+            <Link
+              href="#"
+              className="text-gray-400 hover:text-white"
+            >
+              <Twitter className="h-6 w-6" />
+              <span className="sr-only">Twitter</span>
+            </Link>
+            <Link
+              href="#"
+              className="text-gray-400 hover:text-white"
+            >
+              <Instagram className="h-6 w-6" />
+              <span className="sr-only">Instagram</span>
+            </Link>
+          </div>
+
+          {/* Status */}
+          <div className="flex items-center gap-2 mt-8">
+            <CheckCircle2 className="h-5 w-5 text-green-500" />
+            <span className="text-gray-300">All services are online</span>
+          </div>
+
+          <div className="mt-4 text-gray-400">
+            &copy; {new Date().getFullYear()} Chance Me. All rights reserved.
+          </div>
+        </div>
+
+        {/* Links section - Commented out temporarily */}
+        {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          {/* Legal column */}
+        {/* <div>
+            <h4 className="text-xl font-bold mb-6">Legal</h4>
+            <ul className="space-y-4">
               <li>
                 <Link
                   href="#"
-                  className="text-sm text-muted-foreground hover:text-foreground"
+                  className="text-gray-400 hover:text-white"
                 >
-                  Features
+                  Refund policy
                 </Link>
               </li>
               <li>
                 <Link
                   href="#"
-                  className="text-sm text-muted-foreground hover:text-foreground"
+                  className="text-gray-400 hover:text-white"
                 >
-                  Pricing
+                  Terms of Service
                 </Link>
               </li>
               <li>
                 <Link
                   href="#"
-                  className="text-sm text-muted-foreground hover:text-foreground"
+                  className="text-gray-400 hover:text-white"
                 >
-                  Integrations
+                  Privacy policy
                 </Link>
               </li>
               <li>
                 <Link
                   href="#"
-                  className="text-sm text-muted-foreground hover:text-foreground"
+                  className="text-gray-400 hover:text-white"
                 >
-                  Changelog
+                  Cancellation Policy
                 </Link>
               </li>
             </ul>
-          </div>
-          <div className="space-y-4">
-            <h4 className="text-sm font-bold uppercase tracking-wider">
-              Company
-            </h4>
-            <ul className="space-y-2">
+          </div> */}
+
+        {/* Links column */}
+        {/* <div>
+            <h4 className="text-xl font-bold mb-6">Links</h4>
+            <ul className="space-y-4">
               <li>
                 <Link
                   href="#"
-                  className="text-sm text-muted-foreground hover:text-foreground"
-                >
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-sm text-muted-foreground hover:text-foreground"
-                >
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-sm text-muted-foreground hover:text-foreground"
+                  className="text-gray-400 hover:text-white"
                 >
                   Careers
                 </Link>
@@ -600,56 +570,30 @@ function Footer() {
               <li>
                 <Link
                   href="#"
-                  className="text-sm text-muted-foreground hover:text-foreground"
+                  className="text-gray-400 hover:text-white"
                 >
-                  Contact
+                  Help Center
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="#"
+                  className="text-gray-400 hover:text-white"
+                >
+                  Get Started
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="#"
+                  className="text-gray-400 hover:text-white"
+                >
+                  Log in to Chance Me
                 </Link>
               </li>
             </ul>
           </div>
-          <div className="space-y-4">
-            <h4 className="text-sm font-bold uppercase tracking-wider">
-              Legal
-            </h4>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href="#"
-                  className="text-sm text-muted-foreground hover:text-foreground"
-                >
-                  Terms
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-sm text-muted-foreground hover:text-foreground"
-                >
-                  Privacy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-sm text-muted-foreground hover:text-foreground"
-                >
-                  Cookies
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-sm text-muted-foreground hover:text-foreground"
-                >
-                  Licenses
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="mt-8 border-t pt-8 text-center text-sm text-muted-foreground">
-          &copy; {new Date().getFullYear()} chance-me. All rights reserved.
-        </div>
+        </div> */}
       </div>
     </footer>
   );

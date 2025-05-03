@@ -79,19 +79,68 @@ export default function AdmissionDot({
     onSelect(id);
   };
 
+  // Generate random feedback for officers
+  const generateFeedback = (isPositive: boolean) => {
+    const positiveFeedback = [
+      "Strong academic record with rigorous courses.",
+      "Compelling personal statement that showcases character.",
+      "Impressive extracurricular achievements and leadership.",
+      "Clear passion for the field of study.",
+      "Well-written essays with unique perspective.",
+      "Excellent recommendation letters highlighting potential.",
+      "Demonstrated commitment to community service.",
+      "Unique talents that add diversity to campus.",
+    ];
+
+    const negativeFeedback = [
+      "Insufficient academic rigor in course selection.",
+      "Personal statement lacks depth and authenticity.",
+      "Limited extracurricular involvement or leadership.",
+      "Unclear academic focus or career goals.",
+      "Essays contain grammatical errors and lack polish.",
+      "Recommendation letters lack specific examples.",
+      "Minimal community engagement or service.",
+      "Application appears rushed or incomplete.",
+    ];
+
+    const feedbackList = isPositive ? positiveFeedback : negativeFeedback;
+    // Return 1-2 random feedback items
+    const numItems = Math.floor(Math.random() * 2) + 1;
+    const selectedIndices = new Set<number>();
+
+    while (selectedIndices.size < numItems) {
+      selectedIndices.add(Math.floor(Math.random() * feedbackList.length));
+    }
+
+    return Array.from(selectedIndices).map((index) => feedbackList[index]);
+  };
+
+  // Get feedback for first round officer
+  const firstRoundFeedback = generateFeedback(
+    firstRoundDecision === "accepted"
+  );
+
+  // Get feedback for board if application reached second round
+  const boardFeedback = secondRoundDecision
+    ? generateFeedback(secondRoundDecision === "accepted")
+    : [];
+
   // Expanded dot view
   if (isSelected) {
     return (
       <div
-        className="col-span-5 row-span-3 p-4 bg-white/10 backdrop-blur-md rounded-lg border border-white/20 shadow-xl transition-all duration-300 animate-in fade-in-0 zoom-in-95"
+        className="col-span-5 p-6 bg-white rounded-xl shadow-xl transition-all duration-300 animate-in fade-in-0 zoom-in-95 max-h-[500px] overflow-y-auto"
         style={{ gridRow: "span 3" }}
       >
         <div className="flex flex-col h-full">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold">Application #{id}</h3>
+          <div className="flex justify-between items-center mb-6 border-b pb-4">
+            <h3 className="text-xl font-bold text-gray-900">
+              Application #{id}
+            </h3>
             <button
               onClick={() => onSelect(-1)}
-              className="p-1 rounded-full hover:bg-white/20"
+              className="p-1 rounded-full hover:bg-gray-100 text-gray-500"
+              aria-label="Close"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -120,129 +169,165 @@ export default function AdmissionDot({
             </button>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            <div className="p-3 rounded-lg bg-white/5 border border-white/10">
-              <h4 className="text-sm font-medium text-white/80 mb-2">
-                Round 1
-              </h4>
-              <div className="flex items-center gap-3">
-                <div
-                  className="relative"
-                  onMouseEnter={() => setHoveredOfficer(firstRoundOfficer)}
-                  onMouseLeave={() => setHoveredOfficer(null)}
-                >
-                  <Image
-                    src={officers[firstRoundOfficer].image}
-                    alt={officers[firstRoundOfficer].name}
-                    width={48}
-                    height={48}
-                    className="rounded-full object-cover border-2 border-white/30"
-                  />
-                  {hoveredOfficer === firstRoundOfficer && (
-                    <div className="absolute z-10 bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-48 p-2 bg-black/90 rounded text-xs">
-                      <p className="font-bold">
-                        {officers[firstRoundOfficer].name}
-                      </p>
-                      <p className="text-white/70">Admissions Officer</p>
-                    </div>
-                  )}
+          <div className="flex flex-col gap-6">
+            {/* First Round Section */}
+            <div className="rounded-lg border border-gray-200 overflow-hidden">
+              <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
+                <h4 className="font-semibold text-gray-800">Round 1 Review</h4>
+              </div>
+
+              <div className="p-4">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="relative">
+                    <Image
+                      src={officers[firstRoundOfficer].image}
+                      alt={officers[firstRoundOfficer].name}
+                      width={56}
+                      height={56}
+                      className="rounded-full object-cover border-2 border-gray-200"
+                    />
+                  </div>
+
+                  <div>
+                    <p className="font-medium text-gray-900">
+                      {officers[firstRoundOfficer].name}
+                    </p>
+                    <p
+                      className={`text-sm font-bold ${
+                        firstRoundDecision === "accepted"
+                          ? "text-green-600"
+                          : "text-red-600"
+                      }`}
+                    >
+                      {firstRoundDecision === "accepted"
+                        ? "Approved"
+                        : "Rejected"}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm font-medium">
-                    {officers[firstRoundOfficer].name}
-                  </p>
-                  <p
-                    className={`text-xs mt-1 font-bold ${
-                      firstRoundDecision === "accepted"
-                        ? "text-green-400"
-                        : "text-red-400"
-                    }`}
-                  >
-                    {firstRoundDecision === "accepted"
-                      ? "Approved"
-                      : "Rejected"}
-                  </p>
+
+                <div className="mt-3">
+                  <h5 className="text-sm font-medium text-gray-700 mb-2">
+                    Feedback:
+                  </h5>
+                  <ul className="list-disc pl-5 space-y-1">
+                    {firstRoundFeedback.map((feedback, idx) => (
+                      <li
+                        key={idx}
+                        className="text-sm text-gray-600"
+                      >
+                        {feedback}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             </div>
 
+            {/* Second Round Section (if applicable) */}
             {firstRoundDecision === "accepted" && (
-              <div className="p-3 rounded-lg bg-white/5 border border-white/10">
-                <h4 className="text-sm font-medium text-white/80 mb-2">
-                  Round 2 Board
-                </h4>
-                <div className="space-y-3">
-                  {boardOfficers.map((officerIndex, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-center gap-3"
-                    >
+              <div className="rounded-lg border border-gray-200 overflow-hidden">
+                <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
+                  <h4 className="font-semibold text-gray-800">Board Review</h4>
+                </div>
+
+                <div className="p-4">
+                  <div className="flex flex-wrap gap-4 mb-4">
+                    {boardOfficers.map((officerIndex, idx) => (
                       <div
-                        className="relative"
-                        onMouseEnter={() => setHoveredOfficer(officerIndex)}
-                        onMouseLeave={() => setHoveredOfficer(null)}
+                        key={idx}
+                        className="flex items-center gap-3"
                       >
                         <Image
                           src={officers[officerIndex].image}
                           alt={officers[officerIndex].name}
-                          width={36}
-                          height={36}
-                          className="rounded-full object-cover border-2 border-white/30"
+                          width={40}
+                          height={40}
+                          className="rounded-full object-cover border-2 border-gray-200"
                         />
-                        {hoveredOfficer === officerIndex && (
-                          <div className="absolute z-10 bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-48 p-2 bg-black/90 rounded text-xs">
-                            <p className="font-bold">
-                              {officers[officerIndex].name}
-                            </p>
-                            <p className="text-white/70">Board Member</p>
-                          </div>
-                        )}
-                      </div>
-                      <div>
-                        <p className="text-xs font-medium">
-                          {officers[officerIndex].name}
-                        </p>
-                        {secondRoundDecision && (
-                          <p
-                            className={`text-xs mt-1 font-bold ${
-                              secondRoundDecision === "accepted"
-                                ? "text-green-400"
-                                : "text-red-400"
-                            }`}
-                          >
-                            {secondRoundDecision === "accepted"
-                              ? "Approved"
-                              : "Rejected"}
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">
+                            {officers[officerIndex].name}
                           </p>
-                        )}
+                          {secondRoundDecision && (
+                            <p
+                              className={`text-xs font-bold ${
+                                secondRoundDecision === "accepted"
+                                  ? "text-green-600"
+                                  : "text-red-600"
+                              }`}
+                            >
+                              {secondRoundDecision === "accepted"
+                                ? "Approved"
+                                : "Rejected"}
+                            </p>
+                          )}
+                        </div>
                       </div>
+                    ))}
+                  </div>
+
+                  {secondRoundDecision && (
+                    <div className="mt-3">
+                      <h5 className="text-sm font-medium text-gray-700 mb-2">
+                        Board Feedback:
+                      </h5>
+                      <ul className="list-disc pl-5 space-y-1">
+                        {boardFeedback.map((feedback, idx) => (
+                          <li
+                            key={idx}
+                            className="text-sm text-gray-600"
+                          >
+                            {feedback}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                  ))}
+                  )}
                 </div>
               </div>
             )}
           </div>
 
-          <div className="mt-auto">
+          {/* Final Decision Section */}
+          <div className="mt-6">
             <div
-              className={`p-3 rounded-lg ${
+              className={`p-4 rounded-lg border ${
                 status === "accepted-round2"
-                  ? "bg-green-900/20"
+                  ? "bg-green-50 border-green-200"
                   : status.includes("rejected")
-                  ? "bg-red-900/20"
-                  : "bg-blue-900/20"
+                  ? "bg-red-50 border-red-200"
+                  : "bg-blue-50 border-blue-200"
               }`}
             >
-              <h4 className="font-medium mb-1">Final Decision</h4>
-              <p className="text-sm">
+              <h4
+                className={`font-medium mb-2 ${
+                  status === "accepted-round2"
+                    ? "text-green-800"
+                    : status.includes("rejected")
+                    ? "text-red-800"
+                    : "text-blue-800"
+                }`}
+              >
+                Final Decision
+              </h4>
+              <p
+                className={`text-sm ${
+                  status === "accepted-round2"
+                    ? "text-green-700"
+                    : status.includes("rejected")
+                    ? "text-red-700"
+                    : "text-blue-700"
+                }`}
+              >
                 {status === "accepted-round2" &&
-                  "Congratulations! Your application was accepted."}
+                  "Congratulations! Your application was accepted. The admissions committee was impressed with your qualifications."}
                 {status === "rejected-round1" &&
-                  "Your application was rejected in the first round."}
+                  "Your application was rejected in the first round. The admissions officer identified areas that did not meet our current criteria."}
                 {status === "rejected-round2" &&
-                  "Your application passed the first round but was rejected by the board."}
+                  "Your application passed the first round but was rejected by the board. While your application had notable strengths, it did not meet all the requirements for admission."}
                 {status === "in-progress" &&
-                  "Your application is still being reviewed."}
+                  "Your application is still being reviewed. Our admissions team is carefully evaluating your qualifications."}
               </p>
             </div>
           </div>
@@ -282,7 +367,7 @@ export default function AdmissionDot({
             ${
               isHovered
                 ? "opacity-100 duration-100" // Faster fade in
-                : "opacity-0 duration-200" // Remove delay, make fade-out faster
+                : "opacity-0 duration-300 delay-300" // Remove delay, make fade-out faster
             }
           `}
         >

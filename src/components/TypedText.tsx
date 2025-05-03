@@ -49,7 +49,7 @@ export default function TypedText() {
         if (!isDeleting && displayText !== currentCollege.name) {
           // Add the next character
           setDisplayText(
-            currentCollege.name.substring(0, displayText.length + 1)
+            currentCollege.name.substring(0, displayText.length + 1),
           );
         }
         // PAUSING: If we've just finished typing and aren't deleting yet
@@ -70,7 +70,7 @@ export default function TypedText() {
           setDisplayText(""); // Ensure text is empty before typing next word
         }
       },
-      isDeleting ? deletingSpeed : typingSpeed
+      isDeleting ? deletingSpeed : typingSpeed,
     );
 
     // Clean up the timeout
