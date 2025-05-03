@@ -53,7 +53,8 @@
   /* color: #ffa500; */ /* Removed, handled by inline style */
   font-weight: bold;
   /* text-shadow: ... */ /* Removed, handled by inline style */
-  white-space: nowrap; /* Prevent college name from wrapping */
+  white-space: normal; /* Allow college name to wrap */
+  word-wrap: break-word; /* Break long words if needed */
 }
 
 /* Blinking cursor styling */

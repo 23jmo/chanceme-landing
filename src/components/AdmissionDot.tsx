@@ -426,7 +426,7 @@ export default function AdmissionDot({
         {/* Chat-like popup above the circle */}
         {isHovered && !isSelected && !isOtherDotSelected && (
           <div
-            className={`absolute z-50 p-4 rounded-lg shadow-lg text-left min-w-[220px] 
+            className={`absolute z-[1000] p-4 rounded-lg shadow-lg text-left min-w-[220px] 
               top-0 left-1/2 transform -translate-x-1/2 -translate-y-[120%] mb-4
               ${
                 status === "accepted-round2"

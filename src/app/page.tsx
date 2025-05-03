@@ -3,12 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import {
-  CheckCircle2,
-  ArrowRight,
-  Twitter,
-  Instagram,
-} from "lucide-react";
+import { CheckCircle2, ArrowRight, Twitter, Instagram } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import TypedText from "@/components/TypedText";
 import AdmissionDot, { TrialStatus } from "@/components/AdmissionDot";
@@ -47,7 +42,7 @@ function HeroSection() {
               alt="Chance Me Logo"
               width={150}
               height={150}
-              className="object-contain hover:scale-110 transition-all duration-300 ease-in-out animate-float cursor-none"
+              className="md:block hidden object-contain hover:scale-110 transition-all duration-300 ease-in-out animate-float cursor-none"
               style={{
                 filter: "drop-shadow(0 0 8px rgba(255, 215, 0, 0.3))",
               }}
@@ -268,7 +263,7 @@ function AdmissionTrials() {
       <div className="container max-w-7xl mx-auto px-4">
         <div className="flex flex-col items-center mb-10 text-center">
           <div className="inline-flex items-center rounded-lg bg-muted px-3 py-1 text-sm font-medium">
-            <span className="text-primary">Try Your Luck</span>
+            <span className="text-primary">Try Your Luck 🍀</span>
           </div>
           <h2 className="mt-4 text-2xl font-bold tracking-tight sm:text-3xl flex items-center justify-center gap-2">
             See The Admission Process At Work
@@ -313,6 +308,9 @@ function AdmissionTrials() {
               </button>
             )}
           </h2>
+          <p className="text-muted-foreground">
+            We simulated the admission process 40 times
+          </p>
         </div>
 
         <div className="flex flex-col items-center">
