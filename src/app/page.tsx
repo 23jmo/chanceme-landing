@@ -7,16 +7,11 @@ import {
   CheckCircle2,
   ArrowRight,
   Twitter,
-  Facebook,
   Instagram,
-  Linkedin,
-  Menu,
-  X,
-  ChevronRight,
 } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import TypedText from "@/components/TypedText";
-import AdmissionDot, { TrialStatus, Officer } from "@/components/AdmissionDot";
+import AdmissionDot, { TrialStatus } from "@/components/AdmissionDot";
 import Navbar from "@/components/navbar";
 export default function LandingPage() {
   return (
@@ -213,7 +208,7 @@ function AdmissionTrials() {
       const firstRoundOfficer = Math.floor(Math.random() * 5);
 
       // Create a board with 3 officers (including the first round officer)
-      let boardOfficers = [firstRoundOfficer];
+      const boardOfficers = [firstRoundOfficer];
       while (boardOfficers.length < 3) {
         const officer = Math.floor(Math.random() * 5);
         if (!boardOfficers.includes(officer)) {

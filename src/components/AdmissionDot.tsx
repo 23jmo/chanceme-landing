@@ -41,7 +41,7 @@ export default function AdmissionDot({
   isOtherDotSelected,
 }: AdmissionDotProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const [hoveredOfficer, setHoveredOfficer] = useState<number | null>(null);
+  // const [hoveredOfficer, setHoveredOfficer] = useState<number | null>(null);
 
   // Function to determine dot color based on status
   const getDotColor = (status: TrialStatus) => {
@@ -129,8 +129,8 @@ export default function AdmissionDot({
   if (isSelected) {
     return (
       <div
-        className="col-span-5 p-6 bg-white rounded-xl shadow-xl transition-all duration-300 animate-in fade-in-0 zoom-in-95 max-h-[500px] overflow-y-auto"
-        style={{ gridRow: "span 3" }}
+        className="col-span-5 p-6 bg-white rounded-xl shadow-xl transition-all duration-300 animate-in fade-in-0 zoom-in-95 w-full"
+        style={{ gridRow: "auto" }}
       >
         <div className="flex flex-col h-full">
           <div className="flex justify-between items-center mb-6 border-b pb-4">
@@ -424,7 +424,7 @@ export default function AdmissionDot({
         </div>
 
         {/* Chat-like popup above the circle */}
-        {isHovered && !isSelected && (
+        {isHovered && !isSelected && !isOtherDotSelected && (
           <div
             className={`absolute z-50 p-4 rounded-lg shadow-lg text-left min-w-[220px] 
               top-0 left-1/2 transform -translate-x-1/2 -translate-y-[120%] mb-4

@@ -1,9 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Github } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link as ScrollLink } from "react-scroll";
 
