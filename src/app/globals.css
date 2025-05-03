@@ -120,3 +120,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Arrow indicator for tooltips */
+.arrow-down {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid rgba(0, 0, 0, 0.8);
+}

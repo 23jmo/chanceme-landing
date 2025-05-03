@@ -12,19 +12,25 @@ import {
   Linkedin,
   Menu,
   X,
+  ChevronRight,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import TypedText from "@/components/TypedText";
+import AdmissionDot, { TrialStatus, Officer } from "@/components/AdmissionDot";
 
 export default function LandingPage() {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div
+      className="flex min-h-screen flex-col bg-cover bg-no-repeat"
+      style={{
+        backgroundImage: "url('/bg.png')",
+        backgroundPosition: "center 20%",
+      }}
+    >
       <Header />
-      <main className="flex-1">
+      <main className="flex-1 mx-auto">
         <HeroSection />
-        <FeaturesSection />
-        <TestimonialsSection />
-        <PricingSection />
+        <AdmissionTrials />
         <CtaSection />
       </main>
       <Footer />
@@ -50,7 +56,7 @@ function Header() {
               height={32}
               className="rounded"
             />
-            <span className="text-xl font-bold">chance-me</span>
+            <span className="text-xl font-bold">Chance Me</span>
           </Link>
         </div>
 
@@ -160,25 +166,25 @@ function HeroSection() {
             </h1>
             <p className="max-w-[400px] mx-auto text-muted-foreground md:text-xl">
               Multi-agent prediction model that predicts your chances of getting
-              in. 
+              in.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
-              <Button
-                asChild
-                size="lg"
+              <Link
+                href="#get-started"
+                className="
+                  inline-flex items-center justify-center rounded-md text-sm font-bold 
+                  h-11 px-8 
+                  text-black 
+                  bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-300
+                  shadow-md shadow-yellow-500/30 
+                  transition-all duration-300 ease-in-out 
+                  hover:shadow-xl hover:shadow-yellow-400/50 hover:scale-110
+                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500 focus-visible:ring-offset-2
+                "
               >
-                <Link href="#get-started">Join Waitlist</Link>
-              </Button>
+                Join Waitlist
+              </Link>
             </div>
-          </div>
-          <div className="mt-12">
-            <Image
-              src="/placeholder.svg?height=550&width=550"
-              width={550}
-              height={550}
-              alt="StreamLine Dashboard"
-              className="mx-auto aspect-video overflow-hidden rounded-xl object-cover"
-            />
           </div>
         </div>
       </div>
@@ -186,268 +192,255 @@ function HeroSection() {
   );
 }
 
-function FeaturesSection() {
-  const features = [
+function AdmissionTrials() {
+  // Define types for our trial data
+  type Trial = {
+    id: number;
+    firstRoundDecision: "accepted" | "rejected";
+    secondRoundDecision: "accepted" | "rejected" | null;
+    status: TrialStatus;
+    firstRoundOfficer: number; // Index of the officer
+    boardOfficers: number[]; // Indices of the board officers
+  };
+
+  // State for selected trial (expanded view)
+  const [selectedTrialId, setSelectedTrialId] = useState<number | null>(null);
+
+  // Handle selecting a dot
+  const handleSelectDot = (id: number) => {
+    setSelectedTrialId(id === -1 ? null : id);
+  };
+
+  // Admissions officers data
+  const officers = [
     {
-      title: "Workflow Automation",
-      description:
-        "Automate repetitive tasks and workflows to save time and reduce errors.",
-      icon: "/placeholder.svg?height=48&width=48",
+      name: "Julie Dobrow",
+      image:
+        "https://arts.columbia.edu/sites/default/files/styles/cu_crop/public/content/Images/Headshots/admis_hs_julie_dobrow_2.jpeg?itok=qX6ABjKo",
     },
     {
-      title: "Team Collaboration",
-      description:
-        "Real-time collaboration tools that keep your team connected and productive.",
-      icon: "/placeholder.svg?height=48&width=48",
+      name: "Glenn John",
+      image:
+        "https://as.cornell.edu/sites/default/files/styles/square_landscape/public/glenn_2.jpg?h=c94b7089&itok=Lqam0ViO",
     },
     {
-      title: "Advanced Analytics",
-      description:
-        "Gain insights into your team's performance with detailed analytics and reports.",
-      icon: "/placeholder.svg?height=48&width=48",
+      name: "Niquette Johnson",
+      image:
+        "https://arts.columbia.edu/sites/default/files/styles/cu_crop/public/content/Images/Headshots/hs_laura_cane.jpeg?itok=u_1mK0dR",
     },
     {
-      title: "Seamless Integration",
-      description:
-        "Connect with your favorite tools and services for a unified workflow experience.",
-      icon: "/placeholder.svg?height=48&width=48",
+      name: "Michael Robinson",
+      image:
+        "https://business.columbia.edu/sites/default/files/styles/cu_crop/public/content/EMBA/headshots_thumbs/Christopher%20Cashman%20Headshot.jpeg?itok=vSiluciO",
+    },
+    {
+      name: "Sarah Chen",
+      image:
+        "https://www.seas.columbia.edu/sites/default/files/styles/cu_crop/public/content/Admissions/img_8631.jpeg?itok=dPtEXtoj",
     },
   ];
 
+  // Generate some fake data for our trials
+  const generateFakeTrials = useCallback((): Trial[] => {
+    const trials: Trial[] = [];
+
+    // Define which positions should be which status
+    const positions: Record<number, TrialStatus> = {
+      1: "accepted-round2",
+      3: "accepted-round2",
+      5: "accepted-round2",
+      8: "accepted-round2",
+      11: "accepted-round2",
+      15: "accepted-round2",
+      18: "accepted-round2",
+      22: "accepted-round2",
+      24: "accepted-round2",
+      27: "accepted-round2",
+      30: "accepted-round2",
+      32: "accepted-round2",
+      38: "accepted-round2",
+
+      2: "rejected-round1",
+      4: "rejected-round1",
+      6: "rejected-round1",
+      12: "rejected-round1",
+      14: "rejected-round1",
+      16: "rejected-round1",
+      20: "rejected-round1",
+      23: "rejected-round1",
+      26: "rejected-round1",
+      29: "rejected-round1",
+      35: "rejected-round1",
+      39: "rejected-round1",
+
+      7: "rejected-round2",
+      10: "rejected-round2",
+      17: "rejected-round2",
+      19: "rejected-round2",
+      21: "rejected-round2",
+      28: "rejected-round2",
+      31: "rejected-round2",
+      33: "rejected-round2",
+      37: "rejected-round2",
+
+      9: "in-progress",
+      13: "in-progress",
+      25: "in-progress",
+      34: "in-progress",
+      36: "in-progress",
+      40: "in-progress",
+    };
+
+    // Create trials
+    for (let i = 1; i <= 40; i++) {
+      const status: TrialStatus = positions[i] || "in-progress";
+
+      // Randomly select officers for this trial
+      const firstRoundOfficer = Math.floor(Math.random() * 5);
+
+      // Create a board with 3 officers (including the first round officer)
+      let boardOfficers = [firstRoundOfficer];
+      while (boardOfficers.length < 3) {
+        const officer = Math.floor(Math.random() * 5);
+        if (!boardOfficers.includes(officer)) {
+          boardOfficers.push(officer);
+        }
+      }
+
+      // Determine the decisions based on the status
+      let firstRoundDecision: "accepted" | "rejected" = "rejected";
+      let secondRoundDecision: "accepted" | "rejected" | null = null;
+
+      switch (status) {
+        case "accepted-round2":
+          firstRoundDecision = "accepted";
+          secondRoundDecision = "accepted";
+          break;
+        case "rejected-round1":
+          firstRoundDecision = "rejected";
+          break;
+        case "rejected-round2":
+          firstRoundDecision = "accepted";
+          secondRoundDecision = "rejected";
+          break;
+        case "in-progress":
+          // For in-progress, randomly determine if they passed round 1
+          firstRoundDecision = Math.random() > 0.5 ? "accepted" : "rejected";
+          // If they passed round 1, they're in round 2, otherwise still in round 1
+          break;
+      }
+
+      trials.push({
+        id: i,
+        status,
+        firstRoundDecision,
+        secondRoundDecision,
+        firstRoundOfficer,
+        boardOfficers,
+      });
+    }
+
+    return trials;
+  }, []);
+
+  // State to hold the generated trials
+  const [trials, setTrials] = useState<Trial[]>([]);
+
+  // Generate admission trial data inside useEffect to ensure it runs client-side only
+  useEffect(() => {
+    setTrials(generateFakeTrials());
+  }, [generateFakeTrials]);
+
   return (
     <section
-      id="features"
-      className="w-full py-12 md:py-24 lg:py-32 bg-muted"
+      id="admission-trials"
+      className="w-full py-24 md:py-32"
     >
-      <div className="container px-4 md:px-6">
-        <div className="flex flex-col items-center justify-center space-y-4 text-center">
-          <div className="space-y-2">
-            <div className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground">
-              Features
-            </div>
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-              Everything You Need to Succeed
-            </h2>
-            <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              chance-me provides powerful tools designed to help your team work
-              smarter, not harder.
-            </p>
+      <div className="container max-w-7xl">
+        <div className="flex flex-col items-center mb-10 text-center">
+          <div className="inline-flex items-center rounded-lg bg-muted px-3 py-1 text-sm font-medium">
+            <span className="text-primary">Try Your Luck</span>
           </div>
+          <h2 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
+            See The Admission Process At Work
+          </h2>
         </div>
-        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 py-12 md:grid-cols-2 lg:gap-12">
-          {features.map((feature, index) => (
-            <div
-              key={index}
-              className="flex flex-col items-start gap-4 rounded-lg border p-6 bg-background shadow-sm"
-            >
-              <Image
-                src={feature.icon || "/placeholder.svg"}
-                width={48}
-                height={48}
-                alt={feature.title}
-                className="rounded-md"
-              />
-              <div className="space-y-2">
-                <h3 className="text-xl font-bold">{feature.title}</h3>
-                <p className="text-muted-foreground">{feature.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
 
-function TestimonialsSection() {
-  const testimonials = [
-    {
-      quote:
-        "chance-me has transformed how our team works. We've cut our project delivery time in half!",
-      author: "Sarah Johnson",
-      role: "Product Manager, TechCorp",
-      avatar: "/placeholder.svg?height=64&width=64",
-    },
-    {
-      quote:
-        "The automation features alone have saved us countless hours of manual work. Absolutely worth every penny.",
-      author: "Michael Chen",
-      role: "CTO, GrowthStartup",
-      avatar: "/placeholder.svg?height=64&width=64",
-    },
-    {
-      quote:
-        "Our team collaboration has improved dramatically since we started using chance-me. Highly recommended!",
-      author: "Emily Rodriguez",
-      role: "Team Lead, InnovateDesign",
-      avatar: "/placeholder.svg?height=64&width=64",
-    },
-  ];
-
-  return (
-    <section
-      id="testimonials"
-      className="w-full py-12 md:py-24 lg:py-32"
-    >
-      <div className="container px-4 md:px-6">
-        <div className="flex flex-col items-center justify-center space-y-4 text-center">
-          <div className="space-y-2">
-            <div className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground">
-              Testimonials
+        <div className="flex flex-col items-center">
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-12 mt-8 w-full max-w-6xl mx-auto">
+            {/* Grid of admission trial dots (Left side) */}
+            <div className="grid grid-cols-5 gap-8 w-full md:w-2/3 p-10 bg-white/5 backdrop-blur-sm rounded-lg border border-gray-100/10 flex-shrink-0">
+              {trials.map((trial) => (
+                <AdmissionDot
+                  key={trial.id}
+                  id={trial.id}
+                  status={trial.status}
+                  firstRoundDecision={trial.firstRoundDecision}
+                  secondRoundDecision={trial.secondRoundDecision}
+                  firstRoundOfficer={trial.firstRoundOfficer}
+                  boardOfficers={trial.boardOfficers}
+                  officers={officers}
+                  isSelected={selectedTrialId === trial.id}
+                  onSelect={handleSelectDot}
+                  isOtherDotSelected={
+                    selectedTrialId !== null && selectedTrialId !== trial.id
+                  }
+                />
+              ))}
             </div>
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-              Trusted by Teams Worldwide
-            </h2>
-            <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Don't just take our word for it. See what our customers have to
-              say about chance-me.
-            </p>
-          </div>
-        </div>
-        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 py-12 md:grid-cols-3">
-          {testimonials.map((testimonial, index) => (
-            <div
-              key={index}
-              className="flex flex-col justify-between rounded-lg border p-6 shadow-sm"
-            >
-              <div className="space-y-4">
-                <p className="text-muted-foreground italic">
-                  "{testimonial.quote}"
-                </p>
-                <div className="flex items-center gap-4">
-                  <Image
-                    src={testimonial.avatar || "/placeholder.svg"}
-                    width={64}
-                    height={64}
-                    alt={testimonial.author}
-                    className="rounded-full"
-                  />
+
+            {/* Description (Right side) */}
+            <div className="mt-2 md:mt-0 md:w-1/3 text-center md:text-left">
+              <h3 className="text-2xl font-semibold mb-4">
+                Two-Round Admission Process
+              </h3>
+              <p className="text-muted-foreground mb-6">
+                Each dot represents an applicant going through our admission
+                process:
+              </p>
+
+              <div className="space-y-4 text-sm">
+                <div className="flex gap-2">
+                  <div className="mt-1 w-4 h-4 rounded-full bg-red-200 flex-shrink-0"></div>
                   <div>
-                    <h4 className="font-semibold">{testimonial.author}</h4>
-                    <p className="text-sm text-muted-foreground">
-                      {testimonial.role}
+                    <p className="font-medium">Round 1 Rejection</p>
+                    <p className="text-muted-foreground">
+                      Application rejected by the first admission officer.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-2">
+                  <div className="mt-1 w-4 h-4 rounded-full bg-blue-200 flex-shrink-0"></div>
+                  <div>
+                    <p className="font-medium">In Progress</p>
+                    <p className="text-muted-foreground">
+                      Application is still being reviewed.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-2">
+                  <div className="mt-1 w-4 h-4 rounded-full bg-green-200 flex-shrink-0"></div>
+                  <div>
+                    <p className="font-medium">Accepted</p>
+                    <p className="text-muted-foreground">
+                      Application approved by the board of officers.
                     </p>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
 
-function PricingSection() {
-  const plans = [
-    {
-      name: "Starter",
-      price: "$9",
-      description:
-        "Perfect for individuals and small teams just getting started.",
-      features: [
-        "Up to 5 team members",
-        "Basic workflow automation",
-        "Standard support",
-        "1GB storage",
-      ],
-    },
-    {
-      name: "Professional",
-      price: "$29",
-      description:
-        "Ideal for growing teams that need more power and flexibility.",
-      features: [
-        "Up to 20 team members",
-        "Advanced automation",
-        "Priority support",
-        "10GB storage",
-        "Advanced analytics",
-      ],
-      popular: true,
-    },
-    {
-      name: "Enterprise",
-      price: "$99",
-      description:
-        "For large organizations with complex needs and dedicated support.",
-      features: [
-        "Unlimited team members",
-        "Custom workflow solutions",
-        "24/7 dedicated support",
-        "Unlimited storage",
-        "Advanced security features",
-        "Custom integrations",
-      ],
-    },
-  ];
-
-  return (
-    <section
-      id="pricing"
-      className="w-full py-12 md:py-24 lg:py-32 bg-muted"
-    >
-      <div className="container px-4 md:px-6">
-        <div className="flex flex-col items-center justify-center space-y-4 text-center">
-          <div className="space-y-2">
-            <div className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground">
-              Pricing
+              <div className="mt-8">
+                <p className="mb-2 font-medium">
+                  Click on any dot to see detailed admission results
+                </p>
+                <p className="text-muted-foreground">
+                  Hover over officers to learn more about them.
+                </p>
+              </div>
             </div>
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-              Simple, Transparent Pricing
-            </h2>
-            <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Choose the plan that's right for your team. All plans include a
-              14-day free trial.
-            </p>
           </div>
-        </div>
-        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 py-12 md:grid-cols-3">
-          {plans.map((plan, index) => (
-            <div
-              key={index}
-              className={`flex flex-col rounded-lg border p-6 shadow-sm ${
-                plan.popular
-                  ? "border-primary bg-background relative"
-                  : "bg-background"
-              }`}
-            >
-              {plan.popular && (
-                <div className="absolute -top-3 left-0 right-0 mx-auto w-fit rounded-full bg-primary px-3 py-1 text-xs text-primary-foreground">
-                  Most Popular
-                </div>
-              )}
-              <div className="space-y-4">
-                <h3 className="text-2xl font-bold">{plan.name}</h3>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-bold">{plan.price}</span>
-                  <span className="text-muted-foreground">/month</span>
-                </div>
-                <p className="text-muted-foreground">{plan.description}</p>
-              </div>
-              <div className="mt-6 space-y-4">
-                <ul className="space-y-2">
-                  {plan.features.map((feature, featureIndex) => (
-                    <li
-                      key={featureIndex}
-                      className="flex items-center gap-2"
-                    >
-                      <CheckCircle2 className="h-4 w-4 text-primary" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Button
-                  className={`w-full ${
-                    plan.popular ? "bg-primary text-primary-foreground" : ""
-                  }`}
-                  variant={plan.popular ? "default" : "outline"}
-                >
-                  Get Started
-                </Button>
-              </div>
-            </div>
-          ))}
         </div>
       </div>
     </section>
@@ -464,26 +457,19 @@ function CtaSection() {
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-              Ready to Transform Your Workflow?
+              Ready to predict the future?
             </h2>
             <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Join thousands of teams that use chance-me to boost productivity
-              and chance-me collaboration.
+              Get a leg up on your college applications.
             </p>
           </div>
           <div className="flex flex-col gap-2 min-[400px]:flex-row">
             <Button
               size="lg"
-              className="gap-1"
+              className="gap-1 text-black bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-300 hover:scale-105 transition-all duration-300 ease-in-out shadow-[0_0_15px_rgba(255,215,0,0.5)] hover:shadow-[0_0_20px_rgba(255,215,0,0.7)] animate-pulse"
             >
-              Get Started Now
+              Join the Waitlist
               <ArrowRight className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-            >
-              Contact Sales
             </Button>
           </div>
         </div>
@@ -494,7 +480,7 @@ function CtaSection() {
 
 function Footer() {
   return (
-    <footer className="w-full border-t bg-background py-6 md:py-12">
+    <footer className="w-full border-t bg-gradient-to-b from-background to-muted py-6 md:py-12">
       <div className="container px-4 md:px-6">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="space-y-4">
