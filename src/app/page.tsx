@@ -110,17 +110,13 @@ function Header() {
 
 function HeroSection() {
   return (
-    <section
-      id="hero"
-      className="w-full py-12 md:py-24 lg:py-32 xl:py-48"
-    >
+    <section id="hero" className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center text-center">
           <div className="max-w-3xl mx-auto space-y-4">
-            <h1 className="text-5xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">
-              Get your application read by{" "}
-              <span className="number-box">1000</span>
-              Admissions Officers at <TypedText />
+            <h1 className="text-5xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl text-center">
+              Get your application read by 1000 Admissions Officers at{" "}
+              <TypedText />
             </h1>
             <p className="max-w-[400px] mx-auto text-muted-foreground md:text-xl">
               Multi-agent prediction model that predicts your chances of getting
@@ -318,10 +314,7 @@ function AdmissionTrials() {
   }, [generateFakeTrials]);
 
   return (
-    <section
-      id="admission-trials"
-      className="w-full py-24 md:py-32"
-    >
+    <section id="admission-trials" className="w-full py-24 md:py-32">
       <div className="container max-w-7xl">
         <div className="flex flex-col items-center mb-10 text-center">
           <div className="inline-flex items-center rounded-lg bg-muted px-3 py-1 text-sm font-medium">
@@ -346,18 +339,8 @@ function AdmissionTrials() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 >
-                  <line
-                    x1="18"
-                    y1="6"
-                    x2="6"
-                    y2="18"
-                  ></line>
-                  <line
-                    x1="6"
-                    y1="6"
-                    x2="18"
-                    y2="18"
-                  ></line>
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
               </button>
             ) : (
@@ -470,10 +453,7 @@ function AdmissionTrials() {
 
 function CtaSection() {
   return (
-    <section
-      id="get-started"
-      className="w-full py-12 md:py-24 lg:py-32"
-    >
+    <section id="get-started" className="w-full py-12 md:py-24 lg:py-32">
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
@@ -505,10 +485,7 @@ function Footer() {
       <div className="container px-4 md:px-6">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="space-y-4">
-            <Link
-              href="/"
-              className="flex items-center gap-2"
-            >
+            <Link href="/" className="flex items-center gap-2">
               <Image
                 src="/placeholder.svg?height=32&width=32"
                 alt="chance-me Logo"

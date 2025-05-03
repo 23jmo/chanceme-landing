@@ -19,7 +19,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className="fixed top-0 z-50 w-full px-4 py-4">
+    <header className="fixed top-0 z-50 w-full px-6 py-4">
       <div
         className={`mx-auto rounded-xl border border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-all duration-200 ${
           scrolled
@@ -27,7 +27,7 @@ export default function Navbar() {
             : "py-3 max-w-[98%] md:max-w-[96%]"
         }`}
       >
-        <div className="container flex max-w-screen-2xl items-center">
+        <div className="container flex max-w-screen-2xl items-center px-4 md:px-8">
           <ScrollLink
             to="home"
             spy={true}
@@ -45,7 +45,7 @@ export default function Navbar() {
               <span className="hidden md:inline">Chance Me</span>
             </span>
           </ScrollLink>
-          <nav className="flex flex-1 items-center space-x-6 text-sm font-medium md:block">
+          <nav className="flex flex-1 items-center space-x-8 text-sm font-medium md:block mx-4">
             {["features", "Pricing"].map((section) => (
               <ScrollLink
                 key={section}
