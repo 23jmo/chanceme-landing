@@ -87,7 +87,7 @@ function HeroSection() {
               variants={fadeInUp}
             >
               <span className="text-yellow-800">
-                Made by 2 Columbia Students
+                Made by Two Columbia Students
               </span>
             </motion.div>
             <motion.h1
