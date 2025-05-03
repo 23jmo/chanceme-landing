@@ -8,9 +8,21 @@ import { useState, useEffect, useCallback } from "react";
 import TypedText from "@/components/TypedText";
 import AdmissionDot, { TrialStatus } from "@/components/AdmissionDot";
 import Navbar from "@/components/navbar";
+import { motion } from "framer-motion";
+import {
+  fadeInUp,
+  staggerContainer,
+  fadeInLeft,
+  fadeInRight,
+  popIn,
+  bounceIn,
+} from "@/components/framer-animations";
+
 export default function LandingPage() {
   return (
-    <div
+    <motion.div
+      initial="hidden"
+      animate="visible"
       className="flex min-h-screen flex-col bg-cover bg-no-repeat pt-16"
       style={{
         backgroundImage: "url('/absbg.png')",
@@ -18,25 +30,43 @@ export default function LandingPage() {
       }}
     >
       <Navbar />
-      <main className="flex-1 mx-auto">
+      <motion.main
+        className="flex-1 mx-auto"
+        variants={staggerContainer}
+      >
         <HeroSection />
         <AdmissionTrials />
         <CtaSection />
-      </main>
-      <Footer />
-    </div>
+      </motion.main>
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.8, duration: 0.6 }}
+      >
+        <Footer />
+      </motion.div>
+    </motion.div>
   );
 }
 
 function HeroSection() {
+  const [isInView, setIsInView] = useState(false);
+
   return (
-    <section
+    <motion.section
       id="hero"
       className="w-full py-12 md:py-24 lg:py-32 xl:py-48"
+      variants={fadeInUp}
     >
       <div className="container px-4 md:px-6">
-        <div className="flex flex-col items-center text-center">
-          <div className="flex items-center gap-2">
+        <motion.div
+          className="flex flex-col items-center text-center"
+          variants={staggerContainer}
+        >
+          <motion.div
+            className="flex items-center gap-2"
+            variants={bounceIn}
+          >
             <Image
               src="/logo.png"
               alt="Chance Me Logo"
@@ -47,44 +77,74 @@ function HeroSection() {
                 filter: "drop-shadow(0 0 8px rgba(255, 215, 0, 0.3))",
               }}
             />
-          </div>
-          <div className="max-w-3xl mx-auto space-y-4">
-            <div className="inline-flex items-center rounded-lg bg-yellow-400/10 backdrop-blur-sm border border-yellow-400/30 px-3 py-1 text-sm font-medium">
+          </motion.div>
+          <motion.div
+            className="max-w-3xl mx-auto space-y-4"
+            variants={staggerContainer}
+          >
+            <motion.div
+              className="inline-flex items-center rounded-lg bg-yellow-400/10 backdrop-blur-sm border border-yellow-400/30 px-3 py-1 text-sm font-medium"
+              variants={fadeInUp}
+            >
               <span className="text-yellow-800">
                 Made by 2 Columbia Students
               </span>
-            </div>
-            <h1 className="text-5xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl text-center">
-              Get your application read by 1000 Admissions Officers at{" "}
-              <TypedText />
-            </h1>
-            <p className="max-w-[400px] mx-auto text-muted-foreground md:text-xl">
+            </motion.div>
+            <motion.h1
+              className="text-5xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl text-center"
+              variants={fadeInUp}
+            >
+              Get your application read by{" "}
+              <motion.span
+                className={`number-box ${isInView ? "animate-underline" : ""}`}
+                variants={popIn}
+                onViewportEnter={() => setIsInView(true)}
+                onViewportLeave={() => setIsInView(false)}
+                viewport={{ once: false, amount: 0.8 }}
+              >
+                1000
+              </motion.span>{" "}
+              Admissions Officers at <TypedText />
+            </motion.h1>
+            <motion.p
+              className="max-w-[400px] mx-auto text-muted-foreground md:text-xl"
+              variants={fadeInUp}
+            >
               Multi-agent model that predicts your chances of getting in to your
               dream college
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
-              <Link
-                href="https://tally.so/r/nGk2jj"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="
-                  inline-flex items-center justify-center rounded-md text-md font-bold 
-                  h-14 px-10 
-                  text-black 
-                  bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-300
-                  shadow-md shadow-yellow-500/30 
-                  transition-all duration-300 ease-in-out 
-                  hover:shadow-xl hover:shadow-yellow-400/50 hover:scale-110
-                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500 focus-visible:ring-offset-2
-                "
+            </motion.p>
+            <motion.div
+              className="flex flex-col sm:flex-row gap-4 justify-center mt-6"
+              variants={fadeInUp}
+            >
+              <motion.div
+                variants={popIn}
+                whileHover="hover"
+                whileTap="tap"
               >
-                Join Waitlist
-              </Link>
-            </div>
-          </div>
-        </div>
+                <Link
+                  href="https://tally.so/r/nGk2jj"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="
+                    inline-flex items-center justify-center rounded-md text-md font-bold 
+                    h-14 px-10 
+                    text-black 
+                    bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-300
+                    shadow-md shadow-yellow-500/30 
+                    transition-all duration-300 ease-in-out 
+                    hover:shadow-xl hover:shadow-yellow-400/50 hover:scale-110
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500 focus-visible:ring-offset-2
+                  "
+                >
+                  Join Waitlist
+                </Link>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }
 
@@ -256,22 +316,36 @@ function AdmissionTrials() {
   }, [generateFakeTrials]);
 
   return (
-    <section
+    <motion.section
       id="admission-trials"
       className="w-full py-24 md:py-32"
+      variants={fadeInUp}
+      viewport={{ once: true }}
     >
       <div className="container max-w-7xl mx-auto px-4">
-        <div className="flex flex-col items-center mb-10 text-center">
-          <div className="inline-flex items-center rounded-lg bg-muted px-3 py-1 text-sm font-medium">
+        <motion.div
+          className="flex flex-col items-center mb-10 text-center"
+          variants={staggerContainer}
+        >
+          <motion.div
+            className="inline-flex items-center rounded-lg bg-muted px-3 py-1 text-sm font-medium"
+            variants={fadeInUp}
+          >
             <span className="text-primary">Try Your Luck 🍀</span>
-          </div>
-          <h2 className="mt-4 text-2xl font-bold tracking-tight sm:text-3xl flex items-center justify-center gap-2">
+          </motion.div>
+          <motion.h2
+            className="mt-4 text-2xl font-bold tracking-tight sm:text-3xl flex items-center justify-center gap-2"
+            variants={fadeInUp}
+          >
             See The Admission Process At Work
             {showDescription ? (
-              <button
+              <motion.button
                 onClick={toggleDescription}
                 className="inline-flex p-1 rounded-full hover:bg-white/20"
                 aria-label="Hide description"
+                variants={popIn}
+                whileHover="hover"
+                whileTap="tap"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -297,73 +371,137 @@ function AdmissionTrials() {
                     y2="18"
                   ></line>
                 </svg>
-              </button>
+              </motion.button>
             ) : (
-              <button
+              <motion.button
                 onClick={toggleDescription}
                 className="w-5 h-5 rounded-full border border-current flex items-center justify-center text-xs font-medium hover:bg-white/20"
                 aria-label="Show description"
+                variants={popIn}
+                whileHover="hover"
+                whileTap="tap"
               >
                 ?
-              </button>
+              </motion.button>
             )}
-          </h2>
-          <p className="text-muted-foreground">
+          </motion.h2>
+          <motion.p
+            className="text-muted-foreground"
+            variants={fadeInUp}
+          >
             We simulated the admission process 40 times
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
-        <div className="flex flex-col items-center">
-          <div
+        <motion.div
+          className="flex flex-col items-center"
+          variants={fadeInUp}
+        >
+          <motion.div
             className={`flex flex-col md:flex-row ${
               showDescription
                 ? "md:items-start"
                 : "md:items-center justify-center"
             } gap-12 mt-8 w-full max-w-6xl mx-auto`}
+            variants={staggerContainer}
+            animate={showDescription ? "visible" : { opacity: 1 }}
           >
             {/* Grid of admission trial dots */}
-            <div
+            <motion.div
               className={`grid grid-cols-5 gap-8 w-full ${
                 showDescription
                   ? "md:w-2/3 mx-auto md:mx-0"
                   : "md:max-w-3xl mx-auto"
               } p-10 bg-white/5 backdrop-blur-sm rounded-lg border border-gray-100/10 flex-shrink-0 place-items-center`}
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{
+                staggerChildren: 0.03,
+                delayChildren: 0.1,
+                staggerDirection: 1,
+              }}
             >
               {trials.map((trial) => (
-                <AdmissionDot
+                <motion.div
                   key={trial.id}
-                  id={trial.id}
-                  status={trial.status}
-                  firstRoundDecision={trial.firstRoundDecision}
-                  secondRoundDecision={trial.secondRoundDecision}
-                  firstRoundOfficer={trial.firstRoundOfficer}
-                  boardOfficers={trial.boardOfficers}
-                  officers={officers}
-                  isSelected={selectedTrialId === trial.id}
-                  onSelect={handleSelectDot}
-                  isOtherDotSelected={
-                    selectedTrialId !== null && selectedTrialId !== trial.id
-                  }
-                />
+                  variants={{
+                    hidden: {
+                      opacity: 0,
+                      scale: 0.5,
+                      y: trial.id % 2 === 0 ? 20 : -20,
+                    },
+                    visible: {
+                      opacity: 1,
+                      scale: 1,
+                      y: 0,
+                      transition: {
+                        type: "spring",
+                        stiffness: 300 + (trial.id % 5) * 20,
+                        damping: 20,
+                        mass: 1 + (trial.id % 3) * 0.2,
+                      },
+                    },
+                  }}
+                  whileHover={{
+                    scale: 1.1,
+                    transition: { duration: 0.2 },
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <AdmissionDot
+                    id={trial.id}
+                    status={trial.status}
+                    firstRoundDecision={trial.firstRoundDecision}
+                    secondRoundDecision={trial.secondRoundDecision}
+                    firstRoundOfficer={trial.firstRoundOfficer}
+                    boardOfficers={trial.boardOfficers}
+                    officers={officers}
+                    isSelected={selectedTrialId === trial.id}
+                    onSelect={handleSelectDot}
+                    isOtherDotSelected={
+                      selectedTrialId !== null && selectedTrialId !== trial.id
+                    }
+                  />
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
 
             {/* Description (Right side) */}
             {showDescription && (
-              <div className="mt-2 md:mt-0 md:w-1/3 text-center md:text-left">
-                <div className="mb-4">
+              <motion.div
+                className="mt-2 md:mt-0 md:w-1/3 text-center md:text-left"
+                variants={fadeInRight}
+                initial="hidden"
+                animate="visible"
+                transition={{ delay: 0.2 }}
+              >
+                <motion.div
+                  className="mb-4"
+                  variants={fadeInUp}
+                >
                   <h3 className="text-2xl font-semibold">
                     Two-Round Admission Process
                   </h3>
-                </div>
+                </motion.div>
 
-                <p className="text-muted-foreground mb-6">
+                <motion.p
+                  className="text-muted-foreground mb-6"
+                  variants={fadeInUp}
+                >
                   Each dot represents an applicant going through our admission
                   process:
-                </p>
+                </motion.p>
 
-                <div className="space-y-4 text-sm">
-                  <div className="flex gap-2">
+                <motion.div
+                  className="space-y-4 text-sm"
+                  variants={staggerContainer}
+                >
+                  <motion.div
+                    className="flex gap-2"
+                    variants={fadeInLeft}
+                  >
                     <div className="mt-1 w-4 h-4 rounded-full bg-red-200 flex-shrink-0"></div>
                     <div>
                       <p className="font-medium">Round 1 Rejection</p>
@@ -371,9 +509,12 @@ function AdmissionTrials() {
                         Application rejected by the first admission officer.
                       </p>
                     </div>
-                  </div>
+                  </motion.div>
 
-                  <div className="flex gap-2">
+                  <motion.div
+                    className="flex gap-2"
+                    variants={fadeInLeft}
+                  >
                     <div className="mt-1 w-4 h-4 rounded-full bg-blue-200 flex-shrink-0"></div>
                     <div>
                       <p className="font-medium">In Progress</p>
@@ -381,9 +522,12 @@ function AdmissionTrials() {
                         Application is still being reviewed.
                       </p>
                     </div>
-                  </div>
+                  </motion.div>
 
-                  <div className="flex gap-2">
+                  <motion.div
+                    className="flex gap-2"
+                    variants={fadeInLeft}
+                  >
                     <div className="mt-1 w-4 h-4 rounded-full bg-green-200 flex-shrink-0"></div>
                     <div>
                       <p className="font-medium">Accepted</p>
@@ -391,43 +535,65 @@ function AdmissionTrials() {
                         Application approved by the board of officers.
                       </p>
                     </div>
-                  </div>
-                </div>
+                  </motion.div>
+                </motion.div>
 
-                <div className="mt-8">
+                <motion.div
+                  className="mt-8"
+                  variants={fadeInUp}
+                >
                   <p className="mb-2 font-medium">
                     Click on any dot to see detailed admission results
                   </p>
                   <p className="text-muted-foreground">
                     Hover over officers to learn more about them.
                   </p>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             )}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }
 
 function CtaSection() {
   return (
-    <section
+    <motion.section
       id="get-started"
       className="w-full py-12 md:py-24 lg:py-32"
+      variants={fadeInUp}
+      viewport={{ once: true, margin: "-100px" }}
     >
       <div className="container px-4 md:px-6">
-        <div className="flex flex-col items-center justify-center space-y-4 text-center">
-          <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+        <motion.div
+          className="flex flex-col items-center justify-center space-y-4 text-center"
+          variants={staggerContainer}
+        >
+          <motion.div
+            className="space-y-2"
+            variants={fadeInUp}
+          >
+            <motion.h2
+              className="text-3xl font-bold tracking-tighter sm:text-5xl"
+              variants={fadeInUp}
+            >
               Ready to predict the future?
-            </h2>
-            <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+            </motion.h2>
+            <motion.p
+              className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
+              variants={fadeInUp}
+            >
               Get a leg up on your college applications.
-            </p>
-          </div>
-          <div className="flex flex-col gap-2 min-[400px]:flex-row">
+            </motion.p>
+          </motion.div>
+          <motion.div
+            className="flex flex-col gap-2 min-[400px]:flex-row"
+            variants={popIn}
+            whileHover="hover"
+            whileTap="tap"
+          >
             <Button
               size="lg"
               className="gap-1 text-black bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-300 hover:scale-105 transition-all duration-300 ease-in-out shadow-[0_0_15px_rgba(255,215,0,0.5)] hover:shadow-[0_0_20px_rgba(255,215,0,0.7)] animate-pulse"
@@ -436,16 +602,22 @@ function CtaSection() {
               Join the Waitlist
               <ArrowRight className="h-4 w-4" />
             </Button>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }
 
 function Footer() {
   return (
-    <footer className="w-full bg-[#121212] text-white py-12 rounded-t-3xl relative overflow-hidden">
+    <motion.footer
+      className="w-full bg-[#121212] text-white py-12 rounded-t-3xl relative overflow-hidden"
+      variants={fadeInUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+    >
       {/* Subtle noise texture overlay */}
       <div
         className="absolute inset-0 opacity-5"
@@ -460,10 +632,19 @@ function Footer() {
       {/* Subtle gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] to-[#0c0c0c] opacity-90" />
 
-      <div className="container px-4 md:px-6 mx-auto relative z-10">
+      <motion.div
+        className="container px-4 md:px-6 mx-auto relative z-10"
+        variants={staggerContainer}
+      >
         {/* Logo and info section */}
-        <div className="mb-12">
-          <div className="flex items-center gap-2 mb-4">
+        <motion.div
+          className="mb-12"
+          variants={staggerContainer}
+        >
+          <motion.div
+            className="flex items-center gap-2 mb-4"
+            variants={fadeInLeft}
+          >
             <Image
               src="/logo.png"
               alt="Chance Me Logo"
@@ -472,122 +653,67 @@ function Footer() {
               className="object-contain"
             />
             <span className="text-3xl font-bold">Chance Me</span>
-          </div>
-          <p className="text-gray-400 max-w-md">
+          </motion.div>
+          <motion.p
+            className="text-gray-400 max-w-md"
+            variants={fadeInUp}
+          >
             Chance Me is a multi-agent prediction model that predicts your
             chances of getting into your dream college.
-          </p>
+          </motion.p>
 
           {/* Social media */}
-          <div className="flex gap-6 mt-6">
-            <Link
-              href="#"
-              className="text-gray-400 hover:text-white"
+          <motion.div
+            className="flex gap-6 mt-6"
+            variants={staggerContainer}
+          >
+            <motion.div
+              variants={bounceIn}
+              whileHover={{ scale: 1.2, rotate: 5 }}
+              whileTap={{ scale: 0.9 }}
             >
-              <Twitter className="h-6 w-6" />
-              <span className="sr-only">Twitter</span>
-            </Link>
-            <Link
-              href="#"
-              className="text-gray-400 hover:text-white"
+              <Link
+                href="#"
+                className="text-gray-400 hover:text-white"
+              >
+                <Twitter className="h-6 w-6" />
+                <span className="sr-only">Twitter</span>
+              </Link>
+            </motion.div>
+            <motion.div
+              variants={bounceIn}
+              whileHover={{ scale: 1.2, rotate: -5 }}
+              whileTap={{ scale: 0.9 }}
             >
-              <Instagram className="h-6 w-6" />
-              <span className="sr-only">Instagram</span>
-            </Link>
-          </div>
+              <Link
+                href="#"
+                className="text-gray-400 hover:text-white"
+              >
+                <Instagram className="h-6 w-6" />
+                <span className="sr-only">Instagram</span>
+              </Link>
+            </motion.div>
+          </motion.div>
 
           {/* Status */}
-          <div className="flex items-center gap-2 mt-8">
+          <motion.div
+            className="flex items-center gap-2 mt-8"
+            variants={fadeInUp}
+          >
             <CheckCircle2 className="h-5 w-5 text-green-500" />
             <span className="text-gray-300">All services are online</span>
-          </div>
+          </motion.div>
 
-          <div className="mt-4 text-gray-400">
+          <motion.div
+            className="mt-4 text-gray-400"
+            variants={fadeInUp}
+          >
             &copy; {new Date().getFullYear()} Chance Me. All rights reserved.
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
-        {/* Links section - Commented out temporarily */}
-        {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          {/* Legal column */}
-        {/* <div>
-            <h4 className="text-xl font-bold mb-6">Legal</h4>
-            <ul className="space-y-4">
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-400 hover:text-white"
-                >
-                  Refund policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-400 hover:text-white"
-                >
-                  Terms of Service
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-400 hover:text-white"
-                >
-                  Privacy policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-400 hover:text-white"
-                >
-                  Cancellation Policy
-                </Link>
-              </li>
-            </ul>
-          </div> */}
-
-        {/* Links column */}
-        {/* <div>
-            <h4 className="text-xl font-bold mb-6">Links</h4>
-            <ul className="space-y-4">
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-400 hover:text-white"
-                >
-                  Careers
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-400 hover:text-white"
-                >
-                  Help Center
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-400 hover:text-white"
-                >
-                  Get Started
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-400 hover:text-white"
-                >
-                  Log in to Chance Me
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div> */}
-      </div>
-    </footer>
+        {/* Links section commented out as per original */}
+      </motion.div>
+    </motion.footer>
   );
 }

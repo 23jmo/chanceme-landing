@@ -25,18 +25,33 @@
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2)); /* Subtle shadow */
 }
 
+/* Animatable underline base */
 .number-box::after {
   content: "";
   position: absolute;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  height: 6px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 10' preserveAspectRatio='none'%3E%3Cpath d='M0,5 C20,2 30,9 50,5 C70,1 80,8 100,5' stroke='%23ffa500' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat: repeat-x;
-  background-size: 100% 100%;
+  left: -3px;
+  right: -3px;
+  bottom: -4px;
+  height: 7px; /* Slightly thinner height */
+  background-color: #ffa500; /* Orange color */
+  border-radius: 3px; /* Slightly rounded edges */
   z-index: -1;
-  transform: rotate(-1deg);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+/* Animation for drawing the underline */
+.number-box.animate-underline::after {
+  animation: drawUnderline 0.6s forwards ease-out;
+}
+
+@keyframes drawUnderline {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
 }
 
 /* Wrapper for the animated content and cursor */
