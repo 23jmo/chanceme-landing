@@ -206,9 +206,17 @@ function AdmissionTrials() {
   // State for selected trial (expanded view)
   const [selectedTrialId, setSelectedTrialId] = useState<number | null>(null);
 
+  // State to control description visibility - start with toggle closed
+  const [showDescription, setShowDescription] = useState(false);
+
   // Handle selecting a dot
   const handleSelectDot = (id: number) => {
     setSelectedTrialId(id === -1 ? null : id);
+  };
+
+  // Handle toggling description
+  const toggleDescription = () => {
+    setShowDescription(!showDescription);
   };
 
   // Admissions officers data
@@ -219,24 +227,24 @@ function AdmissionTrials() {
         "https://arts.columbia.edu/sites/default/files/styles/cu_crop/public/content/Images/Headshots/admis_hs_julie_dobrow_2.jpeg?itok=qX6ABjKo",
     },
     {
-      name: "Glenn John",
+      name: "Kenny Wong",
       image:
-        "https://as.cornell.edu/sites/default/files/styles/square_landscape/public/glenn_2.jpg?h=c94b7089&itok=Lqam0ViO",
+        "https://arts.columbia.edu/sites/default/files/styles/cu_crop/public/content/Images/Headshots/admis_hs_kenny_wong_2.jpeg?itok=y9tt0Jwg",
     },
     {
       name: "Niquette Johnson",
       image:
-        "https://arts.columbia.edu/sites/default/files/styles/cu_crop/public/content/Images/Headshots/hs_laura_cane.jpeg?itok=u_1mK0dR",
+        "https://arts.columbia.edu/sites/default/files/styles/cu_crop/public/content/Images/Headshots/staff_hs_johnson_niquette.jpg?itok=kUx2mzoq",
     },
     {
       name: "Michael Robinson",
       image:
-        "https://business.columbia.edu/sites/default/files/styles/cu_crop/public/content/EMBA/headshots_thumbs/Christopher%20Cashman%20Headshot.jpeg?itok=vSiluciO",
+        "https://business.columbia.edu/sites/default/files-efs/styles/default_content_image_mobile/public/imce-uploads/staff-photos/cbs-headshot-michael-robinson.jpg?h=b9cd3d4b&itok=gVYh60zk",
     },
     {
       name: "Sarah Chen",
       image:
-        "https://www.seas.columbia.edu/sites/default/files/styles/cu_crop/public/content/Admissions/img_8631.jpeg?itok=dPtEXtoj",
+        "https://arts.columbia.edu/sites/default/files/styles/cu_crop/public/content/Images/Headshots/admit_hs_tori_sheffer.jpeg?itok=Qx0m-msh",
     },
   ];
 
@@ -361,15 +369,65 @@ function AdmissionTrials() {
           <div className="inline-flex items-center rounded-lg bg-muted px-3 py-1 text-sm font-medium">
             <span className="text-primary">Try Your Luck</span>
           </div>
-          <h2 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
+          <h2 className="mt-4 text-2xl font-bold tracking-tight sm:text-3xl flex items-center justify-center gap-2">
             See The Admission Process At Work
+            {showDescription ? (
+              <button
+                onClick={toggleDescription}
+                className="inline-flex p-1 rounded-full hover:bg-white/20"
+                aria-label="Hide description"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line
+                    x1="18"
+                    y1="6"
+                    x2="6"
+                    y2="18"
+                  ></line>
+                  <line
+                    x1="6"
+                    y1="6"
+                    x2="18"
+                    y2="18"
+                  ></line>
+                </svg>
+              </button>
+            ) : (
+              <button
+                onClick={toggleDescription}
+                className="inline-flex w-5 h-5 rounded-full border border-current flex items-center justify-center text-xs font-medium hover:bg-white/20"
+                aria-label="Show description"
+              >
+                ?
+              </button>
+            )}
           </h2>
         </div>
 
         <div className="flex flex-col items-center">
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-12 mt-8 w-full max-w-6xl mx-auto">
-            {/* Grid of admission trial dots (Left side) */}
-            <div className="grid grid-cols-5 gap-8 w-full md:w-2/3 p-10 bg-white/5 backdrop-blur-sm rounded-lg border border-gray-100/10 flex-shrink-0">
+          <div
+            className={`flex flex-col md:flex-row items-center ${
+              showDescription
+                ? "md:items-start"
+                : "md:items-center justify-center"
+            } gap-12 mt-8 w-full max-w-6xl mx-auto`}
+          >
+            {/* Grid of admission trial dots */}
+            <div
+              className={`grid grid-cols-5 gap-8 w-full ${
+                showDescription ? "md:w-2/3" : "md:max-w-3xl mx-auto"
+              } p-10 bg-white/5 backdrop-blur-sm rounded-lg border border-gray-100/10 flex-shrink-0`}
+            >
               {trials.map((trial) => (
                 <AdmissionDot
                   key={trial.id}
@@ -390,56 +448,61 @@ function AdmissionTrials() {
             </div>
 
             {/* Description (Right side) */}
-            <div className="mt-2 md:mt-0 md:w-1/3 text-center md:text-left">
-              <h3 className="text-2xl font-semibold mb-4">
-                Two-Round Admission Process
-              </h3>
-              <p className="text-muted-foreground mb-6">
-                Each dot represents an applicant going through our admission
-                process:
-              </p>
+            {showDescription && (
+              <div className="mt-2 md:mt-0 md:w-1/3 text-center md:text-left">
+                <div className="mb-4">
+                  <h3 className="text-2xl font-semibold">
+                    Two-Round Admission Process
+                  </h3>
+                </div>
 
-              <div className="space-y-4 text-sm">
-                <div className="flex gap-2">
-                  <div className="mt-1 w-4 h-4 rounded-full bg-red-200 flex-shrink-0"></div>
-                  <div>
-                    <p className="font-medium">Round 1 Rejection</p>
-                    <p className="text-muted-foreground">
-                      Application rejected by the first admission officer.
-                    </p>
+                <p className="text-muted-foreground mb-6">
+                  Each dot represents an applicant going through our admission
+                  process:
+                </p>
+
+                <div className="space-y-4 text-sm">
+                  <div className="flex gap-2">
+                    <div className="mt-1 w-4 h-4 rounded-full bg-red-200 flex-shrink-0"></div>
+                    <div>
+                      <p className="font-medium">Round 1 Rejection</p>
+                      <p className="text-muted-foreground">
+                        Application rejected by the first admission officer.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <div className="mt-1 w-4 h-4 rounded-full bg-blue-200 flex-shrink-0"></div>
+                    <div>
+                      <p className="font-medium">In Progress</p>
+                      <p className="text-muted-foreground">
+                        Application is still being reviewed.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <div className="mt-1 w-4 h-4 rounded-full bg-green-200 flex-shrink-0"></div>
+                    <div>
+                      <p className="font-medium">Accepted</p>
+                      <p className="text-muted-foreground">
+                        Application approved by the board of officers.
+                      </p>
+                    </div>
                   </div>
                 </div>
 
-                <div className="flex gap-2">
-                  <div className="mt-1 w-4 h-4 rounded-full bg-blue-200 flex-shrink-0"></div>
-                  <div>
-                    <p className="font-medium">In Progress</p>
-                    <p className="text-muted-foreground">
-                      Application is still being reviewed.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-2">
-                  <div className="mt-1 w-4 h-4 rounded-full bg-green-200 flex-shrink-0"></div>
-                  <div>
-                    <p className="font-medium">Accepted</p>
-                    <p className="text-muted-foreground">
-                      Application approved by the board of officers.
-                    </p>
-                  </div>
+                <div className="mt-8">
+                  <p className="mb-2 font-medium">
+                    Click on any dot to see detailed admission results
+                  </p>
+                  <p className="text-muted-foreground">
+                    Hover over officers to learn more about them.
+                  </p>
                 </div>
               </div>
-
-              <div className="mt-8">
-                <p className="mb-2 font-medium">
-                  Click on any dot to see detailed admission results
-                </p>
-                <p className="text-muted-foreground">
-                  Hover over officers to learn more about them.
-                </p>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
