@@ -423,7 +423,6 @@ function AdmissionTrials() {
                 delayChildren: 0.1,
                 staggerDirection: 1,
               }}
-              layout
             >
               {/* Selected dot card */}
               {selectedTrialId !== null && (
@@ -669,80 +668,78 @@ function FaqSection() {
     {
       question: "Why should I trust your predictions?",
       answer:
-        "Chance me was made by two Columbia transfer students who have been through the college application process a total of 4 times and know what it's like to be in your shoes.",
-    },
-    {
-      question: "What is Chance Me?",
-      answer:
-        "Chance Me is a multi-agent prediction model that predicts your chances of getting into your dream college.",
+        "We use a multi-agent model to simulate the process of a real admissions officers over a 1000 trials, using the profiles of real Ivy-League Admission Officers. Our simulation is backed by information from former and current admission officers.",
     },
     {
       question: "How does Chance Me work?",
       answer:
-        "Chance Me uses a multi-agent prediction model to predict your chances of getting into your dream college.",
+        "We simulate the random nature of the admissions process to give you a more accurate prediction of your chances of getting into your dream college. We also consider essays, which most other platforms do not.",
     },
     {
-      question: "Is Chance Me free?",
-      answer: "Chance Me is free to use.",
+      question: "Why Chance Me?",
+      answer:
+        "Chance me was made by two Columbia transfer students who have been through the college application process a total of 4 times and know what it's like to be in your shoes.",
+    },
+    {
+      question: "When can I use Chance Me?",
+      answer:
+        "Chance me is currently in early beta as we continue to improve our algorithm and user interface. We are giving access to early users. If you are interested please send an email to jym2117@columbia.edu with your name and how much you are willing to pay per month ",
+    },
+    {
+      question: "Will you sell my data?",
+      answer:
+        "No. We will never sell your data to third parties. We will only use your data to improve our algorithm and user interface.",
     },
   ];
 
   return (
-    <motion.section
+    <section
       id="faq"
-      className="w-full py-16 md:py-24"
-      variants={fadeInUp}
-      viewport={{ once: true }}
+      className="w-full py-16 md:py-24 "
     >
       <div className="container max-w-4xl mx-auto px-4 mb-6">
-        <motion.div
-          className="text-center mb-12"
-          variants={fadeInUp}
-        >
+        <div className="text-center mb-12">
           <h2 className="text-3xl tracking-tighter md:text-4xl font-bold mb-6 pb-6">
             Frequently Asked Questions
           </h2>
-        </motion.div>
+        </div>
 
-        <motion.div
-          className="space-y-4"
-          variants={staggerContainer}
-        >
-          {faqItems.map((item, index) => (
-            <motion.div
-              key={index}
-              className="w-[90%] mx-auto border-b border-gray-300 pb-4"
-              variants={fadeInUp}
-            >
-              <button
-                onClick={() => toggleItem(index)}
-                className="w-full flex justify-between items-center py-2  text-left focus:outline-none"
+        {/* Fixed width container for FAQ items */}
+        <div className="mx-auto w-[90%]">
+          <div className="space-y-4">
+            {faqItems.map((item, index) => (
+              <div
+                key={index}
+                className="border-b border-gray-300 pb-4"
               >
-                <span className="text-lg font-medium text-gray-700">
-                  {item.question}
-                </span>
-                <span className="text-xl text-gray-700">
-                  {openItem === index ? "−" : "+"}
-                </span>
-              </button>
-              <AnimatePresence>
-                {openItem === index && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="overflow-hidden"
-                  >
-                    <p className="py-4 text-gray-500">{item.answer}</p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          ))}
-        </motion.div>
+                <button
+                  onClick={() => toggleItem(index)}
+                  className="flex justify-between items-center w-full py-2 text-left"
+                >
+                  <span className="text-lg font-medium text-gray-700">
+                    {item.question}
+                  </span>
+                  <span className="text-xl text-gray-700 ml-4">
+                    {openItem === index ? "−" : "+"}
+                  </span>
+                </button>
+
+                {/* Simple CSS transition for height */}
+                <div
+                  className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                    openItem === index ? "max-h-96" : "max-h-0"
+                  }`}
+                >
+                  <div className="py-4">
+                    <p className="text-gray-500">{item.answer}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
-    </motion.section>
+    </section>
   );
 }
 
