@@ -363,14 +363,15 @@ export default function AdmissionDot({
               : ""
           }
           ${isOtherDotSelected ? "transform scale-75 opacity-50" : ""}
+          sm:w-12 sm:h-12 w-10 h-10 
         `}
       >
         {/* ID number inside dot */}
         <span
           className={`${
-            isOtherDotSelected ? "text-[18px]" : "text-[12px]"
-          } font-semibold text-gray-600`}
-          style={{ opacity: isOtherDotSelected ? 1 : 0.8 }}
+            isOtherDotSelected ? "text-[14px]" : "text-[12px]"
+          } sm:block font-semibold text-gray-600`}
+          style={{ opacity: isOtherDotSelected ? 0.9 : 0.8 }}
         >
           {id}
         </span>

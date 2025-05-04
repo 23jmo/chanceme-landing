@@ -40,7 +40,7 @@ export default function Navbar() {
       animate={controls}
     >
       <motion.div
-        className={`mx-auto rounded-xl border border-border/40 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/90 transition-all duration-200 ${
+        className={`mx-auto rounded-xl border border-border/40 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/80 transition-all duration-200 ${
           scrolled
             ? "py-2 max-w-[95%] md:max-w-[90%]"
             : "py-3 max-w-[98%] md:max-w-[96%]"
@@ -50,7 +50,7 @@ export default function Navbar() {
           layout: { type: "spring", stiffness: 300, damping: 30 },
         }}
       >
-        <div className="container flex max-w-screen-2xl items-center px-4 md:px-8">
+        <div className="flex items-center px-4 md:px-8">
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

@@ -36,6 +36,7 @@ export default function LandingPage() {
       >
         <HeroSection />
         <AdmissionTrials />
+        <FaqSection />
         <CtaSection />
       </motion.main>
       <motion.div
@@ -87,7 +88,7 @@ function HeroSection() {
               variants={fadeInUp}
             >
               <span className="text-yellow-800">
-                Made by Two Columbia Students
+                By Two Columbia CS Students
               </span>
             </motion.div>
             <motion.h1
@@ -318,7 +319,7 @@ function AdmissionTrials() {
   return (
     <motion.section
       id="admission-trials"
-      className="w-full py-24 md:py-32"
+      className="w-full py-12 md:py-32"
       variants={fadeInUp}
       viewport={{ once: true }}
     >
@@ -412,7 +413,7 @@ function AdmissionTrials() {
                 showDescription
                   ? "md:w-2/3 mx-auto md:mx-0"
                   : "md:max-w-3xl mx-auto"
-              } p-10 bg-white/5 backdrop-blur-sm rounded-lg border border-gray-100/10 flex-shrink-0`}
+              }  bg-white/5 backdrop-blur-sm rounded-lg border border-gray-100/10 flex-shrink-0`}
               variants={fadeInUp}
               initial="hidden"
               whileInView="visible"
@@ -458,8 +459,8 @@ function AdmissionTrials() {
 
               {/* Dots grid with improved spacing */}
               <motion.div
-                className={`w-full mx-auto ${
-                  selectedTrialId !== null ? "mt-8" : ""
+                className={`w-full mx-auto dots-grid ${
+                  selectedTrialId !== null ? "mt-8 selected-mode" : ""
                 }`}
                 style={{
                   display: "grid",
@@ -470,17 +471,60 @@ function AdmissionTrials() {
                   gap:
                     selectedTrialId !== null
                       ? "0.75rem 0.75rem"
-                      : "1.5rem 1.25rem",
+                      : "1rem 0.85rem",
                   justifyContent: "center",
-                  maxWidth: selectedTrialId !== null ? "100%" : "92%",
+                  maxWidth: selectedTrialId !== null ? "100%" : "95%",
+                  padding: selectedTrialId !== null ? "0" : "0.5rem",
                 }}
               >
+                {/* Adding responsive styles for the grid container */}
+                <style
+                  jsx
+                  global
+                >{`
+                  @media (max-width: 768px) {
+                    .dots-grid {
+                      gap: 1rem 0.75rem !important;
+                      max-width: 98% !important;
+                      padding: 0.25rem !important;
+                    }
+                    .dots-grid.selected-mode {
+                      grid-template-columns: repeat(
+                        8,
+                        minmax(0, 1fr)
+                      ) !important;
+                      gap: 0.7rem 0.6rem !important;
+                    }
+                  }
+                  @media (max-width: 640px) {
+                    .dots-grid {
+                      grid-template-columns: repeat(
+                        5,
+                        minmax(0, 1fr)
+                      ) !important;
+                      gap: 0.75rem 0.6rem !important;
+                      max-width: 100% !important;
+                      padding: 0.2rem !important;
+                    }
+                    .dots-grid.selected-mode {
+                      grid-template-columns: repeat(
+                        8,
+                        minmax(0, 1fr)
+                      ) !important;
+                      gap: 0.5rem 0.4rem !important;
+                    }
+                  }
+                `}</style>
                 {trials.map((trial) =>
                   selectedTrialId === trial.id ? null : (
                     <div
                       key={trial.id}
                       className="flex items-center justify-center"
-                      style={{ aspectRatio: "1/1" }}
+                      style={{
+                        aspectRatio: "1/1",
+                        minWidth: 0, // Prevent overflow
+                        minHeight: 0, // Prevent overflow
+                      }}
                     >
                       <motion.div
                         initial={{ opacity: 0 }}
@@ -493,6 +537,14 @@ function AdmissionTrials() {
                           transition: { duration: 0.2 },
                         }}
                         whileTap={{ scale: 0.95 }}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          padding: "2px", // Small padding to ensure spacing
+                        }}
                       >
                         <AdmissionDot
                           id={trial.id}
@@ -603,11 +655,102 @@ function AdmissionTrials() {
   );
 }
 
+function FaqSection() {
+  // State to track which FAQ item is open
+  const [openItem, setOpenItem] = useState<number | null>(null);
+
+  // Toggle function for accordion
+  const toggleItem = (index: number) => {
+    setOpenItem(openItem === index ? null : index);
+  };
+
+  // FAQ data
+  const faqItems = [
+    {
+      question: "Why should I trust your predictions?",
+      answer:
+        "Chance me was made by two Columbia transfer students who have been through the college application process a total of 4 times and know what it's like to be in your shoes.",
+    },
+    {
+      question: "What is Chance Me?",
+      answer:
+        "Chance Me is a multi-agent prediction model that predicts your chances of getting into your dream college.",
+    },
+    {
+      question: "How does Chance Me work?",
+      answer:
+        "Chance Me uses a multi-agent prediction model to predict your chances of getting into your dream college.",
+    },
+    {
+      question: "Is Chance Me free?",
+      answer: "Chance Me is free to use.",
+    },
+  ];
+
+  return (
+    <motion.section
+      id="faq"
+      className="w-full py-16 md:py-24"
+      variants={fadeInUp}
+      viewport={{ once: true }}
+    >
+      <div className="container max-w-4xl mx-auto px-4 mb-6">
+        <motion.div
+          className="text-center mb-12"
+          variants={fadeInUp}
+        >
+          <h2 className="text-3xl tracking-tighter md:text-4xl font-bold mb-6 pb-6">
+            Frequently Asked Questions
+          </h2>
+        </motion.div>
+
+        <motion.div
+          className="space-y-4"
+          variants={staggerContainer}
+        >
+          {faqItems.map((item, index) => (
+            <motion.div
+              key={index}
+              className="w-[90%] mx-auto border-b border-gray-300 pb-4"
+              variants={fadeInUp}
+            >
+              <button
+                onClick={() => toggleItem(index)}
+                className="w-full flex justify-between items-center py-2  text-left focus:outline-none"
+              >
+                <span className="text-lg font-medium text-gray-700">
+                  {item.question}
+                </span>
+                <span className="text-xl text-gray-700">
+                  {openItem === index ? "−" : "+"}
+                </span>
+              </button>
+              <AnimatePresence>
+                {openItem === index && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden"
+                  >
+                    <p className="py-4 text-gray-500">{item.answer}</p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </motion.section>
+  );
+}
+
 function CtaSection() {
   return (
     <motion.section
       id="get-started"
-      className="w-full md:py-6 lg:py-12"
+      className="w-full py-6 md:py-12 lg:py-18 mb-12"
       variants={fadeInUp}
       viewport={{ once: true, margin: "-100px" }}
     >
@@ -634,7 +777,7 @@ function CtaSection() {
             </motion.p>
           </motion.div>
           <motion.div
-            className="flex flex-col gap-2 min-[400px]:flex-row"
+            className="flex flex-col mb-12 lg:mb-24 py-4 gap-2 min-[400px]:flex-row"
             variants={popIn}
             whileHover="hover"
             whileTap="tap"
@@ -695,9 +838,9 @@ function Footer() {
               alt="Chance Me Logo"
               width={70}
               height={70}
-              className="object-contain"
+              className="w-[50px] h-[50px] md:w-[70px] md:h-[70px] object-contain"
             />
-            <span className="text-3xl font-bold">Chance Me</span>
+            <span className="text-2xl md:text-3xl font-bold">Chance Me</span>
           </motion.div>
           <motion.p
             className="text-gray-400 max-w-md"
