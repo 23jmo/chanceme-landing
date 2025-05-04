@@ -695,7 +695,7 @@ function FaqSection() {
   return (
     <section
       id="faq"
-      className="w-full py-16 md:py-24 "
+      className="w-full py-16 md:py-24"
     >
       <div className="container max-w-4xl mx-auto px-4 mb-6">
         <div className="text-center mb-12">
@@ -707,35 +707,43 @@ function FaqSection() {
         {/* Fixed width container for FAQ items */}
         <div className="mx-auto w-[90%]">
           <div className="space-y-4">
-            {faqItems.map((item, index) => (
-              <div
-                key={index}
-                className="border-b border-gray-300 pb-4"
-              >
-                <button
-                  onClick={() => toggleItem(index)}
-                  className="flex justify-between items-center w-full py-2 text-left"
-                >
-                  <span className="text-lg font-medium text-gray-700">
-                    {item.question}
-                  </span>
-                  <span className="text-xl text-gray-700 ml-4">
-                    {openItem === index ? "−" : "+"}
-                  </span>
-                </button>
+            {faqItems.map((item, index) => {
+              const isOpen = openItem === index;
 
-                {/* Simple CSS transition for height */}
+              return (
                 <div
-                  className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                    openItem === index ? "max-h-96" : "max-h-0"
-                  }`}
+                  key={index}
+                  className="border-b border-gray-300 pb-4"
                 >
-                  <div className="py-4">
+                  <button
+                    onClick={() => toggleItem(index)}
+                    className="flex justify-between items-center w-full py-2 text-left"
+                  >
+                    <span className="text-lg font-medium text-gray-700">
+                      {item.question}
+                    </span>
+                    <span className="text-xl text-gray-700 ml-4">
+                      {isOpen ? "−" : "+"}
+                    </span>
+                  </button>
+
+                  {/* Always render the content div but control its height and opacity */}
+                  <div
+                    className="overflow-hidden"
+                    style={{
+                      height: isOpen ? "auto" : "0",
+                      opacity: isOpen ? 1 : 0,
+                      transformOrigin: "top",
+                      transform: isOpen ? "scaleY(1)" : "scaleY(0)",
+                      transition: "all 300ms cubic-bezier(0.4, 0, 0.2, 1)",
+                      padding: isOpen ? "16px 0" : "0",
+                    }}
+                  >
                     <p className="text-gray-500">{item.answer}</p>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
