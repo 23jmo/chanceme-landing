@@ -668,7 +668,7 @@ function FaqSection() {
     {
       question: "Why should I trust your predictions?",
       answer:
-        "We use a multi-agent model to simulate the process of a real admissions officers over a 1000 trials, using the profiles of real Ivy-League Admission Officers. Our simulation is backed by information from former and current admission officers.",
+        "Our multi-agent model replicates the decision-making process of real Ivy League admissions offices across 1,000 simulations, using profiles based on actual admissions officers. Backed by insights from both former and current admission professionals, our approach gives you a uniquely realistic and credible evaluation.",
     },
     {
       question: "How does Chance Me work?",
