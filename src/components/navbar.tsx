@@ -40,10 +40,10 @@ export default function Navbar() {
       animate={controls}
     >
       <motion.div
-        className={`mx-auto rounded-xl border border-border/40 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/80 transition-all duration-200 ${
+        className={`mx-auto rounded-2xl border border-border/40 backdrop-blur supports-[backdrop-filter]:bg-white/80 transition-all duration-200 ${
           scrolled
-            ? "py-2 max-w-[95%] md:max-w-[90%]"
-            : "py-3 max-w-[98%] md:max-w-[96%]"
+            ? "py-2 max-w-[90%] md:max-w-[85%] bg-white/95"
+            : "py-6 max-w-[98%] md:max-w-[96%] bg-transparent"
         }`}
         layout
         transition={{
@@ -66,13 +66,13 @@ export default function Navbar() {
               <Image
                 src="/logo.png"
                 alt="Chance Me Logo"
-                width={48}
-                height={48}
-                className="object-contain"
+                width={scrolled ? 40 : 48}
+                height={scrolled ? 40 : 48}
+                className="object-contain transition-all duration-200"
               />
               <motion.span
                 className={`font-bold text-black transition-all duration-200 ${
-                  scrolled ? "text-sm md:text-base" : "text-base md:text-lg"
+                  scrolled ? "text-sm md:text-base" : "text-lg md:text-xl"
                 }`}
                 animate={{ opacity: 1 }}
                 initial={{ opacity: 0 }}
