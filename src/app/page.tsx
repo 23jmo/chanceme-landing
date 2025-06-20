@@ -18,6 +18,12 @@ import {
   bounceIn,
 } from "@/components/framer-animations";
 
+import PersonalStatementCard from "@/components/PersonalStatementCard";
+import AOOpinionCard from "@/components/AOOpinionCard";
+
+const DESIGN_W = 1200; // natural resolution
+const DESIGN_H = 600;
+
 export default function LandingPage() {
   return (
     <motion.div
@@ -35,6 +41,7 @@ export default function LandingPage() {
         variants={staggerContainer}
       >
         <HeroSection />
+        <PersonalStatement />
         <AdmissionTrials />
         <FaqSection />
         <CtaSection />
@@ -144,6 +151,179 @@ function HeroSection() {
             </motion.div>
           </motion.div>
         </motion.div>
+      </div>
+    </motion.section>
+  );
+}
+
+function PersonalStatement() {
+  const DESIGN_W = 1200;
+  const DESIGN_H = 600;
+
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    const updateScale = () => {
+      const vw = window.innerWidth;
+      setScale(Math.min(1, vw / DESIGN_W));
+    };
+    updateScale();
+    window.addEventListener("resize", updateScale);
+    return () => window.removeEventListener("resize", updateScale);
+  }, []);
+
+  return (
+    <motion.section
+      id="personal-statement"
+      className="w-full py-12 md:py-32 flex justify-center"
+      variants={fadeInUp}
+    >
+      {/* Outer wrapper takes up real layout space */}
+      <div
+        style={{
+          width: DESIGN_W * scale,
+          height: DESIGN_H * scale,
+          position: "relative",
+          minWidth: 320,
+          minHeight: 240,
+        }}
+      >
+        {/* Inner scene rendered at natural resolution then scaled */}
+        <div
+          style={{
+            width: DESIGN_W,
+            height: DESIGN_H,
+            transform: `scale(${scale})`,
+            transformOrigin: "top left",
+            position: "relative",
+          }}
+        >
+          {/* Main personal statement card centred */}
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              translate: "-50% -50%",
+            }}
+          >
+            <PersonalStatementCard />
+          </div>
+
+          {/* Floating AO opinion cards at design-pixel positions */}
+          {/* Top-left mixed feedback */}
+          <div style={{ position: "absolute", top: 72, left: 32 }}>
+            <AOOpinionCard
+              aos={[
+                {
+                  name: "Dr. Elizabeth Brown",
+                  avatar:
+                    "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&h=100&fit=crop&crop=face",
+                },
+                {
+                  name: "James Martinez",
+                  avatar:
+                    "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&h=100&fit=crop&crop=face",
+                },
+              ]}
+              totalAOs={18}
+              opinion="appreciated the honesty but"
+              strengths={[
+                { text: "authentic voice", type: "positive" },
+                { text: "needs polish", type: "negative" },
+              ]}
+            />
+          </div>
+
+          {/* Top-right negative feedback */}
+          <div style={{ position: "absolute", top: 48, right: 96 }}>
+            <AOOpinionCard
+              aos={[
+                {
+                  name: "John Doe",
+                  avatar:
+                    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
+                },
+                {
+                  name: "Sarah Wilson",
+                  avatar:
+                    "https://images.unsplash.com/photo-1494790108755-2616b8f1a999?w=100&h=100&fit=crop&crop=face",
+                },
+                {
+                  name: "Mike Chen",
+                  avatar:
+                    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
+                },
+              ]}
+              totalAOs={50}
+              opinion="did not like this sentence because"
+              strengths={[
+                { text: "too repetitive", type: "negative" },
+                { text: "cliché", type: "negative" },
+              ]}
+            />
+          </div>
+
+          {/* Middle-right neutral feedback */}
+          <div
+            style={{
+              position: "absolute",
+              top: 240,
+              right: 32,
+              translate: "0 -50%",
+            }}
+          >
+            <AOOpinionCard
+              aos={[
+                {
+                  name: "Robert Johnson",
+                  avatar:
+                    "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&h=100&fit=crop&crop=face",
+                },
+                {
+                  name: "Amanda Lee",
+                  avatar:
+                    "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=100&h=100&fit=crop&crop=face",
+                },
+              ]}
+              totalAOs={25}
+              opinion="found this section interesting but"
+              strengths={[
+                { text: "needs more detail", type: "neutral" },
+                { text: "could be stronger", type: "neutral" },
+              ]}
+            />
+          </div>
+
+          {/* Bottom-left positive feedback */}
+          <div style={{ position: "absolute", bottom: 48, left: 96 }}>
+            <AOOpinionCard
+              aos={[
+                {
+                  name: "Mary Jane",
+                  avatar:
+                    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
+                },
+                {
+                  name: "David Kim",
+                  avatar:
+                    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face",
+                },
+                {
+                  name: "Lisa Chen",
+                  avatar:
+                    "https://images.unsplash.com/photo-1534528741775-53994a69daeby?w=100&h=100&fit=crop&crop=face",
+                },
+              ]}
+              totalAOs={31}
+              opinion="liked this sentence because"
+              strengths={[
+                { text: "touching", type: "positive" },
+                { text: "full circle moment", type: "positive" },
+              ]}
+            />
+          </div>
+        </div>
       </div>
     </motion.section>
   );
