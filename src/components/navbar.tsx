@@ -25,32 +25,56 @@ export default function Navbar() {
   }, [controls]);
 
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 20);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <motion.header
-      className="fixed top-0 z-50 w-full px-6 py-4"
+      className="fixed top-0 z-50 w-full px-4 py-4"
       initial={{ y: -100 }}
       animate={controls}
     >
       <motion.div
-        className={`mx-auto rounded-xl transition-all duration-200 ${
+        className={`relative ${
           scrolled
-            ? "border border-border/40 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/80 py-2 max-w-[95%] md:max-w-[90%]"
-            : "border-transparent bg-transparent backdrop-blur-none py-3 max-w-[98%] md:max-w-[96%]"
+            ? "mx-auto rounded-xl py-2 max-w-[95%] md:max-w-[90%]"
+            : "w-full"
         }`}
         layout
         transition={{
           layout: { type: "spring", stiffness: 300, damping: 30 },
         }}
       >
-        <div className="flex items-center px-4 md:px-8">
+        <motion.div
+          className={`absolute inset-0 rounded-xl border border-border/40 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/80 ${
+            scrolled ? "" : "pointer-events-none"
+          }`}
+          animate={{
+            opacity: scrolled ? 1 : 0,
+          }}
+          transition={{
+            duration: 0.2,
+            ease: "easeInOut",
+          }}
+        />
+        <div
+          className={`relative flex items-center justify-between ${
+            scrolled ? "px-4 md:px-8" : "px-0"
+          }`}
+        >
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -61,7 +85,9 @@ export default function Navbar() {
               smooth={true}
               offset={-100}
               duration={700}
-              className="mr-6 flex cursor-pointer items-center space-x-2"
+              className={`flex cursor-pointer items-center space-x-2 ${
+                scrolled ? "mr-6" : ""
+              }`}
             >
               <Image
                 src="/logo.png"
@@ -71,7 +97,7 @@ export default function Navbar() {
                 className="object-contain"
               />
               <motion.span
-                className={`font-bold text-black transition-all duration-200 ${
+                className={`font-bold text-black transition-all duration-300 ${
                   scrolled ? "text-sm md:text-base" : "text-base md:text-lg"
                 }`}
                 animate={{ opacity: 1 }}
@@ -83,7 +109,11 @@ export default function Navbar() {
             </ScrollLink>
           </motion.div>
 
-          <nav className="flex flex-1 items-center space-x-8 text-sm font-medium text-gray-700 md:block mx-4">
+          <nav
+            className={`flex flex-1 items-center space-x-8 text-sm font-medium text-gray-700 md:block ${
+              scrolled ? "mx-4" : "hidden"
+            }`}
+          >
             {/* Navigation items can be added here */}
             <motion.div
               className="hidden md:flex space-x-4"
@@ -116,12 +146,7 @@ export default function Navbar() {
             </motion.div>
           </nav>
 
-          <motion.div
-            className="flex items-center space-x-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-          >
+          <div className="flex items-center space-x-4">
             <Button
               variant="ghost"
               size="sm"
@@ -152,7 +177,7 @@ export default function Navbar() {
                 Join Waitlist
               </Button>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
       </motion.div>
     </motion.header>
