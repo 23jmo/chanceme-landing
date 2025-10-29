@@ -940,24 +940,24 @@ function FaqSection() {
   // FAQ data
   const faqItems = [
     {
-      question: "Why should I trust your predictions?",
+      question: "How does the agentic draft editor work?",
       answer:
-        "Our multi-agent model replicates the decision-making process of real Ivy League admissions offices across 1,000 simulations, using profiles based on actual admissions officers. Backed by insights from both former and current admission professionals, our approach gives you a uniquely realistic and credible evaluation.",
+        "Our AI-powered draft editor uses an intelligent agent that provides personalized feedback on your essays. Our goal is to provide a fully optimized essay-writing workflow using AI to deliver real-time actionable feedback and automate repetitive tasks.",
     },
     {
-      question: "How does Chance Me work?",
+      question: "Why not just use ChatGPT?",
       answer:
-        "We simulate the random nature of the admissions process to give you a more accurate prediction of your chances of getting into your dream college. We also consider essays, which most other platforms do not.",
+        "Unlike ChatGPT, our agent provides contextual feedback based on your writing style, profile, background, and extracurriculars. It crafts responses tailored to your unique story and how it aligns with what your target schools are looking for.",
     },
     {
-      question: "Why Chance Me?",
+      question: "Is it free?",
       answer:
-        "Chance me was made by two Columbia transfer students who have been through the college application process a total of 4 times and know what it's like to be in your shoes.",
+        "Yes, we offer a free tier with limited features to help you get started. Upgrade to our pro tier for higher agent quotas, unlimited drafts, and priority support.",
     },
     {
-      question: "When can I use Chance Me?",
+      question: "Why should I trust Chance Me?",
       answer:
-        "Chance me is currently in early beta as we continue to improve our algorithm and user interface. We are giving access to early users. If you are interested please send an email to jym2117@columbia.edu with your name and how much you are willing to pay per month ",
+        "Chance Me was developed by two Ivy League transfer computer science students who have been through the admissions process a total of 4 times. We know firsthand how important essays are, how long the process can take, and the lack of quality resources available to students. We built this tool to solve the problems we faced ourselves.",
     },
     {
       question: "Will you sell my data?",
@@ -1001,20 +1001,22 @@ function FaqSection() {
                     </span>
                   </button>
 
-                  {/* Always render the content div but control its height and opacity */}
-                  <div
-                    className="overflow-hidden"
-                    style={{
-                      height: isOpen ? "auto" : "0",
-                      opacity: isOpen ? 1 : 0,
-                      transformOrigin: "top",
-                      transform: isOpen ? "scaleY(1)" : "scaleY(0)",
-                      transition: "all 300ms cubic-bezier(0.4, 0, 0.2, 1)",
-                      padding: isOpen ? "16px 0" : "0",
-                    }}
-                  >
-                    <p className="text-gray-500">{item.answer}</p>
-                  </div>
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{
+                          duration: 0.3,
+                          ease: [0.4, 0, 0.2, 1],
+                        }}
+                        className="overflow-hidden"
+                      >
+                        <p className="text-gray-500 pt-4">{item.answer}</p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               );
             })}
@@ -1033,9 +1035,9 @@ function CtaSection() {
       variants={fadeInUp}
       viewport={{ once: true, margin: "-100px" }}
     >
-      <div className="container px-4 md:px-6">
+      <div className="container mx-auto px-4 md:px-6">
         <motion.div
-          className="flex flex-col items-center justify-center space-y-4 text-center"
+          className="flex flex-col items-center justify-center space-y-4 text-center mx-auto"
           variants={staggerContainer}
         >
           <motion.div
