@@ -150,21 +150,21 @@ const FloatingComment = ({
 
         {/* Edit Suggestion UI */}
         {toolItem.toolName === "make_edit_suggestion" && toolItem.editSuggestion && toolItem.status === "completed" && (
-          <div className="ml-11 mt-2">
+          <div className="ml-11 mt-2 max-w-[calc(100%-2.75rem)]">
             <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
               <div className="text-sm font-medium text-gray-700 mb-2">Edit Suggestion</div>
-              <div className="text-sm text-gray-700 mb-3">
+              <div className="text-sm text-gray-700 mb-3 break-words">
                 Replace <span className="font-medium">&ldquo;{toolItem.editSuggestion.original_text}&rdquo;</span> with{" "}
                 <span className="font-medium">&ldquo;{toolItem.editSuggestion.suggested_text}&rdquo;</span>
               </div>
 
               <div className="flex gap-2">
-                <button className="flex-1 py-2 px-3 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-1.5">
-                  <RiCheckLine className="w-4 h-4" />
+                <button className="flex-1 py-2 px-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-1">
+                  <RiCheckLine className="w-3.5 h-3.5" />
                   Accept
                 </button>
-                <button className="flex-1 py-2 px-3 bg-gray-500 text-white text-sm font-medium rounded-lg hover:bg-gray-600 transition-colors flex items-center justify-center gap-1.5">
-                  <RiCloseLine className="w-4 h-4" />
+                <button className="flex-1 py-2 px-2 bg-gray-500 text-white text-sm font-medium rounded-lg hover:bg-gray-600 transition-colors flex items-center justify-center gap-1">
+                  <RiCloseLine className="w-3.5 h-3.5" />
                   Decline
                 </button>
               </div>
