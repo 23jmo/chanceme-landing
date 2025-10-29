@@ -170,7 +170,7 @@ function PersonalStatement() {
   const DRAFT_LEFT = DRAFT_CENTER_X - DRAFT_WIDTH / 2;
   const DRAFT_RIGHT = DRAFT_CENTER_X + DRAFT_WIDTH / 2;
   const COMMENT_WIDTH = 280;
-  const COMMENT_SPACING = 20; // Space between draft and comments
+  const COMMENT_SPACING = 60; // Space between draft and comments
   
   // Calculate safe positions to keep comments on screen
   const LEFT_COMMENT_X = Math.max(10, DRAFT_LEFT - COMMENT_WIDTH - COMMENT_SPACING);
@@ -365,6 +365,7 @@ function PersonalStatement() {
               position={{ top: 0, left: 0 }}
               scrollY={scrollY}
               commentTop={getCommentTop(DRAFT_CENTER_Y + 200)}
+              expandThreshold={600}
             />
           </div>
 
@@ -380,6 +381,7 @@ function PersonalStatement() {
               commentTitle="Strong conclusion"
               scrollY={scrollY}
               commentTop={getCommentTop(Math.min(DESIGN_H - 150, DRAFT_CENTER_Y + 250))}
+              expandThreshold={600}
               commentReplies={[
                 {
                   type: "ai",

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { RiCloseLine, RiCheckLine, RiUser3Line, RiArrowUpLine, RiArrowDownSLine, RiArrowRightSLine, RiEyeLine, RiEyeOffLine } from "react-icons/ri";
+import { RiCloseLine, RiCheckLine, RiUserLine, RiArrowUpLine, RiArrowDownSLine, RiArrowRightSLine, RiEyeLine, RiEyeOffLine } from "react-icons/ri";
+import { Clover } from "lucide-react";
 
 // Type definitions for floating comment
 interface ToolItem {
@@ -39,6 +40,7 @@ interface FloatingCommentProps {
   resolved?: boolean;
   scrollY?: number; // Scroll position for auto-expand
   commentTop?: number; // Absolute top position of comment in viewport
+  expandThreshold?: number; // Scroll threshold for expansion (default: 400)
 }
 
 // Floating Comment Component matching chance-me design
@@ -50,12 +52,13 @@ const FloatingComment = ({
   resolved = false,
   scrollY = 0,
   commentTop,
+  expandThreshold = 400,
 }: FloatingCommentProps) => {
   // Auto-expand based on scroll: expand when scrolled past the comment, close when scrolled back up
   const isExpanded = controlledExpanded !== undefined 
     ? controlledExpanded 
     : commentTop !== undefined 
-      ? scrollY > commentTop - 400// Expand when scrolled past the comment
+      ? scrollY > commentTop - expandThreshold// Expand when scrolled past the comment
       : false;
 
   const [replyText, setReplyText] = useState("");
@@ -218,7 +221,7 @@ const FloatingComment = ({
 
   return (
     <div
-      className={`absolute transition-all duration-200 ease-in-out ${
+      className={`absolute ${
         isExpanded ? "z-[70]" : "z-60"
       }`}
       style={{
@@ -228,18 +231,22 @@ const FloatingComment = ({
           isExpanded ? 1 : 0.8
         })`,
         opacity: isExpanded ? 1 : 0.7,
+        transition: "transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
         willChange: "transform, opacity",
       }}
     >
       {/* Comment Card */}
       <div
-        className="bg-white rounded-2xl shadow-xl border border-gray-100 max-w-[280px] min-w-[280px] transition duration-15 z-[1000] flex flex-col"
+        className="bg-white rounded-2xl shadow-xl border border-gray-100 max-w-[280px] min-w-[280px] z-[1000] flex flex-col"
       >
         {/* Header */}
         <div
           className={`flex items-center justify-between px-4 bg-gradient-to-r rounded-t-2xl flex-shrink-0 ${
             isExpanded ? "pt-3 pb-3 border-b border-gray-100" : "py-3"
           }`}
+          style={{
+            transition: "padding 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+          }}
         >
           <div className="flex items-center gap-1.5">
             <span className="text-xs font-medium text-gray-700 truncate" title={title}>
@@ -276,18 +283,28 @@ const FloatingComment = ({
 
         {/* Content wrapper - flex container */}
         <div
-          className={`transition-all duration-300 ease-in-out overflow-hidden ${
+          className={`overflow-hidden ${
             isExpanded 
               ? "flex flex-col flex-1 min-h-0 opacity-100" 
               : "max-h-0 opacity-0"
           }`}
+          style={{
+            transition: isExpanded 
+              ? "max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s"
+              : "max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s, opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+            maxHeight: isExpanded ? "24rem" : "0",
+          }}
         >
           {/* Content */}
           <div
-            className={`transition-all duration-300 comment-scrollbar ${
+            className={`comment-scrollbar ${
               isExpanded ? "mt-3 opacity-100 flex-1 overflow-y-auto" : "mt-0 opacity-0 overflow-hidden"
             }`}
-            style={{ maxHeight: isExpanded ? "20rem" : "0" }}
+            style={{ 
+              transition: isExpanded
+                ? "margin-top 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s, opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.15s"
+                : "margin-top 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
+            }}
           >
             <div className="mb-3 pr-6">
               {/* Conversation Display */}
@@ -309,8 +326,8 @@ const FloatingComment = ({
                         {showAIHeader && (
                           <div className="flex items-start gap-3 px-3 py-1 rounded-lg hover:bg-gray-50/50 transition-colors duration-200 mb-1">
                             {/* Avatar */}
-                            <div className="w-5 h-5 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center flex-shrink-0">
-                              <span className="text-white text-xs font-bold">AI</span>
+                            <div className="w-5 h-5 bg-gray-200 rounded-full flex items-center justify-center flex-shrink-0">
+                              <Clover className="w-3 h-3 text-gray-600" strokeWidth={2} />
                             </div>
                             {/* Header Info */}
                             <div className="flex-1 min-w-0">
@@ -345,17 +362,11 @@ const FloatingComment = ({
                       {showHeader && (
                         <div className="flex items-start gap-3 px-3 py-1 rounded-lg hover:bg-gray-50/50 transition-colors duration-200">
                           {/* Avatar */}
-                          <div
-                            className={`w-5 h-5 ${
-                              isUser
-                                ? "bg-gradient-to-r from-blue-500 to-indigo-500"
-                                : "bg-gradient-to-r from-green-500 to-emerald-500"
-                            } rounded-full flex items-center justify-center flex-shrink-0`}
-                          >
+                          <div className="w-5 h-5 bg-gray-200 rounded-full flex items-center justify-center flex-shrink-0">
                             {isUser ? (
-                              <RiUser3Line className="w-3 h-3 text-white" />
+                              <RiUserLine className="w-3 h-3 text-gray-600" />
                             ) : (
-                              <span className="text-white text-xs font-bold">AI</span>
+                              <Clover className="w-3 h-3 text-gray-600" strokeWidth={2} />
                             )}
                           </div>
 
@@ -388,13 +399,18 @@ const FloatingComment = ({
 
           {/* Sticky Reply Input - Only when expanded */}
           <div
-            className={`flex-shrink-0 bg-white flex items-center gap-1.5 px-3 py-3 rounded-b-2xl border-t border-gray-100 transition-all duration-300 ${
+            className={`flex-shrink-0 bg-white flex items-center gap-1.5 px-3 py-3 rounded-b-2xl border-t border-gray-100 ${
               isExpanded ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
             }`}
+            style={{
+              transition: isExpanded
+                ? "opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.2s, height 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s"
+                : "opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), height 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+            }}
           >
             {/* User Avatar */}
             <div className="w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center flex-shrink-0">
-              <RiUser3Line className="w-2.5 h-2.5 text-gray-500" />
+              <RiUserLine className="w-2.5 h-2.5 text-gray-500" />
             </div>
 
             {/* Input Container */}
@@ -436,7 +452,7 @@ const FloatingComment = ({
       </div>
 
       {/* Comment Connector */}
-      <div className="absolute top-6 -left-3 w-3 h-0.5 bg-gradient-to-r from-gray-300 to-transparent rounded-full" />
+      <div className="absolute top-6 -left-2 w-2 h-0.5 bg-gradient-to-r from-gray-300 to-transparent rounded-full" />
     </div>
   );
 };
@@ -454,6 +470,7 @@ interface AOOpinionCardProps {
   isExpanded?: boolean;
   scrollY?: number;
   commentTop?: number;
+  expandThreshold?: number;
 }
 
 const AOOpinionCard = ({
@@ -463,6 +480,7 @@ const AOOpinionCard = ({
   isExpanded,
   scrollY,
   commentTop,
+  expandThreshold,
 }: AOOpinionCardProps) => {
   return (
     <FloatingComment
@@ -472,6 +490,7 @@ const AOOpinionCard = ({
       isExpanded={isExpanded}
       scrollY={scrollY}
       commentTop={commentTop}
+      expandThreshold={expandThreshold}
     />
   );
 };
