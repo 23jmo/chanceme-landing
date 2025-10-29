@@ -85,8 +85,7 @@ function HeroSection() {
               className="max-w-2xl mx-auto text-muted-foreground md:text-xl lg:text-2xl"
               variants={fadeInUp}
             >
-              Draft personalized essays with the context of your experiences and your dream school
-        
+              Get personalized essay feedback and editing suggestions from AI agents that understand your story and what your dream school is looking for.
             </motion.p>
             <motion.div
               className="flex flex-col sm:flex-row gap-4 justify-center mt-8"
@@ -129,12 +128,16 @@ function PersonalStatement() {
 
   const [scale, setScale] = useState(1);
   const [scrollY, setScrollY] = useState(0);
+  const [windowWidth, setWindowWidth] = useState(1200);
   const sectionRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const updateScale = () => {
       const vw = window.innerWidth;
-      setScale(Math.min(1, vw / DESIGN_W));
+      setWindowWidth(vw);
+      // Allow wider design space on larger screens
+      const effectiveDesignW = vw >= 1400 ? 1400 : vw >= 1200 ? 1300 : DESIGN_W;
+      setScale(Math.min(1, vw / effectiveDesignW));
     };
     updateScale();
     window.addEventListener("resize", updateScale);
@@ -164,17 +167,24 @@ function PersonalStatement() {
   };
 
   // Draft card dimensions (700px width)
+  // Use wider design space on larger screens to allow more spacing
+  const effectiveDesignW = windowWidth >= 1400 ? 1300 : windowWidth >= 1100 ? 1250 : DESIGN_W;
+  
   const DRAFT_WIDTH = 1000;
-  const DRAFT_CENTER_X = DESIGN_W / 2;
+  const DRAFT_CENTER_X = effectiveDesignW / 2;
   const DRAFT_CENTER_Y = DESIGN_H / 2;
   const DRAFT_LEFT = DRAFT_CENTER_X - DRAFT_WIDTH / 2;
   const DRAFT_RIGHT = DRAFT_CENTER_X + DRAFT_WIDTH / 2;
   const COMMENT_WIDTH = 280;
-  const COMMENT_SPACING = 60; // Space between draft and comments
+  // Responsive spacing: more space on larger screens (in design space)
+  const baseSpacing = 60;
+  const COMMENT_SPACING = windowWidth >= 1400 ? 100 : windowWidth >= 1200 ? 80 : baseSpacing;
   
   // Calculate safe positions to keep comments on screen
-  const LEFT_COMMENT_X = Math.max(10, DRAFT_LEFT - COMMENT_WIDTH - COMMENT_SPACING);
-  const RIGHT_COMMENT_X = Math.min(DESIGN_W - COMMENT_WIDTH - 10, DRAFT_RIGHT + COMMENT_SPACING);
+  const minLeftMargin = 10;
+  const maxRightMargin = effectiveDesignW - COMMENT_WIDTH - 10;
+  const LEFT_COMMENT_X = Math.max(minLeftMargin, DRAFT_LEFT - COMMENT_WIDTH - COMMENT_SPACING);
+  const RIGHT_COMMENT_X = Math.min(maxRightMargin, DRAFT_RIGHT + COMMENT_SPACING);
 
   return (
     <motion.section
@@ -186,7 +196,7 @@ function PersonalStatement() {
       {/* Outer wrapper takes up real layout space */}
       <div
         style={{
-          width: DESIGN_W * scale,
+          width: effectiveDesignW * scale,
           height: DESIGN_H * scale,
           position: "relative",
           minWidth: 320,
@@ -196,7 +206,7 @@ function PersonalStatement() {
         {/* Inner scene rendered at natural resolution then scaled */}
         <div
           style={{
-            width: DESIGN_W,
+            width: effectiveDesignW,
             height: DESIGN_H,
             transform: `scale(${scale})`,
             transformOrigin: "top left",
