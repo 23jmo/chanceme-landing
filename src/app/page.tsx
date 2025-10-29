@@ -164,7 +164,7 @@ function PersonalStatement() {
   };
 
   // Draft card dimensions (700px width)
-  const DRAFT_WIDTH = 700;
+  const DRAFT_WIDTH = 1000;
   const DRAFT_CENTER_X = DESIGN_W / 2;
   const DRAFT_CENTER_Y = DESIGN_H / 2;
   const DRAFT_LEFT = DRAFT_CENTER_X - DRAFT_WIDTH / 2;
@@ -229,6 +229,7 @@ function PersonalStatement() {
               commentTitle="Make it more specific"
               scrollY={scrollY}
               commentTop={getCommentTop(Math.max(20, DRAFT_CENTER_Y - 200))}
+              expandThreshold={350}
               commentReplies={[
                 {
                   type: "user",
@@ -294,6 +295,7 @@ function PersonalStatement() {
               commentTitle="Find Columbia clubs"
               scrollY={scrollY}
               commentTop={getCommentTop(Math.max(20, DRAFT_CENTER_Y - 250))}
+              expandThreshold={350}
               commentReplies={[
                 {
                   type: "user",

@@ -6,9 +6,21 @@ import { RiFileTextLine, RiSchoolLine } from "react-icons/ri";
 // Draft editor matching chance-me design
 const PersonalStatementCard = () => {
   return (
-    <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200 w-[700px]">
-      {/* Title */}
-      <div className="mb-4">
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 w-[850px]">
+      {/* macOS Header */}
+      <div className="flex items-center gap-2 px-4 py-2 border-b border-gray-200 bg-gray-50 rounded-t-lg">
+        {/* Traffic Light Buttons */}
+        <div className="flex items-center gap-1.5">
+          <div className="w-3 h-3 rounded-full bg-red-500"></div>
+          <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+          <div className="w-3 h-3 rounded-full bg-green-500"></div>
+        </div>
+      </div>
+      
+      {/* Content */}
+      <div className="px-30 py-12">
+        {/* Title */}
+        <div className="mb-4">
         <input
           type="text"
           value="Personal Statement Draft"
@@ -94,6 +106,11 @@ const PersonalStatementCard = () => {
               school.
             </p>
 
+            {/* Additional paragraph - no highlight */}
+            <p>
+              Through my involvement in debate and community organizing, I've developed a particular interest in how effective communication shapes public discourse and drives social change. At Columbia, I'm excited to explore courses in media studies and political communication that will deepen my understanding of these dynamics. The interdisciplinary approach to learning at Columbia aligns perfectly with my goal of understanding how different fields intersect to create meaningful impact.
+            </p>
+
             {/* Sixth paragraph - matches "Strong conclusion" comment (bottom-left) */}
             <p>
               <span className="bg-yellow-200/40 rounded px-1">
@@ -113,6 +130,7 @@ const PersonalStatementCard = () => {
             </p>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );
