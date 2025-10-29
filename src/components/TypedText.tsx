@@ -10,7 +10,7 @@ const colleges = [
   { name: "Columbia", color: "#C4D8E2" }, // Light Blue
   { name: "Princeton", color: "#E87722" }, // Orange
   { name: "UMich", color: "#FFCB05" }, // Maize
-  { name: "UC Davis", color: "#022851" }, // Aggie Blue
+  { name: "Caltech", color: "#022851" }, // Aggie Blue
   { name: "UC Berkeley", color: "#FDB515" }, // California Gold
   { name: "Stanford", color: "#8C1515" }, // Cardinal Red
   { name: "Cornell", color: "#B31B1B" }, // Carnelian Red

@@ -1,136 +1,478 @@
 import React, { useState } from "react";
+import { RiCloseLine, RiCheckLine, RiUser3Line, RiArrowUpLine, RiArrowDownSLine, RiArrowRightSLine, RiEyeLine, RiEyeOffLine } from "react-icons/ri";
 
-// Type definitions for component props and data structures
-interface AO {
-  name: string;
-  avatar: string;
+// Type definitions for floating comment
+interface ToolItem {
+  type: "tool";
+  id: string;
+  toolName: string;
+  status: "started" | "running" | "completed" | "failed";
+  args?: Record<string, unknown>;
+  result?: unknown;
+  editSuggestion?: {
+    original_text: string;
+    suggested_text: string;
+  };
+  searchResults?: {
+    query: string;
+    results: Array<{
+      title: string;
+      url: string;
+      snippet: string;
+    }>;
+  };
 }
 
-interface Strength {
-  text: string;
-  type: "positive" | "negative" | "neutral";
+interface ReplyItem {
+  type: "user" | "ai" | "tool";
+  text?: string;
+  author?: "user" | "ai";
+  timestamp?: Date;
+  toolItem?: ToolItem;
 }
 
-interface AOOpinionCardProps {
-  aos?: AO[];
-  totalAOs?: number;
-  opinion?: string;
-  strengths?: Strength[];
+interface FloatingCommentProps {
+  title?: string;
+  replies?: ReplyItem[];
+  position?: { top: number; left: number };
+  isExpanded?: boolean;
+  resolved?: boolean;
+  scrollY?: number; // Scroll position for auto-expand
+  commentTop?: number; // Absolute top position of comment in viewport
 }
 
-// AO Opinion Card with clean, compact design
-const AOOpinionCard = ({
-  aos = [
-    {
-      name: "Sarah Chen",
-      avatar:
-        "https://images.unsplash.com/photo-1494790108755-2616b8f1a999?w=100&h=100&fit=crop&crop=face",
-    },
-    {
-      name: "David Martinez",
-      avatar:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
-    },
-    {
-      name: "Emily Johnson",
-      avatar:
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
-    },
-  ],
-  totalAOs = 45,
-  opinion = "found this section compelling because it shows",
-  strengths = [
-    { text: "authentic voice", type: "positive" as const },
-    { text: "specific examples", type: "positive" as const },
-    { text: "clear growth", type: "positive" as const },
-  ],
-}: AOOpinionCardProps) => {
-  // State for hover interactions with proper types
-  const [isHovered, setIsHovered] = useState<boolean>(false);
-  const [hoveredAO, setHoveredAO] = useState<number | null>(null);
+// Floating Comment Component matching chance-me design
+const FloatingComment = ({
+  title = "Comment",
+  replies = [],
+  position = { top: 0, left: 0 },
+  isExpanded: controlledExpanded,
+  resolved = false,
+  scrollY = 0,
+  commentTop,
+}: FloatingCommentProps) => {
+  // Auto-expand based on scroll: expand when scrolled past the comment, close when scrolled back up
+  const isExpanded = controlledExpanded !== undefined 
+    ? controlledExpanded 
+    : commentTop !== undefined 
+      ? scrollY > commentTop - 400// Expand when scrolled past the comment
+      : false;
 
-  // Helper function to get styling for strength tags with proper typing
-  const getStrengthColor = (type: "positive" | "negative" | "neutral") => {
-    switch (type) {
-      case "positive":
-        return "bg-green-100 text-green-700 border-green-200";
-      case "negative":
-        return "bg-red-100 text-red-700 border-red-200";
-      case "neutral":
-      default:
-        return "bg-blue-100 text-blue-700 border-blue-200";
-    }
+  const [replyText, setReplyText] = useState("");
+
+  const formatRelativeTime = (date: Date): string => {
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffSeconds = Math.floor(diffMs / 1000);
+    const diffMinutes = Math.floor(diffSeconds / 60);
+
+    if (diffSeconds < 10) return "just now";
+    if (diffSeconds < 60) return `${diffSeconds}s ago`;
+    if (diffMinutes < 60) return `${diffMinutes}m ago`;
+    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  };
+
+  // Tool Call Card Component
+  const ToolCallCard = ({ toolItem }: { toolItem: ToolItem }) => {
+    const [isExpanded, setIsExpanded] = useState(false);
+    const [isSearchExpanded, setIsSearchExpanded] = useState(true);
+
+    const getToolDisplayText = (name: string, status: ToolItem["status"]) => {
+      const isActive = status === "started" || status === "running";
+      switch (name) {
+        case "web_search":
+          return isActive ? "Searching the web..." : "Searched the web";
+        case "make_edit_suggestion":
+          return isActive ? "Making edit suggestion..." : "Made edit suggestion";
+        default:
+          return isActive ? `Running ${name}...` : `Ran ${name}`;
+      }
+    };
+
+    const getStatusStyles = () => {
+      switch (toolItem.status) {
+        case "started":
+        case "running":
+          return "text-gray-500 animate-pulse";
+        case "completed":
+          return "text-gray-500";
+        case "failed":
+          return "text-red-500";
+      }
+    };
+
+    if (toolItem.type !== "tool") return null;
+
+    return (
+      <div className="group">
+        <div className="ml-11 pb-1 flex items-center gap-2">
+          <span className={`text-sm italic ${getStatusStyles()}`}>
+            {getToolDisplayText(toolItem.toolName, toolItem.status)}
+          </span>
+          {(toolItem.args || (toolItem.result !== undefined && toolItem.result !== null)) && toolItem.status === "completed" && (
+            <button
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              {isExpanded ? (
+                <RiArrowDownSLine className="w-4 h-4" />
+              ) : (
+                <RiArrowRightSLine className="w-4 h-4" />
+              )}
+            </button>
+          )}
+        </div>
+
+        {/* Tool debug info */}
+        {isExpanded && toolItem.status === "completed" && (
+          <div className="ml-11 mt-2 space-y-1 text-xs text-gray-600">
+            {toolItem.args && (
+              <div>
+                <div className="font-medium text-gray-700">Arguments:</div>
+                <pre className="bg-gray-50 rounded p-2 overflow-x-auto mt-1">
+                  {JSON.stringify(toolItem.args, null, 2)}
+                </pre>
+              </div>
+            )}
+            {toolItem.result !== undefined && toolItem.result !== null && !toolItem.editSuggestion && !toolItem.searchResults && (
+              <div>
+                <div className="font-medium text-gray-700">Result:</div>
+                <pre className="bg-gray-50 rounded p-2 overflow-x-auto max-h-32 overflow-y-auto mt-1">
+                  {JSON.stringify(toolItem.result, null, 2) || ""}
+                </pre>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Edit Suggestion UI */}
+        {toolItem.toolName === "make_edit_suggestion" && toolItem.editSuggestion && toolItem.status === "completed" && (
+          <div className="ml-11 mt-2">
+            <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
+              <div className="text-sm font-medium text-gray-700 mb-2">Edit Suggestion</div>
+              <div className="text-sm text-gray-700 mb-3">
+                Replace <span className="font-medium">&ldquo;{toolItem.editSuggestion.original_text}&rdquo;</span> with{" "}
+                <span className="font-medium">&ldquo;{toolItem.editSuggestion.suggested_text}&rdquo;</span>
+              </div>
+
+              <div className="flex gap-2">
+                <button className="flex-1 py-2 px-3 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-1.5">
+                  <RiCheckLine className="w-4 h-4" />
+                  Accept
+                </button>
+                <button className="flex-1 py-2 px-3 bg-gray-500 text-white text-sm font-medium rounded-lg hover:bg-gray-600 transition-colors flex items-center justify-center gap-1.5">
+                  <RiCloseLine className="w-4 h-4" />
+                  Decline
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Web Search UI */}
+        {toolItem.toolName === "web_search" && toolItem.searchResults && toolItem.status === "completed" && (
+          <div className="ml-11 mt-1">
+            <button
+              onClick={() => setIsSearchExpanded(!isSearchExpanded)}
+              className="text-sm text-gray-700 hover:text-gray-900 transition-colors text-left flex items-center gap-2"
+            >
+              <span className="italic text-gray-500 hover:cursor-pointer transition-colors duration-150 hover:text-gray-700">
+                {toolItem.searchResults.results.length} results found for &ldquo;{toolItem.searchResults.query}&rdquo;
+              </span>
+              {isSearchExpanded ? (
+                <RiEyeOffLine className="w-3 h-3" />
+              ) : (
+                <RiEyeLine className="w-3 h-3" />
+              )}
+            </button>
+            {isSearchExpanded && (
+              <div className="mt-2 flex flex-wrap gap-2">
+                {toolItem.searchResults.results.slice(0, 3).map((result, index) => {
+                  const getDomain = (url: string) => {
+                    try {
+                      const urlObj = new URL(url);
+                      return urlObj.hostname.replace("www.", "");
+                    } catch {
+                      return url;
+                    }
+                  };
+                  return (
+                    <a
+                      key={index}
+                      href={result.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-xs font-medium text-gray-700 transition-colors"
+                    >
+                      <span>{getDomain(result.url)}</span>
+                    </a>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    );
   };
 
   return (
-    // Fixed size container that scales as one entity
     <div
-      className="w-80 h-32 transition-all duration-300 hover:scale-101"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      className={`absolute transition-all duration-200 ease-in-out ${
+        isExpanded ? "z-[70]" : "z-60"
+      }`}
+      style={{
+        top: 0,
+        left: 0,
+        transform: `translate3d(${position.left}px, ${position.top}px, 0) scale(${
+          isExpanded ? 1 : 0.8
+        })`,
+        opacity: isExpanded ? 1 : 0.7,
+        willChange: "transform, opacity",
+      }}
     >
-      {/* Clean, compact card with subtle glass effect */}
+      {/* Comment Card */}
       <div
-        className="w-full h-full bg-white/30 backdrop-blur-xl border border-gray-300/30 rounded-xl p-3 shadow-lg transition-all duration-300 hover:shadow-xl"
-        // style={{
-        //   backgroundColor: "rgba(255, 255, 255, 0.35)",
-        //   backdropFilter: "blur(10px)",
-        //   WebkitBackdropFilter: "blur(100px)",
-        // }}
+        className="bg-white rounded-2xl shadow-xl border border-gray-100 max-w-[280px] min-w-[280px] transition duration-15 z-[1000] flex flex-col"
       >
-        {/* Header with AO profiles and title - more compact */}
-        <div className="flex items-center gap-2 mb-2">
-          {/* Compact overlapping profile pictures */}
-          <div className={`flex items-center transition-all duration-200 ${isHovered ? '-space-x-1' : '-space-x-2'}`}>
-            {aos.slice(0, 3).map((ao, index) => (
-              <div
-                key={index}
-                className="relative transition-all duration-200"
-                onMouseEnter={() => setHoveredAO(index)}
-                onMouseLeave={() => setHoveredAO(null)}
-              >
-                {/* Smaller, cleaner profile pictures */}
-                <div className="w-6 h-6 rounded-full border border-white overflow-hidden bg-white shadow-sm transition-transform duration-200 hover:scale-125">
-                  <img
-                    src={ao.avatar}
-                    alt={ao.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+        {/* Header */}
+        <div
+          className={`flex items-center justify-between px-4 bg-gradient-to-r rounded-t-2xl flex-shrink-0 ${
+            isExpanded ? "pt-3 pb-3 border-b border-gray-100" : "py-3"
+          }`}
+        >
+          <div className="flex items-center gap-1.5">
+            <span className="text-xs font-medium text-gray-700 truncate" title={title}>
+              {title}
+            </span>
+          </div>
+          <div className="flex items-center gap-1">
+            {isExpanded && (
+              <>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    // Handle resolve (demo - no action)
+                  }}
+                  className="p-1.5 text-green-600 hover:text-green-800 hover:bg-green-100 rounded-lg transition-all duration-200 opacity-100 scale-100"
+                  title="Resolve"
+                >
+                  <RiCheckLine className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    // Handle delete (demo - no action)
+                  }}
+                  className="p-1.5 text-red-600 hover:text-red-800 hover:bg-red-100 rounded-lg transition-all duration-200 opacity-100 scale-100"
+                  title="Delete"
+                >
+                  <RiCloseLine className="w-3.5 h-3.5" />
+                </button>
+              </>
+            )}
+          </div>
+        </div>
 
-                {/* Compact tooltip */}
-                {hoveredAO === index && (
-                  <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-1 py-0.5 rounded whitespace-nowrap z-10">
-                    {ao.name}
-                  </div>
-                )}
+        {/* Content wrapper - flex container */}
+        <div
+          className={`transition-all duration-300 ease-in-out overflow-hidden ${
+            isExpanded 
+              ? "flex flex-col flex-1 min-h-0 opacity-100" 
+              : "max-h-0 opacity-0"
+          }`}
+        >
+          {/* Content */}
+          <div
+            className={`transition-all duration-300 comment-scrollbar ${
+              isExpanded ? "mt-3 opacity-100 flex-1 overflow-y-auto" : "mt-0 opacity-0 overflow-hidden"
+            }`}
+            style={{ maxHeight: isExpanded ? "20rem" : "0" }}
+          >
+            <div className="mb-3 pr-6">
+              {/* Conversation Display */}
+              <div className="space-y-1">
+                {replies.map((reply, index) => {
+                  // Check if next item is a tool and current is user, to show AI header before tool
+                  const nextItem = replies[index + 1];
+                  const showAIHeaderBeforeTool = 
+                    reply.type === "user" && 
+                    nextItem?.type === "tool";
+
+                  // Handle tool items
+                  if (reply.type === "tool" && reply.toolItem) {
+                    const prevItem = replies[index - 1];
+                    const showAIHeader = prevItem?.type === "user";
+                    
+                    return (
+                      <div key={reply.toolItem.id || index}>
+                        {showAIHeader && (
+                          <div className="flex items-start gap-3 px-3 py-1 rounded-lg hover:bg-gray-50/50 transition-colors duration-200 mb-1">
+                            {/* Avatar */}
+                            <div className="w-5 h-5 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center flex-shrink-0">
+                              <span className="text-white text-xs font-bold">AI</span>
+                            </div>
+                            {/* Header Info */}
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 mb-1">
+                                <span className="text-sm font-semibold text-gray-900 font-sans">
+                                  Agent
+                                </span>
+                                <span className="text-xs text-gray-500 font-sans">
+                                  now
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                        <ToolCallCard toolItem={reply.toolItem} />
+                      </div>
+                    );
+                  }
+
+                  // Handle user/AI messages
+                  const isUser = reply.author === "user";
+                  // Show header if first item, or if previous item was a tool or different author
+                  const prevItem = replies[index - 1];
+                  const showHeader = 
+                    index === 0 || 
+                    prevItem?.type === "tool" ||
+                    (prevItem?.author !== reply.author);
+
+                  return (
+                    <div key={index} className="group">
+                      {/* Header */}
+                      {showHeader && (
+                        <div className="flex items-start gap-3 px-3 py-1 rounded-lg hover:bg-gray-50/50 transition-colors duration-200">
+                          {/* Avatar */}
+                          <div
+                            className={`w-5 h-5 ${
+                              isUser
+                                ? "bg-gradient-to-r from-blue-500 to-indigo-500"
+                                : "bg-gradient-to-r from-green-500 to-emerald-500"
+                            } rounded-full flex items-center justify-center flex-shrink-0`}
+                          >
+                            {isUser ? (
+                              <RiUser3Line className="w-3 h-3 text-white" />
+                            ) : (
+                              <span className="text-white text-xs font-bold">AI</span>
+                            )}
+                          </div>
+
+                          {/* Header Info */}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="text-sm font-semibold text-gray-900 font-sans">
+                                {isUser ? "You" : "Agent"}
+                              </span>
+                              <span className="text-xs text-gray-500 font-sans">
+                                {reply.timestamp ? formatRelativeTime(reply.timestamp) : "now"}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Message Content */}
+                      {reply.text && (
+                        <div className="ml-11 text-sm text-gray-700 leading-relaxed font-sans mb-2">
+                          {reply.text}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
-            ))}
+            </div>
           </div>
 
-          {/* Compact title */}
-          <h4 className="text-xs font-medium text-gray-800 truncate">
-            {aos[0]?.name || "Sarah Chen"} +{totalAOs - 1} others
-          </h4>
-        </div>
+          {/* Sticky Reply Input - Only when expanded */}
+          <div
+            className={`flex-shrink-0 bg-white flex items-center gap-1.5 px-3 py-3 rounded-b-2xl border-t border-gray-100 transition-all duration-300 ${
+              isExpanded ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
+            }`}
+          >
+            {/* User Avatar */}
+            <div className="w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center flex-shrink-0">
+              <RiUser3Line className="w-2.5 h-2.5 text-gray-500" />
+            </div>
 
-        {/* Compact opinion with inline tags */}
-        <div className="text-xs text-gray-700 leading-relaxed">
-          <span className="mr-1">{opinion}</span>
-          {/* Compact inline strength tags */}
-          {strengths.map((strength, index) => (
-            <span
-              key={index}
-              className={`inline-block px-1.5 py-0.5 rounded text-xs font-medium border mr-1 mb-1 ${getStrengthColor(
-                strength.type
-              )}`}
-            >
-              {strength.text}
-            </span>
-          ))}
+            {/* Input Container */}
+            <div className="flex-1 bg-[#f2f2f6] rounded-md p-1.5 flex justify-center items-center gap-1.5 min-h-[20px]">
+              <input
+                type="text"
+                value={replyText}
+                onChange={(e) => setReplyText(e.target.value)}
+                placeholder="Add a comment..."
+                className="flex-1 bg-transparent border-none outline-none text-sm text-gray-700 placeholder-gray-400"
+                onClick={(e) => e.stopPropagation()}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && replyText.trim()) {
+                    e.preventDefault();
+                    // Handle submit (demo - no action)
+                    setReplyText("");
+                  }
+                }}
+              />
+
+              {/* Send Button */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (replyText.trim()) {
+                    // Handle submit (demo - no action)
+                    setReplyText("");
+                  }
+                }}
+                disabled={!replyText.trim()}
+                className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors disabled:opacity-50 flex-shrink-0"
+                title="Send comment"
+              >
+                <RiArrowUpLine className="w-2.5 h-2.5 text-white" />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
+
+      {/* Comment Connector */}
+      <div className="absolute top-6 -left-3 w-3 h-0.5 bg-gradient-to-r from-gray-300 to-transparent rounded-full" />
     </div>
+  );
+};
+
+// Main AOOpinionCard Component - now renders floating comments
+interface AOOpinionCardProps {
+  aos?: Array<{ name: string; avatar: string }>;
+  totalAOs?: number;
+  opinion?: string;
+  strengths?: Array<{ text: string; type: "positive" | "negative" | "neutral" }>;
+  // New props for floating comment
+  commentTitle?: string;
+  commentReplies?: ReplyItem[];
+  position?: { top: number; left: number };
+  isExpanded?: boolean;
+  scrollY?: number;
+  commentTop?: number;
+}
+
+const AOOpinionCard = ({
+  commentTitle,
+  commentReplies = [],
+  position = { top: 0, left: 0 },
+  isExpanded,
+  scrollY,
+  commentTop,
+}: AOOpinionCardProps) => {
+  return (
+    <FloatingComment
+      title={commentTitle}
+      replies={commentReplies}
+      position={position}
+      isExpanded={isExpanded}
+      scrollY={scrollY}
+      commentTop={commentTop}
+    />
   );
 };
 

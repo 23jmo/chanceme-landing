@@ -133,3 +133,30 @@
   border-right: 8px solid transparent;
   border-top: 8px solid rgba(0, 0, 0, 0.8);
 }
+
+/* Custom scrollbar styles for comment components */
+.comment-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 163, 175, 0.4) transparent;
+}
+
+.comment-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.comment-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 4px 0;
+}
+
+.comment-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.3);
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: background-color 0.2s ease;
+}
+
+.comment-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(107, 114, 128, 0.5);
+}

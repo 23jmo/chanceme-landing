@@ -1,29 +1,57 @@
 "use client";
 
 import React from "react";
+import { RiFileTextLine, RiSchoolLine } from "react-icons/ri";
 
-// College personal statement with enhanced glassmorphic design
+// Draft editor matching chance-me design
 const PersonalStatementCard = () => {
   return (
-    <div className="w-full max-w-2xl mx-auto p-6 relative">
-      {/* Background card, same size, offset down and left */}
-      <div
-        className="absolute top-4 -left-4 w-full h-full rounded-3xl bg-white/60 border border-gray-200 shadow-md"
-        style={{ zIndex: 0, pointerEvents: "none" }}
-        aria-hidden="true"
-      ></div>
+    <div className="bg-white p-12 rounded-lg shadow-sm border border-gray-200 w-[700px]">
+      {/* Title */}
+      <div className="mb-8">
+        <input
+          type="text"
+          value="Personal Statement Draft"
+          readOnly
+          className="w-full bg-transparent border-none outline-none text-4xl font-bold text-gray-900 placeholder-gray-400 leading-tight cursor-default"
+        />
+      </div>
 
-      {/* Foreground card */}
-      <div className="relative bg-white/80 backdrop-blur-lg border border-white/30 rounded-3xl p-8 shadow-xl z-10">
-        {/* Header */}
-        <h2 className="text-sm font-medium text-gray-700 mb-6 bg-white/10 backdrop-blur-sm rounded-xl px-4 py-2 border border-white/20 inline-block">
-          Draft 2
-        </h2>
+      {/* Metadata fields */}
+      <div className="mb-8">
+        {/* School field */}
+        <div className="mb-4">
+          <div className="text-sm font-medium text-gray-600 mb-2 flex items-center gap-2">
+            <RiSchoolLine className="text-lg text-gray-500" />
+            School
+          </div>
+          <textarea
+            value="Columbia University"
+            readOnly
+            className="w-full bg-transparent border-none outline-none resize-none text-gray-700 placeholder-gray-400 leading-relaxed overflow-hidden"
+            rows={1}
+          />
+        </div>
 
-        {/* Text area with enhanced glassmorphic background */}
-        <div className="bg-white/15 backdrop-blur-lg rounded-2xl p-6 min-h-[350px] border border-white/25 relative overflow-hidden">
-          {/* Text content with relative positioning */}
-          <div className="relative z-10 space-y-4 text-sm leading-relaxed text-gray-800">
+        {/* Essay Prompt field */}
+        <div className="mb-4">
+          <div className="text-sm font-medium text-gray-600 mb-2 flex items-center gap-2">
+            <RiFileTextLine className="text-lg text-gray-500" />
+            Essay Prompt
+          </div>
+          <textarea
+            value="Please provide a statement that addresses your reasons for transferring and the objectives you hope to achieve."
+            readOnly
+            className="w-full bg-transparent border-none outline-none resize-none text-gray-700 placeholder-gray-400 leading-relaxed overflow-hidden"
+            rows={2}
+          />
+        </div>
+      </div>
+
+      {/* Main content */}
+      <div className="mb-8">
+        <div className="w-full bg-transparent border-none outline-none resize-none text-base text-gray-900 placeholder-gray-400 leading-relaxed font-normal min-h-[600px]">
+          <div className="space-y-4">
             {/* Strong sections - highlighted like text selection in green */}
             <p>
               <span className="bg-green-300/50 selection:bg-green-300/70 backdrop-blur-sm rounded px-1">

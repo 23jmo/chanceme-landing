@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, ArrowRight, Twitter, Instagram } from "lucide-react";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import TypedText from "@/components/TypedText";
 import AdmissionDot, { TrialStatus } from "@/components/AdmissionDot";
 import Navbar from "@/components/navbar";
@@ -125,9 +125,11 @@ function HeroSection() {
 
 function PersonalStatement() {
   const DESIGN_W = 1200;
-  const DESIGN_H = 600;
+  const DESIGN_H = 800; // Increased height to accommodate expanded comments
 
   const [scale, setScale] = useState(1);
+  const [scrollY, setScrollY] = useState(0);
+  const sectionRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const updateScale = () => {
@@ -139,10 +141,46 @@ function PersonalStatement() {
     return () => window.removeEventListener("resize", updateScale);
   }, []);
 
+  // Track scroll position for auto-expanding comments
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+    
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // Initial call
+    
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Calculate comment top positions relative to viewport
+  const getCommentTop = (commentTopInSection: number) => {
+    if (!sectionRef.current) return undefined;
+    const sectionRect = sectionRef.current.getBoundingClientRect();
+    const sectionTop = sectionRect.top + window.scrollY;
+    // Account for padding and container offset
+    const containerTop = sectionTop + 48; // py-12 = 48px
+    return containerTop + commentTopInSection * scale;
+  };
+
+  // Draft card dimensions (700px width)
+  const DRAFT_WIDTH = 700;
+  const DRAFT_CENTER_X = DESIGN_W / 2;
+  const DRAFT_CENTER_Y = DESIGN_H / 2;
+  const DRAFT_LEFT = DRAFT_CENTER_X - DRAFT_WIDTH / 2;
+  const DRAFT_RIGHT = DRAFT_CENTER_X + DRAFT_WIDTH / 2;
+  const COMMENT_WIDTH = 280;
+  const COMMENT_SPACING = 20; // Space between draft and comments
+  
+  // Calculate safe positions to keep comments on screen
+  const LEFT_COMMENT_X = Math.max(10, DRAFT_LEFT - COMMENT_WIDTH - COMMENT_SPACING);
+  const RIGHT_COMMENT_X = Math.min(DESIGN_W - COMMENT_WIDTH - 10, DRAFT_RIGHT + COMMENT_SPACING);
+
   return (
     <motion.section
+      ref={sectionRef as React.RefObject<HTMLElement>}
       id="personal-statement"
-      className="w-full py-12 md:py-32 flex justify-center"
+      className="w-full py-12 md:py-32 flex justify-center overflow-visible"
       variants={fadeInUp}
     >
       {/* Outer wrapper takes up real layout space */}
@@ -163,6 +201,7 @@ function PersonalStatement() {
             transform: `scale(${scale})`,
             transformOrigin: "top left",
             position: "relative",
+            overflow: "visible",
           }}
         >
           {/* Main personal statement card centred */}
@@ -171,123 +210,197 @@ function PersonalStatement() {
               position: "absolute",
               top: "50%",
               left: "50%",
-              translate: "-50% -50%",
+              transform: "translate(-50%, -50%)",
             }}
           >
             <PersonalStatementCard />
           </div>
 
-          {/* Floating AO opinion cards at design-pixel positions */}
-          {/* Top-left mixed feedback */}
-          <div style={{ position: "absolute", top: 72, left: 32 }}>
-            <AOOpinionCard
-              aos={[
-                {
-                  name: "Dr. Elizabeth Brown",
-                  avatar:
-                    "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&h=100&fit=crop&crop=face",
-                },
-                {
-                  name: "James Martinez",
-                  avatar:
-                    "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&h=100&fit=crop&crop=face",
-                },
-              ]}
-              totalAOs={18}
-              opinion="appreciated the honesty but"
-              strengths={[
-                { text: "authentic voice", type: "positive" },
-                { text: "needs polish", type: "negative" },
-              ]}
-            />
-          </div>
-
-          {/* Top-right negative feedback */}
-          <div style={{ position: "absolute", top: 48, right: 96 }}>
-            <AOOpinionCard
-              aos={[
-                {
-                  name: "John Doe",
-                  avatar:
-                    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
-                },
-                {
-                  name: "Sarah Wilson",
-                  avatar:
-                    "https://images.unsplash.com/photo-1494790108755-2616b8f1a999?w=100&h=100&fit=crop&crop=face",
-                },
-                {
-                  name: "Mike Chen",
-                  avatar:
-                    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
-                },
-              ]}
-              totalAOs={50}
-              opinion="did not like this sentence because"
-              strengths={[
-                { text: "too repetitive", type: "negative" },
-                { text: "cliché", type: "negative" },
-              ]}
-            />
-          </div>
-
-          {/* Middle-right neutral feedback */}
-          <div
-            style={{
-              position: "absolute",
-              top: 240,
-              right: 32,
-              translate: "0 -50%",
+          {/* Floating comment cards positioned relative to draft */}
+          {/* Top-left comment - Edit suggestion demo */}
+          <div 
+            style={{ 
+              position: "absolute", 
+              top: Math.max(20, DRAFT_CENTER_Y - 200),
+              left: LEFT_COMMENT_X,
             }}
           >
             <AOOpinionCard
-              aos={[
+              commentTitle="Make it more specific"
+              scrollY={scrollY}
+              commentTop={getCommentTop(Math.max(20, DRAFT_CENTER_Y - 200))}
+              commentReplies={[
                 {
-                  name: "Robert Johnson",
-                  avatar:
-                    "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&h=100&fit=crop&crop=face",
+                  type: "user",
+                  text: "I want to make this less vague, can you replace this with something specific about my extracurricular as Debate Captain?",
+                  author: "user",
+                  timestamp: new Date(Date.now() - 600000),
                 },
                 {
-                  name: "Amanda Lee",
-                  avatar:
-                    "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=100&h=100&fit=crop&crop=face",
+                  type: "tool",
+                  toolItem: {
+                    type: "tool",
+                    id: "profile-search-1",
+                    toolName: "search_activities",
+                    status: "completed",
+                    args: {
+                      query: "debate leadership",
+                    },
+                    result: JSON.stringify({
+                      extracurriculars: [
+                        { name: "Debate Captain", hours: "10 hrs/week", description: "Led team of 25 students to regional championships" },
+                        { name: "Model UN President", hours: "5 hrs/week", description: "Organized school-wide conferences" }
+                      ]
+                    }, null, 2),
+                  },
+                },
+                {
+                  type: "tool",
+                  toolItem: {
+                    type: "tool",
+                    id: "edit-1",
+                    toolName: "make_edit_suggestion",
+                    status: "completed",
+                    args: {
+                      original_text: "I have always been passionate about many different things and I think that makes me a well-rounded person who would be great at college.",
+                      context: "Debate Captain extracurricular",
+                    },
+                    editSuggestion: {
+                      original_text: "I have always been passionate about many different things and I think that makes me a well-rounded person who would be great at college.",
+                      suggested_text: "As Debate Captain, I learned to construct compelling arguments from limited information, organize team strategy sessions, and mentor newer members—skills that directly translate to collaborative academic work.",
+                    },
+                  },
+                },
+                {
+                  type: "ai",
+                  text: "I've created an edit suggestion that replaces the vague statement with specific details about your Debate Captain experience. The new text highlights concrete skills and demonstrates your leadership abilities.",
+                  author: "ai",
+                  timestamp: new Date(Date.now() - 300000),
                 },
               ]}
-              totalAOs={25}
-              opinion="found this section interesting but"
-              strengths={[
-                { text: "needs more detail", type: "neutral" },
-                { text: "could be stronger", type: "neutral" },
-              ]}
+              position={{ top: 0, left: 0 }}
             />
           </div>
 
-          {/* Bottom-left positive feedback */}
-          <div style={{ position: "absolute", bottom: 48, left: 96 }}>
+          {/* Top-right comment - Web search demo */}
+          <div 
+            style={{ 
+              position: "absolute", 
+              top: Math.max(20, DRAFT_CENTER_Y - 250),
+              left: RIGHT_COMMENT_X,
+            }}
+          >
             <AOOpinionCard
-              aos={[
+              commentTitle="Find Columbia clubs"
+              scrollY={scrollY}
+              commentTop={getCommentTop(Math.max(20, DRAFT_CENTER_Y - 250))}
+              commentReplies={[
                 {
-                  name: "Mary Jane",
-                  avatar:
-                    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
+                  type: "user",
+                  text: "Search for a Columbia club that I can write about relating to this section",
+                  author: "user",
+                  timestamp: new Date(Date.now() - 900000),
                 },
                 {
-                  name: "David Kim",
-                  avatar:
-                    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face",
+                  type: "tool",
+                  toolItem: {
+                    type: "tool",
+                    id: "search-1",
+                    toolName: "web_search",
+                    status: "completed",
+                    args: {
+                      query: "Columbia University debate clubs organizations",
+                    },
+                    searchResults: {
+                      query: "Columbia University debate clubs organizations",
+                      results: [
+                        {
+                          title: "Columbia Debate Society | Columbia University",
+                          url: "https://debate.columbia.edu",
+                          snippet: "The Columbia Debate Society is one of the oldest student organizations on campus, competing in national and international tournaments.",
+                        },
+                        {
+                          title: "Columbia Parliamentary Debate Association",
+                          url: "https://cpda.columbia.edu",
+                          snippet: "CPDA hosts weekly debates and training sessions for students interested in parliamentary debate.",
+                        },
+                        {
+                          title: "Model UN at Columbia",
+                          url: "https://mun.columbia.edu",
+                          snippet: "Columbia's Model UN program offers students opportunities to engage in diplomatic simulations and develop public speaking skills.",
+                        },
+                      ],
+                    },
+                  },
                 },
                 {
-                  name: "Lisa Chen",
-                  avatar:
-                    "https://images.unsplash.com/photo-1534528741775-53994a69daeby?w=100&h=100&fit=crop&crop=face",
+                  type: "ai",
+                  text: "I found several Columbia debate-related organizations that align with your essay topic. The Columbia Debate Society and Columbia Parliamentary Debate Association would be excellent additions to mention, as they directly connect to your experience as Debate Captain.",
+                  author: "ai",
+                  timestamp: new Date(Date.now() - 300000),
                 },
               ]}
-              totalAOs={31}
-              opinion="liked this sentence because"
-              strengths={[
-                { text: "touching", type: "positive" },
-                { text: "full circle moment", type: "positive" },
+              position={{ top: 0, left: 0 }}
+            />
+          </div>
+
+          {/* Middle-right comment - positioned to the right, middle */}
+          <div
+            style={{
+              position: "absolute",
+              top: DRAFT_CENTER_Y + 200,
+              left: RIGHT_COMMENT_X,
+            }}
+          >
+            <AOOpinionCard
+              commentTitle="Good flow"
+              commentReplies={[
+                {
+                  type: "ai",
+                  text: "This paragraph transitions well into the next. The connection between your debate team experience and leadership is clear.",
+                  author: "ai",
+                  timestamp: new Date(Date.now() - 900000),
+                },
               ]}
+              position={{ top: 0, left: 0 }}
+              scrollY={scrollY}
+              commentTop={getCommentTop(DRAFT_CENTER_Y + 200)}
+            />
+          </div>
+
+          {/* Bottom-left comment - positioned to the left, bottom */}
+          <div 
+            style={{ 
+              position: "absolute", 
+              top: Math.min(DESIGN_H - 150, DRAFT_CENTER_Y + 250),
+              left: LEFT_COMMENT_X,
+            }}
+          >
+            <AOOpinionCard
+              commentTitle="Strong conclusion"
+              scrollY={scrollY}
+              commentTop={getCommentTop(Math.min(DESIGN_H - 150, DRAFT_CENTER_Y + 250))}
+              commentReplies={[
+                {
+                  type: "ai",
+                  text: "Excellent closing paragraph. The 'full circle moment' effectively ties back to your opening.",
+                  author: "ai",
+                  timestamp: new Date(Date.now() - 1200000),
+                },
+                {
+                  type: "user",
+                  text: "Thank you! I worked hard on that part.",
+                  author: "user",
+                  timestamp: new Date(Date.now() - 600000),
+                },
+                {
+                  type: "ai",
+                  text: "It shows. This kind of thoughtful reflection is exactly what admissions officers look for.",
+                  author: "ai",
+                  timestamp: new Date(Date.now() - 300000),
+                },
+              ]}
+              position={{ top: 0, left: 0 }}
             />
           </div>
         </div>
