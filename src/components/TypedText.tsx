@@ -5,6 +5,7 @@ import "./typing-animation.css";
 
 // Updated colleges array to include names and colors
 const colleges = [
+  { name: "your dream school", color: "#FFD700" }, // Gold
   { name: "Harvard", color: "#A51C30" }, // Crimson
   { name: "Columbia", color: "#C4D8E2" }, // Light Blue
   { name: "Princeton", color: "#E87722" }, // Orange
@@ -81,8 +82,8 @@ export default function TypedText() {
   const currentColor = colleges[collegeIndex].color;
 
   return (
-    // Using a div container again for better block-level layout control
-    <div>
+    // Using inline display with baseline alignment
+    <span style={{ display: "inline", verticalAlign: "baseline" }}>
       <span className="typed-content-wrapper">
         <span
           className="college-name"
@@ -98,6 +99,6 @@ export default function TypedText() {
           style={{ backgroundColor: currentColor }}
         ></span>
       </span>
-    </div>
+    </span>
   );
 }

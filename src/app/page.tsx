@@ -58,71 +58,38 @@ export default function LandingPage() {
 }
 
 function HeroSection() {
-  const [isInView, setIsInView] = useState(false);
-
   return (
     <motion.section
       id="hero"
-      className="w-full py-12 md:py-24 lg:py-32 xl:py-48"
+      className="w-full py-12 md:py-24 lg:py-32 xl:py-48 relative"
       variants={fadeInUp}
     >
-      <div className="container px-4 md:px-6">
+      <div className="container mx-auto px-4 md:px-6">
         <motion.div
           className="flex flex-col items-center text-center"
           variants={staggerContainer}
         >
           <motion.div
-            className="flex items-center gap-2"
-            variants={bounceIn}
-          >
-            <Image
-              src="/logo.png"
-              alt="Chance Me Logo"
-              width={150}
-              height={150}
-              className="md:block hidden object-contain hover:scale-110 transition-all duration-300 ease-in-out animate-float cursor-none"
-              style={{
-                filter: "drop-shadow(0 0 8px rgba(255, 215, 0, 0.3))",
-              }}
-            />
-          </motion.div>
-          <motion.div
-            className="max-w-3xl mx-auto space-y-4"
+            className="max-w-4xl mx-auto space-y-6"
             variants={staggerContainer}
           >
-            <motion.div
-              className="inline-flex items-center rounded-lg bg-yellow-400/10 backdrop-blur-sm border border-yellow-400/30 px-3 py-1 text-sm font-medium"
-              variants={fadeInUp}
-            >
-              <span className="text-yellow-800">
-                By Two Columbia CS Students
-              </span>
-            </motion.div>
             <motion.h1
-              className="text-5xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl text-center"
+              className="text-5xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-7xl text-center"
               variants={fadeInUp}
             >
-              Get your application read by{" "}
-              <motion.span
-                className={`number-box ${isInView ? "animate-underline" : ""}`}
-                variants={popIn}
-                onViewportEnter={() => setIsInView(true)}
-                onViewportLeave={() => setIsInView(false)}
-                viewport={{ once: false, amount: 0.8 }}
-              >
-                1000
-              </motion.span>{" "}
-              Admissions Officers at <TypedText />
+              Essays personalized for you
+              <br />
+              and <TypedText />
             </motion.h1>
             <motion.p
-              className="max-w-[400px] mx-auto text-muted-foreground md:text-xl"
+              className="max-w-2xl mx-auto text-muted-foreground md:text-xl lg:text-2xl"
               variants={fadeInUp}
             >
-              Multi-agent model that predicts your chances of getting in to your
-              dream college
+              Draft personalized essays with the context of your experiences and your dream school
+        
             </motion.p>
             <motion.div
-              className="flex flex-col sm:flex-row gap-4 justify-center mt-6"
+              className="flex flex-col sm:flex-row gap-4 justify-center mt-8"
               variants={fadeInUp}
             >
               <motion.div
@@ -135,8 +102,8 @@ function HeroSection() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="
-                    inline-flex items-center justify-center rounded-md text-md font-bold 
-                    h-14 px-10 
+                    inline-flex items-center justify-center rounded-lg text-md font-bold 
+                    h-10 px-6 
                     text-black 
                     bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-300
                     shadow-md shadow-yellow-500/30 
@@ -145,7 +112,7 @@ function HeroSection() {
                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500 focus-visible:ring-offset-2
                   "
                 >
-                  Join Waitlist
+                  Try for free
                 </Link>
               </motion.div>
             </motion.div>

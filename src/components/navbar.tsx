@@ -40,10 +40,10 @@ export default function Navbar() {
       animate={controls}
     >
       <motion.div
-        className={`mx-auto rounded-xl border border-border/40 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/80 transition-all duration-200 ${
+        className={`mx-auto rounded-xl transition-all duration-200 ${
           scrolled
-            ? "py-2 max-w-[95%] md:max-w-[90%]"
-            : "py-3 max-w-[98%] md:max-w-[96%]"
+            ? "border border-border/40 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/80 py-2 max-w-[95%] md:max-w-[90%]"
+            : "border-transparent bg-transparent backdrop-blur-none py-3 max-w-[98%] md:max-w-[96%]"
         }`}
         layout
         transition={{
@@ -125,7 +125,9 @@ export default function Navbar() {
             <Button
               variant="ghost"
               size="sm"
-              className="md:block hidden hover:bg-yellow-400/10 text-gray-700"
+              className={`md:block hidden hover:bg-yellow-400/10 transition-all duration-200 text-gray-700 ${
+                scrolled ? "" : "hover:bg-gray-100/20"
+              }`}
               onClick={() => {
                 window.open("mailto:jym2117@columbia.edu", "_blank");
               }}
@@ -138,7 +140,11 @@ export default function Navbar() {
             >
               <Button
                 size="sm"
-                className="relative overflow-hidden bg-yellow-400/50 text-black hover:shadow-[0_0_15px_rgba(255,255,255,0.7)] hover:bg-yellow-400/50 hover:scale-105 transition-all duration-200"
+                className={`relative overflow-hidden transition-all duration-200 hover:scale-105 ${
+                  scrolled
+                    ? "bg-yellow-400/50 text-black hover:shadow-[0_0_15px_rgba(255,255,255,0.7)] hover:bg-yellow-400/50"
+                    : "bg-yellow-400/50 text-black hover:bg-yellow-400/70 hover:shadow-[0_0_15px_rgba(255,215,0,0.5)]"
+                }`}
                 onClick={() =>
                   window.open("https://tally.so/r/nGk2jj", "_blank")
                 }
