@@ -174,7 +174,7 @@ export default function Navbar() {
                   window.open("https://tally.so/r/nGk2jj", "_blank")
                 }
               >
-                Join Waitlist
+                Try for free
               </Button>
             </motion.div>
           </div>
