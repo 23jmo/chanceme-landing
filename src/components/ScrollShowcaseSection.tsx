@@ -31,7 +31,6 @@ export default function ScrollShowcaseSection() {
     const handleScroll = () => {
       if (!sectionRef.current) return;
 
-      const sectionRect = sectionRef.current.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
       
       // Check which image section is currently most visible in viewport

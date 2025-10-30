@@ -69,8 +69,8 @@ const PersonalStatementCard = () => {
               <span className="bg-yellow-200/40 rounded px-1">
                 Growing up in a small town where opportunities were scarce, I
                 learned early that success requires both determination and
-                creativity. When our school's debate team was disbanded due to
-                budget cuts, I didn't accept defeat.
+                creativity. When our school&apos;s debate team was disbanded due to
+                budget cuts, I didn&apos;t accept defeat.
               </span>
             </p>
 
@@ -108,7 +108,7 @@ const PersonalStatementCard = () => {
 
             {/* Additional paragraph - no highlight */}
             <p>
-              Through my involvement in debate and community organizing, I've developed a particular interest in how effective communication shapes public discourse and drives social change. At Columbia, I'm excited to explore courses in media studies and political communication that will deepen my understanding of these dynamics. The interdisciplinary approach to learning at Columbia aligns perfectly with my goal of understanding how different fields intersect to create meaningful impact.
+              Through my involvement in debate and community organizing, I&apos;ve developed a particular interest in how effective communication shapes public discourse and drives social change. At Columbia, I&apos;m excited to explore courses in media studies and political communication that will deepen my understanding of these dynamics. The interdisciplinary approach to learning at Columbia aligns perfectly with my goal of understanding how different fields intersect to create meaningful impact.
             </p>
 
             {/* Sixth paragraph - matches "Strong conclusion" comment (bottom-left) */}

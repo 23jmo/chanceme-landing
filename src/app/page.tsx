@@ -12,7 +12,6 @@ import {
   fadeInUp,
   staggerContainer,
   fadeInLeft,
-  fadeInRight,
   popIn,
   bounceIn,
 } from "@/components/framer-animations";
@@ -20,9 +19,6 @@ import {
 import PersonalStatementCard from "@/components/PersonalStatementCard";
 import AOOpinionCard from "@/components/AOOpinionCard";
 import ScrollShowcaseSection from "@/components/ScrollShowcaseSection";
-
-const DESIGN_W = 1200; // natural resolution
-const DESIGN_H = 600;
 
 export default function LandingPage() {
   return (
@@ -42,7 +38,7 @@ export default function LandingPage() {
       >
         <HeroSection />
         <PersonalStatement />
-        {/* <ScrollShowcaseSection /> */}
+        <ScrollShowcaseSection />
         <FaqSection />
         <CtaSection />
       </motion.main>
