@@ -57,10 +57,8 @@
 /* Wrapper for the animated content and cursor */
 .typed-content-wrapper {
   position: relative;
-  display: inline-flex; /* Changed from inline-flex */
-  min-width: 3px; /* Minimum space for cursor when text is empty */
-  height: 1.2em; /* Set fixed height to prevent layout shifts */
-  vertical-align: bottom; /* Align wrapper with baseline */
+  display: inline;
+  vertical-align: baseline;
 }
 
 /* College name styling with glow effect */
@@ -70,16 +68,16 @@
   /* text-shadow: ... */ /* Removed, handled by inline style */
   white-space: normal; /* Allow college name to wrap */
   word-wrap: break-word; /* Break long words if needed */
+  vertical-align: baseline;
 }
 
 /* Blinking cursor styling */
 .cursor {
-  position: absolute;
-  right: -4px; /* Position it right after the text */
-  top: 0;
+  position: relative;
+  display: inline-block;
   width: 3px;
-  height: 1em; /* Reduced height to match text better */
-  /* background-color: #ffa500; */ /* Removed, handled by inline style */
+  height: 1em;
+  vertical-align: baseline;
   margin-left: 2px;
   animation: blink 1s step-end infinite;
 }
