@@ -42,7 +42,7 @@ export default function LandingPage() {
       >
         <HeroSection />
         <PersonalStatement />
-        <ScrollShowcaseSection />
+        {/* <ScrollShowcaseSection /> */}
         <FaqSection />
         <CtaSection />
       </motion.main>
