@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, ArrowRight, Twitter, Instagram } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import TypedText from "@/components/TypedText";
 import Navbar from "@/components/navbar";
 import { motion, AnimatePresence } from "framer-motion";
@@ -457,6 +457,30 @@ function TrustedBySection() {
     "school_logos/tas.jpg",
     "school_logos/thomasjefferson.jpg",
   ];
+
+  const firstGroupRef = useRef<HTMLDivElement | null>(null);
+  const [duration, setDuration] = useState(30);
+
+  useLayoutEffect(() => {
+    const el = firstGroupRef.current;
+    if (!el) return;
+
+    const compute = () => {
+      const width = el.getBoundingClientRect().width;
+      const speed = 40;
+      const seconds = Math.max(10, width / Math.max(40, speed));
+      setDuration(seconds);
+    };
+
+    compute();
+    const ro = new ResizeObserver(compute);
+    ro.observe(el);
+    window.addEventListener("resize", compute);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", compute);
+    };
+  }, []);
   
   return (
     <motion.section
@@ -471,29 +495,55 @@ function TrustedBySection() {
           Trusted by
         </motion.p>
         <motion.div
-          className="flex items-center justify-center mb-4 md:mb-6"
+          className="flex items-center justify-center mb-8 md:mb-12"
           variants={fadeInUp}
         >
-          <div className="h-px w-50 bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
+          <div className="h-px w-12 bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
         </motion.div>
         <div className="relative overflow-hidden">
           <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
-          <div className="flex animate-scroll gap-10 md:gap-14">
-            {[...schoolLogos, ...schoolLogos].map((logo, i) => (
-              <div
-                key={i}
-                className="flex-shrink-0 h-12 md:h-16 flex items-center justify-center"
-              >
-                <Image
-                  src={`/${logo}`}
-                  alt="School logo"
-                  width={128}
-                  height={64}
-                  className="h-full w-auto object-contain opacity-70 hover:opacity-100 transition-opacity"
-                />
-              </div>
-            ))}
+          <div
+            className="flex will-change-transform select-none hover:[animation-play-state:paused]"
+            style={{
+              width: 'max-content',
+              animation: `marquee-scroll ${duration}s linear infinite`,
+            } as React.CSSProperties}
+          >
+            {/* Group A */}
+            <div ref={firstGroupRef} className="flex items-center gap-10 md:gap-14 pr-10 md:pr-14">
+              {schoolLogos.map((logo, i) => (
+                <div
+                  key={`a-${i}`}
+                  className="flex-shrink-0 h-12 md:h-16 flex items-center justify-center"
+                >
+                  <Image
+                    src={`/${logo}`}
+                    alt="School logo"
+                    width={128}
+                    height={64}
+                    className="h-full w-auto object-contain opacity-70 hover:opacity-100 transition-opacity"
+                  />
+                </div>
+              ))}
+            </div>
+            {/* Group B (duplicate) */}
+            <div className="flex items-center gap-10 md:gap-14 pr-10 md:pr-14" aria-hidden="true">
+              {schoolLogos.map((logo, i) => (
+                <div
+                  key={`b-${i}`}
+                  className="flex-shrink-0 h-12 md:h-16 flex items-center justify-center"
+                >
+                  <Image
+                    src={`/${logo}`}
+                    alt="School logo"
+                    width={128}
+                    height={64}
+                    className="h-full w-auto object-contain opacity-70 hover:opacity-100 transition-opacity"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
