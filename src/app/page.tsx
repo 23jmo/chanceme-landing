@@ -465,19 +465,25 @@ function TrustedBySection() {
     >
       <div className="container mx-auto px-4 md:px-6">
         <motion.p
-          className="text-center text-lg md:text-xl lg:text-2xl font-medium text-foreground mb-12 md:mb-16 tracking-normal"
+          className="text-center text-lg md:text-xl lg:text-2xl font-medium text-gray-600 mb-4 md:mb-6 tracking-normal"
           variants={fadeInUp}
         >
           Trusted by
         </motion.p>
+        <motion.div
+          className="flex items-center justify-center mb-4 md:mb-6"
+          variants={fadeInUp}
+        >
+          <div className="h-px w-50 bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
+        </motion.div>
         <div className="relative overflow-hidden">
           <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
-          <div className="flex animate-scroll gap-12 md:gap-16">
+          <div className="flex animate-scroll gap-10 md:gap-14">
             {[...schoolLogos, ...schoolLogos].map((logo, i) => (
               <div
                 key={i}
-                className="flex-shrink-0 w-24 h-12 md:w-32 md:h-16 flex items-center justify-center"
+                className="flex-shrink-0 h-12 md:h-16 flex items-center justify-center"
               >
                 <Image
                   src={`/${logo}`}

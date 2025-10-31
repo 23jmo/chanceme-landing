@@ -81,12 +81,8 @@ export default function Navbar() {
               whileTap={{ scale: 0.95 }}
               className="h-full flex items-center"
             >
-              <ScrollLink
-                to="hero"
-                spy={true}
-                smooth={true}
-                offset={-100}
-                duration={700}
+              <button
+                onClick={() => window.location.href = "/"}
                 className="flex cursor-pointer items-center space-x-2 h-full"
               >
                 <Image
@@ -106,7 +102,7 @@ export default function Navbar() {
                 >
                   <span className="hidden font-medium md:inline">Chance Me</span>
                 </motion.span>
-              </ScrollLink>
+              </button>
             </motion.div>
             
             <nav className="hidden md:flex items-center space-x-4 h-full">
