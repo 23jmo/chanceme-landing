@@ -71,12 +71,10 @@ function HeroSection() {
             variants={staggerContainer}
           >
             <motion.h1
-              className="text-5xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl text-center"
+              className="text-5xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl text-center max-w-2xl mx-auto"
               variants={fadeInUp}
             >
-              Essays personalized for
-              <br />
-              You and <TypedText />
+              Essays personalized for You and <span className="block sm:inline"><TypedText /></span>
             </motion.h1>
             <motion.p
               className="max-w-md mx-auto text-muted-foreground md:text-lg lg:text-xl"
