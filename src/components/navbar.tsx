@@ -43,7 +43,7 @@ export default function Navbar() {
 
   return (
     <motion.header
-      className="fixed top-0 z-50 w-full px-4 py-4"
+      className="fixed top-0 left-1/2 transform -translate-x-1/2 z-50 w-[90%] px-4 py-4"
       initial={{ y: -100 }}
       animate={controls}
     >
@@ -88,8 +88,8 @@ export default function Navbar() {
                 <Image
                   src="/logo.png"
                   alt="Chance Me Logo"
-                  width={32}
-                  height={32}
+                  width={52}
+                  height={52}
                   className="object-contain"
                 />
                 <motion.span
