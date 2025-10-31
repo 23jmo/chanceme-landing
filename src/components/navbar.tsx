@@ -71,101 +71,103 @@ export default function Navbar() {
           }}
         />
         <div
-          className={`relative flex items-center justify-between ${
+          className={`relative flex items-center justify-between h-12 ${
             scrolled ? "px-4 md:px-8" : "px-0"
           }`}
         >
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <ScrollLink
-              to="hero"
-              spy={true}
-              smooth={true}
-              offset={-100}
-              duration={700}
-              className={`flex cursor-pointer items-center space-x-2 ${
-                scrolled ? "mr-6" : ""
-              }`}
-            >
-              <Image
-                src="/logo.png"
-                alt="Chance Me Logo"
-                width={48}
-                height={48}
-                className="object-contain"
-              />
-              <motion.span
-                className={`font-bold text-black transition-all duration-300 ${
-                  scrolled ? "text-sm md:text-base" : "text-base md:text-lg"
-                }`}
-                animate={{ opacity: 1 }}
-                initial={{ opacity: 0 }}
-                transition={{ delay: 0.3 }}
-              >
-                <span className="hidden font-medium md:inline">Chance Me</span>
-              </motion.span>
-            </ScrollLink>
-          </motion.div>
-
-          <nav
-            className={`flex flex-1 items-center space-x-8 text-sm font-medium text-gray-700 md:block ${
-              scrolled ? "mx-4" : "hidden"
-            }`}
-          >
-            {/* Navigation items can be added here */}
-            <motion.div
-              className="hidden md:flex space-x-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4, staggerChildren: 0.1 }}
-            >
-              {/* {["Process", "Get Started"].map((item, index) => (
-                <motion.div
-                  key={item}
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 + index * 0.1 }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <ScrollLink
-                    to={item === "Process" ? "admission-trials" : "get-started"}
-                    spy={true}
-                    smooth={true}
-                    offset={-100}
-                    duration={700}
-                    className="cursor-pointer capitalize hover:text-yellow-400 transition-colors"
-                    activeClass="text-yellow-400"
-                  >
-                    {item}
-                  </ScrollLink>
-                </motion.div>
-              ))} */}
-            </motion.div>
-          </nav>
-
-          <div className="flex items-center space-x-3">
-            <Button
-              variant="ghost"
-              size="sm"
-              className={`md:block hidden hover:bg-yellow-400/10 transition-all duration-200 text-gray-700 text-xs ${
-                scrolled ? "" : "hover:bg-gray-100/20"
-              }`}
-              onClick={() => {
-                window.open("mailto:jym2117@columbia.edu", "_blank");
-              }}
-            >
-              Contact
-            </Button>
+          <div className="flex items-center space-x-4 md:space-x-6 h-full">
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              className="h-full flex items-center"
+            >
+              <ScrollLink
+                to="hero"
+                spy={true}
+                smooth={true}
+                offset={-100}
+                duration={700}
+                className="flex cursor-pointer items-center space-x-2 h-full"
+              >
+                <Image
+                  src="/logo.png"
+                  alt="Chance Me Logo"
+                  width={32}
+                  height={32}
+                  className="object-contain"
+                />
+                <motion.span
+                  className={`font-bold text-black transition-all duration-300 leading-none flex items-center ${
+                    scrolled ? "text-xs md:text-sm lg:text-base" : "text-sm md:text-base lg:text-lg"
+                  }`}
+                  animate={{ opacity: 1 }}
+                  initial={{ opacity: 0 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <span className="hidden font-medium md:inline">Chance Me</span>
+                </motion.span>
+              </ScrollLink>
+            </motion.div>
+            
+            <nav className="hidden md:flex items-center space-x-4 h-full">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="h-full flex items-center"
+              >
+                <button
+                  className="text-xs md:text-sm lg:text-base font-medium text-gray-700 hover:text-gray-900 transition-colors leading-none h-full flex items-center"
+                  onClick={() => {
+                    window.location.href = "/pricing";
+                  }}
+                >
+                  Pricing
+                </button>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="h-full flex items-center"
+              >
+                <button
+                  className="text-xs md:text-sm lg:text-base font-medium text-gray-700 hover:text-gray-900 transition-colors leading-none h-full flex items-center"
+                  onClick={() => {
+                    window.open("mailto:jym2117@columbia.edu", "_blank");
+                  }}
+                >
+                  Contact
+                </button>
+              </motion.div>
+            </nav>
+          </div>
+
+          <div className="flex items-center space-x-2 md:space-x-3 h-full">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="h-full flex items-center"
             >
               <Button
                 size="sm"
-                className={`relative overflow-hidden transition-all duration-200 hover:scale-105 text-xs h-7 px-3 ${
+                variant="ghost"
+                className={`relative overflow-hidden transition-all duration-200 hover:scale-105 text-xs md:text-sm lg:text-base h-8 px-3 font-medium text-gray-700 hover:bg-gray-100 flex items-center ${
+                  scrolled ? "" : ""
+                }`}
+                onClick={() =>
+                  window.open("https://tally.so/r/nGk2jj", "_blank")
+                }
+              >
+                Sign up
+              </Button>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="h-full flex items-center"
+            >
+              <Button
+                size="sm"
+                className={`relative overflow-hidden transition-all duration-200 hover:scale-105 text-xs md:text-sm lg:text-base h-8 px-3 flex items-center ${
                   scrolled
                     ? "bg-yellow-400/50 text-black hover:shadow-[0_0_15px_rgba(255,255,255,0.7)] hover:bg-yellow-400/50"
                     : "bg-yellow-400/50 text-black hover:bg-yellow-400/70 hover:shadow-[0_0_15px_rgba(255,215,0,0.5)]"
