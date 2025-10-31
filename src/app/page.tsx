@@ -33,11 +33,12 @@ export default function LandingPage() {
     >
       <Navbar />
       <motion.main
-        className="flex-1 mx-auto"
+        className="flex-1 w-full max-w-full"
         variants={staggerContainer}
       >
         <HeroSection />
         <PersonalStatement />
+        <TrustedBySection />
         <ScrollShowcaseSection />
         <FaqSection />
         <CtaSection />
@@ -57,7 +58,7 @@ function HeroSection() {
   return (
     <motion.section
       id="hero"
-      className="w-full py-12 md:py-24 lg:py-32 xl:py-48 relative"
+      className="w-full pt-8 pb-12 md:pt-16 md:pb-8 lg:pt-24 lg:pb-12 xl:pt-32 xl:pb-16 relative"
       variants={fadeInUp}
     >
       <div className="container mx-auto px-4 md:px-6">
@@ -70,18 +71,18 @@ function HeroSection() {
             variants={staggerContainer}
           >
             <motion.h1
-              className="text-5xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-7xl text-center"
+              className="text-5xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl text-center"
               variants={fadeInUp}
             >
-              Essays personalized for you
+              Essays personalized for
               <br />
-              and <TypedText />
+              You and <TypedText />
             </motion.h1>
             <motion.p
-              className="max-w-2xl mx-auto text-muted-foreground md:text-xl lg:text-2xl"
+              className="max-w-md mx-auto text-muted-foreground md:text-lg lg:text-xl"
               variants={fadeInUp}
             >
-              Get personalized essay feedback and editing suggestions from AI agents that understand your story and what your dream school is looking for.
+              Get personalized essay feedback and editing suggestions from AI agents.
             </motion.p>
             <motion.div
               className="flex flex-col sm:flex-row gap-4 justify-center mt-8"
@@ -97,8 +98,32 @@ function HeroSection() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="
-                    inline-flex items-center justify-center rounded-lg text-md font-bold 
-                    h-10 px-6 
+                    inline-flex items-center justify-center rounded-xl text-md font-semibold 
+                    h-10 px-8 
+                    text-gray-600 
+                    bg-gradient-to-r from-gray-50 to-gray-100
+                    border border-gray-200/60
+                    shadow-sm
+                    transition-all duration-300 ease-in-out 
+                    hover:from-white hover:to-gray-50 hover:shadow-md hover:border-gray-300/80 hover:scale-105
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-2
+                  "
+                >
+                  Sign up
+                </Link>
+              </motion.div>
+              <motion.div
+                variants={popIn}
+                whileHover="hover"
+                whileTap="tap"
+              >
+                <Link
+                  href="https://tally.so/r/nGk2jj"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="
+                    inline-flex items-center justify-center rounded-xl text-md font-bold 
+                    h-10 px-8 
                     text-black 
                     bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-300
                     shadow-md shadow-yellow-500/30 
@@ -117,6 +142,7 @@ function HeroSection() {
     </motion.section>
   );
 }
+
 
 function PersonalStatement() {
   const DESIGN_W = 1200;
@@ -186,16 +212,15 @@ function PersonalStatement() {
     <motion.section
       ref={sectionRef as React.RefObject<HTMLElement>}
       id="personal-statement"
-      className="w-full py-12 md:py-32 flex justify-center overflow-visible mb-20"
+      className="w-full pt-24 pb-16 md:pt-38 md:pb-38 flex justify-center overflow-visible mb-20"
       variants={fadeInUp}
     >
       {/* Outer wrapper takes up real layout space */}
       <div
         style={{
-          width: effectiveDesignW * scale,
+          width: Math.min(effectiveDesignW * scale, windowWidth - 32),
           height: DESIGN_H * scale,
           position: "relative",
-          minWidth: 320,
           minHeight: 240,
         }}
       >
@@ -412,6 +437,57 @@ function PersonalStatement() {
               ]}
               position={{ top: 0, left: 0 }}
             />
+          </div>
+        </div>
+      </div>
+    </motion.section>
+  );
+}
+
+function TrustedBySection() {
+  const schoolLogos = [
+    "school_logos/basis.png",
+    "school_logos/brooklyntech.JPG",
+    "school_logos/exeter.png",
+    "school_logos/harker.jpg",
+    "school_logos/harvardwestlake.svg",
+    "school_logos/kis.png",
+    "school_logos/nueva.jpeg",
+    "school_logos/sas.webp",
+    "school_logos/tas.jpg",
+    "school_logos/thomasjefferson.jpg",
+  ];
+  
+  return (
+    <motion.section
+      className="w-full py-12 md:py-16 lg:py-20"
+      variants={fadeInUp}
+    >
+      <div className="container mx-auto px-4 md:px-6">
+        <motion.p
+          className="text-center text-lg md:text-xl lg:text-2xl font-medium text-foreground mb-12 md:mb-16 tracking-normal"
+          variants={fadeInUp}
+        >
+          Trusted by
+        </motion.p>
+        <div className="relative overflow-hidden">
+          <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+          <div className="flex animate-scroll gap-12 md:gap-16">
+            {[...schoolLogos, ...schoolLogos].map((logo, i) => (
+              <div
+                key={i}
+                className="flex-shrink-0 w-24 h-12 md:w-32 md:h-16 flex items-center justify-center"
+              >
+                <Image
+                  src={`/${logo}`}
+                  alt="School logo"
+                  width={128}
+                  height={64}
+                  className="h-full w-auto object-contain opacity-70 hover:opacity-100 transition-opacity"
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>

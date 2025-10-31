@@ -6,7 +6,7 @@ import { RiFileTextLine, RiSchoolLine } from "react-icons/ri";
 // Draft editor matching chance-me design
 const PersonalStatementCard = () => {
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 w-[850px]">
+    <div className="bg-white rounded-lg border border-gray-300 w-[850px]" style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.1)' }}>
       {/* macOS Header */}
       <div className="flex items-center gap-2 px-4 py-2 border-b border-gray-200 bg-gray-50 rounded-t-lg">
         {/* Traffic Light Buttons */}

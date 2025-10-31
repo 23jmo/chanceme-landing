@@ -146,11 +146,11 @@ export default function Navbar() {
             </motion.div>
           </nav>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3">
             <Button
               variant="ghost"
               size="sm"
-              className={`md:block hidden hover:bg-yellow-400/10 transition-all duration-200 text-gray-700 ${
+              className={`md:block hidden hover:bg-yellow-400/10 transition-all duration-200 text-gray-700 text-xs ${
                 scrolled ? "" : "hover:bg-gray-100/20"
               }`}
               onClick={() => {
@@ -165,7 +165,7 @@ export default function Navbar() {
             >
               <Button
                 size="sm"
-                className={`relative overflow-hidden transition-all duration-200 hover:scale-105 ${
+                className={`relative overflow-hidden transition-all duration-200 hover:scale-105 text-xs h-7 px-3 ${
                   scrolled
                     ? "bg-yellow-400/50 text-black hover:shadow-[0_0_15px_rgba(255,255,255,0.7)] hover:bg-yellow-400/50"
                     : "bg-yellow-400/50 text-black hover:bg-yellow-400/70 hover:shadow-[0_0_15px_rgba(255,215,0,0.5)]"
