@@ -29,6 +29,12 @@ export default function ScrollShowcaseSection() {
 
   useEffect(() => {
     const handleScroll = () => {
+      // Only enable scroll tracking on desktop (md and up)
+      if (window.innerWidth < 768) {
+        setActiveSection(0);
+        return;
+      }
+
       if (!sectionRef.current) return;
 
       const viewportHeight = window.innerHeight;
@@ -56,8 +62,12 @@ export default function ScrollShowcaseSection() {
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
     handleScroll(); // Initial call
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
   }, []);
 
   return (
@@ -71,7 +81,38 @@ export default function ScrollShowcaseSection() {
     >
       <div className="container mx-auto px-2 sm:px-4 md:px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-row gap-2 sm:gap-3 md:gap-4 lg:gap-8 xl:gap-12">
+          {/* Mobile Layout - Static Cards */}
+          <div className="md:hidden space-y-8">
+            {sections.map((section, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+                className="bg-white rounded-lg border border-gray-200 shadow-sm p-6"
+              >
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">
+                      {section.title}
+                    </h3>
+                    <p className="text-sm text-gray-700 leading-relaxed">
+                      {section.description}
+                    </p>
+                  </div>
+                  <div className="w-full aspect-video bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center">
+                    <span className="text-gray-400 text-sm">
+                      Screenshot {index + 1}
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Desktop Layout - Sticky Scroll */}
+          <div className="hidden md:flex flex-row gap-2 sm:gap-3 md:gap-4 lg:gap-8 xl:gap-12">
             {/* Left Side - Sticky Content */}
             <div className="w-1/2 sticky top-16 lg:top-24 h-[calc(100vh-8rem)] lg:h-[calc(100vh-12rem)] flex flex-col justify-center z-10 pr-1 sm:pr-2 md:pr-4">
               <div className="space-y-2 sm:space-y-3 md:space-y-4 lg:space-y-6">
