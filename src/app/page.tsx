@@ -157,8 +157,8 @@ function PersonalStatement() {
     const updateScale = () => {
       const vw = window.innerWidth;
       setWindowWidth(vw);
-      // Allow wider design space on larger screens
-      const effectiveDesignW = vw >= 1400 ? 1400 : vw >= 1200 ? 1300 : DESIGN_W;
+      // Use same effectiveDesignW logic as component body for consistency
+      const effectiveDesignW = vw >= 1400 ? 1300 : vw >= 1100 ? 1250 : DESIGN_W;
       setScale(Math.min(1, vw / effectiveDesignW));
     };
     updateScale();
@@ -188,11 +188,11 @@ function PersonalStatement() {
     return containerTop + commentTopInSection * scale;
   };
 
-  // Draft card dimensions (700px width)
+  // Draft card dimensions (850px width from PersonalStatementCard)
   // Use wider design space on larger screens to allow more spacing
   const effectiveDesignW = windowWidth >= 1400 ? 1300 : windowWidth >= 1100 ? 1250 : DESIGN_W;
   
-  const DRAFT_WIDTH = 1000;
+  const DRAFT_WIDTH = 850;
   const DRAFT_CENTER_X = effectiveDesignW / 2;
   const DRAFT_CENTER_Y = DESIGN_H / 2;
   const DRAFT_LEFT = DRAFT_CENTER_X - DRAFT_WIDTH / 2;
@@ -200,13 +200,44 @@ function PersonalStatement() {
   const COMMENT_WIDTH = 280;
   // Responsive spacing: more space on larger screens (in design space)
   const baseSpacing = 60;
-  const COMMENT_SPACING = windowWidth >= 1400 ? 100 : windowWidth >= 1200 ? 80 : baseSpacing;
+  let COMMENT_SPACING = windowWidth >= 1400 ? 100 : windowWidth >= 1200 ? 80 : baseSpacing;
   
-  // Calculate safe positions to keep comments on screen
-  const minLeftMargin = 10;
-  const maxRightMargin = effectiveDesignW - COMMENT_WIDTH - 10;
-  const LEFT_COMMENT_X = Math.max(minLeftMargin, DRAFT_LEFT - COMMENT_WIDTH - COMMENT_SPACING);
-  const RIGHT_COMMENT_X = Math.min(maxRightMargin, DRAFT_RIGHT + COMMENT_SPACING);
+  // Calculate ideal positions (outside draft card)
+  let leftCommentX = DRAFT_LEFT - COMMENT_WIDTH - COMMENT_SPACING;
+  let rightCommentX = DRAFT_RIGHT + COMMENT_SPACING;
+  
+  // Check if total scaled width exceeds viewport width
+  // If so, reduce spacing to allow comments to overlap draft card
+  const totalScaledWidth = (rightCommentX + COMMENT_WIDTH - leftCommentX) * scale;
+  const maxViewportWidth = windowWidth - 32; // Account for container padding
+  
+  if (totalScaledWidth > maxViewportWidth) {
+    // Reduce spacing to fit within viewport
+    // Keep draft card width constant, only adjust comment positions
+    const targetTotalWidth = maxViewportWidth / scale;
+    const currentTotalWidth = rightCommentX + COMMENT_WIDTH - leftCommentX;
+    const excess = currentTotalWidth - targetTotalWidth;
+    
+    // Reduce spacing equally on both sides (may allow overlap)
+    const spacingReduction = excess / 2;
+    leftCommentX = leftCommentX + spacingReduction;
+    rightCommentX = rightCommentX - spacingReduction;
+    
+    // Ensure comments don't go outside design bounds (with small margin)
+    const minLeftMargin = 10;
+    const maxRightMargin = effectiveDesignW - COMMENT_WIDTH - 10;
+    leftCommentX = Math.max(minLeftMargin, leftCommentX);
+    rightCommentX = Math.min(maxRightMargin, rightCommentX);
+  } else {
+    // Clamp to safe bounds
+    const minLeftMargin = 10;
+    const maxRightMargin = effectiveDesignW - COMMENT_WIDTH - 10;
+    leftCommentX = Math.max(minLeftMargin, leftCommentX);
+    rightCommentX = Math.min(maxRightMargin, rightCommentX);
+  }
+  
+  const LEFT_COMMENT_X = leftCommentX;
+  const RIGHT_COMMENT_X = rightCommentX;
 
   return (
     <motion.section
@@ -218,7 +249,7 @@ function PersonalStatement() {
       {/* Outer wrapper takes up real layout space */}
       <div
         style={{
-          width: Math.min(effectiveDesignW * scale, windowWidth - 32),
+          width: effectiveDesignW * scale,
           height: DESIGN_H * scale,
           position: "relative",
           minHeight: 240,
@@ -239,8 +270,8 @@ function PersonalStatement() {
           <div
             style={{
               position: "absolute",
-              top: "50%",
-              left: "50%",
+              top: DRAFT_CENTER_Y,
+              left: DRAFT_CENTER_X,
               transform: "translate(-50%, -50%)",
             }}
           >
