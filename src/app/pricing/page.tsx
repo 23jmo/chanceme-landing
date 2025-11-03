@@ -9,6 +9,7 @@ import {
   fadeInUp,
   staggerContainer,
 } from "@/components/framer-animations";
+import { AnimatedNumber } from "@/components/AnimatedNumber";
 
 export default function PricingPage() {
   const [billingPeriod, setBillingPeriod] = useState<"monthly" | "quarterly">("monthly");
@@ -166,7 +167,10 @@ export default function PricingPage() {
                           <span className="text-4xl font-bold text-gray-900">Free</span>
                         ) : (
                           <div className="flex items-baseline">
-                            <span className="text-4xl font-bold text-gray-900">${price}</span>
+                            <AnimatedNumber 
+                              value={price} 
+                              className="text-4xl font-bold text-gray-900"
+                            />
                             <span className="text-lg text-gray-600 ml-1">{priceSuffix}</span>
                           </div>
                         )}
