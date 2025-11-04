@@ -12,7 +12,7 @@ function useTypewriter(targetText: string, charsPerSecond: number = 18) {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const completionPromiseRef = useRef<{
     resolve: () => void;
-    reject: () => void;
+    reject: (error?: Error) => void;
   } | null>(null);
 
   const startTyping = useCallback(() => {
@@ -53,7 +53,7 @@ function useTypewriter(targetText: string, charsPerSecond: number = 18) {
       intervalRef.current = null;
     }
     if (completionPromiseRef.current) {
-      completionPromiseRef.current.reject();
+      completionPromiseRef.current.reject(new Error("Typewriter reset"));
       completionPromiseRef.current = null;
     }
     setDisplayText("");
@@ -66,7 +66,7 @@ function useTypewriter(targetText: string, charsPerSecond: number = 18) {
         clearInterval(intervalRef.current);
       }
       if (completionPromiseRef.current) {
-        completionPromiseRef.current.reject();
+        completionPromiseRef.current.reject(new Error("Typewriter unmounted"));
       }
     };
   }, []);
@@ -225,179 +225,206 @@ export default function CommentModeAnimation() {
     sequenceRunningRef.current = true;
 
     const runSequence = async () => {
-      // Reset states
-      setShowAddCommentButton(false);
-      setShowCommentBubble(false);
-      setShowCursor(false);
-      setShowTypingIndicator(false);
-      setShowAgentReply(false);
-      setInputFocused(false);
-      promptTypewriter.reset();
-      replyTypewriter.reset();
+      try {
+        // Reset states
+        setShowAddCommentButton(false);
+        setShowCommentBubble(false);
+        setShowCursor(false);
+        setShowTypingIndicator(false);
+        setShowAgentReply(false);
+        setInputFocused(false);
+        promptTypewriter.reset();
+        replyTypewriter.reset();
 
-      // 1. Fade in paragraph
-      await paragraphControls.start({
-        opacity: 1,
-        transition: { duration: 0.25 },
-      });
-
-      // 2. Sweep highlight - animate background size from left to right
-      await new Promise((resolve) => setTimeout(resolve, 100)); // Wait for render
-      await highlightControls.start({
-        backgroundSize: "100% 100%",
-        transition: { duration: 0.7, ease: "easeOut" },
-      });
-
-      // 3. Show Add Comment button
-      // Calculate button position - centered horizontally on sentence
-      if (sentenceRef.current && containerRef.current) {
-        const sentenceRect = sentenceRef.current.getBoundingClientRect();
-        const containerRect = containerRef.current.getBoundingClientRect();
-        // Button will be ~100px wide, so center it on the sentence
-        const buttonWidth = 100; // Approximate button width
-        setButtonPosition({
-          top: sentenceRect.top - containerRect.top - 35,
-          left: sentenceRect.left - containerRect.left + (sentenceRect.width / 2) - (buttonWidth / 2), // Center horizontally
+        // 1. Fade in paragraph
+        await paragraphControls.start({
+          opacity: 1,
+          transition: { duration: 0.25 },
         });
-      }
-      setShowAddCommentButton(true);
-      // Wait for button to render and position, then recalculate with actual width
-      await new Promise((resolve) => setTimeout(resolve, 50));
-      if (buttonRef.current && sentenceRef.current && containerRef.current) {
-        const sentenceRect = sentenceRef.current.getBoundingClientRect();
-        const containerRect = containerRef.current.getBoundingClientRect();
-        const buttonRect = buttonRef.current.getBoundingClientRect();
-        setButtonPosition({
-          top: sentenceRect.top - containerRect.top - 35,
-          left: sentenceRect.left - containerRect.left + (sentenceRect.width / 2) - (buttonRect.width / 2), // Center with actual width
+
+        // 2. Sweep highlight - animate background size from left to right
+        await new Promise((resolve) => setTimeout(resolve, 100)); // Wait for render
+        await highlightControls.start({
+          backgroundSize: "100% 100%",
+          transition: { duration: 0.7, ease: "easeOut" },
         });
-      }
-      await buttonControls.start({
-        opacity: 1,
-        scale: 1,
-        transition: {
-          type: "spring",
-          stiffness: 400,
-          damping: 25,
-          duration: 0.25,
-        },
-      });
 
-      // 4. Move cursor to button and click
-      await new Promise((resolve) => setTimeout(resolve, 200));
-      const buttonPos = getButtonCenterPosition();
-      // Set initial cursor position before showing it
-      cursorControls.set({ x: buttonPos.x - 150, y: buttonPos.y });
-      setShowCursor(true);
-      // Wait a moment for cursor to appear
-      await new Promise((resolve) => setTimeout(resolve, 50));
-      // Move cursor to button center (cursor is 20px, so center is 10px offset)
-      await cursorControls.start({
-        x: buttonPos.x,
-        y: buttonPos.y,
-        transition: { duration: 0.9, ease: "easeInOut" },
-      });
-
-      // Pause at button
-      await new Promise((resolve) => setTimeout(resolve, 300));
-
-      // Click animation - slight downward press
-      await cursorControls.start({
-        x: buttonPos.x,
-        y: buttonPos.y + 3,
-        transition: { duration: 0.1, ease: "easeOut" },
-      });
-
-      // Click ripple
-      setClickRipple(true);
-      
-      // Return to original position
-      await cursorControls.start({
-        x: buttonPos.x,
-        y: buttonPos.y,
-        transition: { duration: 0.15, ease: "easeIn" },
-      });
-
-      setTimeout(() => setClickRipple(false), 400);
-
-      // Hide button after click
-      await buttonControls.start({
-        opacity: 0,
-        scale: 0.8,
-        transition: { duration: 0.2 },
-      });
-      setShowAddCommentButton(false);
-
-      // 5. Show comment bubble
-      // Calculate position relative to highlighted sentence - appear directly to the right
-      if (sentenceRef.current && containerRef.current) {
-        const sentenceRect = sentenceRef.current.getBoundingClientRect();
-        const containerRect = containerRef.current.getBoundingClientRect();
-        setCommentPosition({
-          top: sentenceRect.top - containerRect.top + sentenceRect.height / 2 - 40, // Center vertically on sentence
-          left: sentenceRect.right - containerRect.left + 16, // 16px to the right of sentence
+        // 3. Show Add Comment button
+        // Calculate button position - centered horizontally on sentence
+        if (sentenceRef.current && containerRef.current) {
+          const sentenceRect = sentenceRef.current.getBoundingClientRect();
+          const containerRect = containerRef.current.getBoundingClientRect();
+          // Button will be ~100px wide, so center it on the sentence
+          const buttonWidth = 100; // Approximate button width
+          setButtonPosition({
+            top: sentenceRect.top - containerRect.top - 35,
+            left: sentenceRect.left - containerRect.left + (sentenceRect.width / 2) - (buttonWidth / 2), // Center horizontally
+          });
+        }
+        setShowAddCommentButton(true);
+        // Wait for button to render and position, then recalculate with actual width
+        await new Promise((resolve) => setTimeout(resolve, 50));
+        if (buttonRef.current && sentenceRef.current && containerRef.current) {
+          const sentenceRect = sentenceRef.current.getBoundingClientRect();
+          const containerRect = containerRef.current.getBoundingClientRect();
+          const buttonRect = buttonRef.current.getBoundingClientRect();
+          setButtonPosition({
+            top: sentenceRect.top - containerRect.top - 35,
+            left: sentenceRect.left - containerRect.left + (sentenceRect.width / 2) - (buttonRect.width / 2), // Center with actual width
+          });
+        }
+        await buttonControls.start({
+          opacity: 1,
+          scale: 1,
+          transition: {
+            type: "spring",
+            stiffness: 400,
+            damping: 25,
+            duration: 0.25,
+          },
         });
-      }
-      setShowCommentBubble(true);
-      // Wait for bubble to render
-      await new Promise((resolve) => setTimeout(resolve, 50));
-      await commentBubbleControls.start({
-        opacity: 1,
-        scale: 1,
-        transition: {
-          type: "spring",
-          stiffness: 300,
-          damping: 25,
-          duration: 0.3,
-        },
-      });
 
-      // 6. Move cursor to input
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      const inputPos = getRelativePosition(inputRef.current);
-      await cursorControls.start({
-        x: inputPos.x - 10,
-        y: inputPos.y - 10,
-        transition: { duration: 0.5, ease: "easeInOut" },
-      });
+        // 4. Move cursor to button and click
+        await new Promise((resolve) => setTimeout(resolve, 200));
+        const buttonPos = getButtonCenterPosition();
+        // Set initial cursor position before showing it
+        cursorControls.set({ x: buttonPos.x - 150, y: buttonPos.y });
+        setShowCursor(true);
+        // Wait a moment for cursor to appear
+        await new Promise((resolve) => setTimeout(resolve, 50));
+        // Move cursor to button center (cursor is 20px, so center is 10px offset)
+        await cursorControls.start({
+          x: buttonPos.x,
+          y: buttonPos.y,
+          transition: { duration: 0.9, ease: "easeInOut" },
+        });
 
-      // Focus flash and hide mouse cursor
-      await new Promise((resolve) => setTimeout(resolve, 200));
-      setShowCursor(false);
-      setInputFocused(true);
-      await new Promise((resolve) => setTimeout(resolve, 100));
+        // Pause at button
+        await new Promise((resolve) => setTimeout(resolve, 300));
 
-      // 7. Type prompt
-      await promptTypewriter.startTyping();
+        // Click animation - slight downward press
+        await cursorControls.start({
+          x: buttonPos.x,
+          y: buttonPos.y + 3,
+          transition: { duration: 0.1, ease: "easeOut" },
+        });
 
-      // Wait a bit before agent response
-      await new Promise((resolve) => setTimeout(resolve, 500));
+        // Click ripple
+        setClickRipple(true);
+        
+        // Return to original position
+        await cursorControls.start({
+          x: buttonPos.x,
+          y: buttonPos.y,
+          transition: { duration: 0.15, ease: "easeIn" },
+        });
 
-      // 8. Show typing indicator
-      setShowTypingIndicator(true);
-      await new Promise((resolve) => setTimeout(resolve, 800));
+        setTimeout(() => setClickRipple(false), 400);
 
-      // 9. Hide indicator and show agent reply
-      setShowTypingIndicator(false);
-      setShowAgentReply(true);
-      await replyTypewriter.startTyping();
+        // Hide button after click
+        await buttonControls.start({
+          opacity: 0,
+          scale: 0.8,
+          transition: { duration: 0.2 },
+        });
+        setShowAddCommentButton(false);
 
-      // 10. Hold and fade out
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      await paragraphControls.start({
-        opacity: 0.5,
-        transition: { duration: 0.5 },
-      });
+        // 5. Show comment bubble
+        // Calculate position relative to highlighted sentence - appear directly to the right
+        if (sentenceRef.current && containerRef.current) {
+          const sentenceRect = sentenceRef.current.getBoundingClientRect();
+          const containerRect = containerRef.current.getBoundingClientRect();
+          setCommentPosition({
+            top: sentenceRect.top - containerRect.top + sentenceRect.height / 2 - 40, // Center vertically on sentence
+            left: sentenceRect.right - containerRect.left + 16, // 16px to the right of sentence
+          });
+        }
+        setShowCommentBubble(true);
+        // Wait for bubble to render
+        await new Promise((resolve) => setTimeout(resolve, 50));
+        await commentBubbleControls.start({
+          opacity: 1,
+          scale: 1,
+          transition: {
+            type: "spring",
+            stiffness: 300,
+            damping: 25,
+            duration: 0.3,
+          },
+        });
 
-      // 11. Reset and loop
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      sequenceRunningRef.current = false;
-      if (isInView) {
-        runSequence();
+        // 6. Move cursor to input
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        const inputPos = getRelativePosition(inputRef.current);
+        await cursorControls.start({
+          x: inputPos.x - 10,
+          y: inputPos.y - 10,
+          transition: { duration: 0.5, ease: "easeInOut" },
+        });
+
+        // Focus flash and hide mouse cursor
+        await new Promise((resolve) => setTimeout(resolve, 200));
+        setShowCursor(false);
+        setInputFocused(true);
+        await new Promise((resolve) => setTimeout(resolve, 100));
+
+        // 7. Type prompt
+        await promptTypewriter.startTyping();
+
+        // Wait a bit before agent response
+        await new Promise((resolve) => setTimeout(resolve, 500));
+
+        // 8. Show typing indicator
+        setShowTypingIndicator(true);
+        await new Promise((resolve) => setTimeout(resolve, 800));
+
+        // 9. Hide indicator and show agent reply
+        setShowTypingIndicator(false);
+        setShowAgentReply(true);
+        await replyTypewriter.startTyping();
+
+        // 10. Hold and fade out
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await paragraphControls.start({
+          opacity: 0.5,
+          transition: { duration: 0.5 },
+        });
+
+        // 11. Reset and loop
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        sequenceRunningRef.current = false;
+        if (isInView) {
+          runSequence().catch((error) => {
+            // Silently handle errors in recursive calls
+            sequenceRunningRef.current = false;
+            // Ignore "Typewriter reset" errors as they're expected when resetting the animation
+            if (error instanceof Error && error.message === "Typewriter reset") {
+              return;
+            }
+          });
+        }
+      } catch (error) {
+        // Handle any errors in the sequence
+        sequenceRunningRef.current = false;
+        // Ignore "Typewriter reset" errors as they're expected when resetting the animation
+        if (error instanceof Error && error.message === "Typewriter reset") {
+          // Silently handle expected reset errors
+          return;
+        }
+        console.error("Error in animation sequence:", error);
       }
     };
 
-    runSequence();
+    runSequence().catch((error) => {
+      // Handle initial sequence errors
+      sequenceRunningRef.current = false;
+      // Ignore "Typewriter reset" errors as they're expected when resetting the animation
+      if (error instanceof Error && error.message === "Typewriter reset") {
+        // Silently handle expected reset errors
+        return;
+      }
+      console.error("Error starting animation sequence:", error);
+    });
   }, [
     isInView,
     highlightControls,
