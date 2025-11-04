@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import FloatingWindow from "./FloatingWindow";
 
 export default function ScrollShowcaseSection() {
   const [activeSection, setActiveSection] = useState(0);
@@ -152,11 +153,17 @@ export default function ScrollShowcaseSection() {
                       {section.description}
                     </p>
                   </div>
-                  <div className="w-full aspect-video bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center">
-                    <span className="text-gray-400 text-sm">
-                      Screenshot {index + 1}
-                    </span>
-                  </div>
+                  {index === 0 ? (
+                    <div className="w-full aspect-video rounded-lg overflow-hidden">
+                      <FloatingWindow />
+                    </div>
+                  ) : (
+                    <div className="w-full aspect-video bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center">
+                      <span className="text-gray-400 text-sm">
+                        Screenshot {index + 1}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </motion.div>
             ))}
@@ -166,7 +173,7 @@ export default function ScrollShowcaseSection() {
           <div className="hidden md:flex flex-row gap-2 sm:gap-3 md:gap-4 lg:gap-8 xl:gap-12 overflow-visible">
             {/* Left Side - Sticky Content */}
             <div 
-              className="w-1/2 max-w-md lg:max-w-lg sticky h-[calc(100vh-8rem)] lg:h-[calc(100vh-12rem)] flex flex-col justify-start z-10 pr-4 md:pr-8 lg:pr-12 xl:pr-16 pt-0 pl-4 md:pl-8 lg:pl-12 xl:pl-16"
+              className="w-1/2 max-w-md lg:max-w-lg sticky h-[calc(100vh-8rem)] lg:h-[calc(100vh-12rem)] flex flex-col justify-start z-10 pr-4 md:pr-8 lg:pr-12 xl:pr-16 pt-0 pl-8 md:pl-16 lg:pl-24 xl:pl-32"
               style={{ 
                 top: `calc(4rem + ${stickyTopOffset}px)`,
                 transition: 'top 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -284,20 +291,21 @@ export default function ScrollShowcaseSection() {
                   
                   // Progressive horizontal movement: only move left, stay left once scrolled past
                   // At progress 0.3: x = 0
-                  // At progress 1 (center): x = -40 (leftmost)
-                  // At progress > 1: stay at x = -40
+                  // At progress 1 (center): x = 20 (shifted right)
+                  // At progress > 1: stay at x = 20
                   if (progress < 1) {
-                    // Moving left as approaching center
+                    // Moving left as approaching center, but starting from right
                     const leftProgress = (progress - 0.3) / 0.7; // 0 to 1 as progress goes from 0.3 to 1
-                    xOffset = -40 * leftProgress;
+                    xOffset = 20 - (60 * leftProgress); // Start at 20, move to -40, but we'll keep it at 20
+                    xOffset = 20; // Keep it more to the right
                   } else {
-                    // Scrolled past: stay at leftmost position
-                    xOffset = -40;
+                    // Scrolled past: stay at right position
+                    xOffset = 20;
                   }
                 } else {
-                  // Beyond viewport: maintain minimum opacity and left position
+                  // Beyond viewport: maintain minimum opacity and right position
                   opacity = 0.3;
-                  xOffset = -40;
+                  xOffset = 20;
                 }
                 
                 return (
@@ -314,16 +322,20 @@ export default function ScrollShowcaseSection() {
                       duration: 0.3,
                       ease: "easeOut",
                     }}
-                    className="w-full h-[400px] md:h-[450px] lg:h-[500px] flex items-center bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border border-gray-200 shadow-sm overflow-hidden"
-                    style={{ width: 'calc(100% + 120px)' }}
+                    className="w-full h-[500px] md:h-[550px] lg:h-[600px] flex items-center overflow-hidden"
+                    style={{ width: 'calc(100% + 250px)', marginLeft: '-50px' }}
                   >
-                    <div className="w-full h-full p-6 md:p-8 lg:p-10 flex items-center">
-                      <div className="w-full h-full bg-white rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center">
+                    {index === 0 ? (
+                      <div className="w-full h-full">
+                        <FloatingWindow />
+                      </div>
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border border-gray-200 shadow-sm flex items-center justify-center">
                         <span className="text-gray-400 text-sm md:text-base">
                           Screenshot {index + 1}
                         </span>
                       </div>
-                    </div>
+                    )}
                   </motion.div>
                 );
               })}
