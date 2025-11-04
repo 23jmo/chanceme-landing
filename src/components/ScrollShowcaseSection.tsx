@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import FloatingWindow from "./FloatingWindow";
+import CommentModeAnimation from "./CommentModeAnimation";
 
 export default function ScrollShowcaseSection() {
   const [activeSection, setActiveSection] = useState(0);
@@ -296,6 +297,10 @@ export default function ScrollShowcaseSection() {
                     {index === 0 ? (
                       <div className="w-full h-full">
                         <FloatingWindow />
+                      </div>
+                    ) : index === 1 ? (
+                      <div className="w-full h-full">
+                        <CommentModeAnimation />
                       </div>
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border border-gray-200 shadow-sm flex items-center justify-center">
