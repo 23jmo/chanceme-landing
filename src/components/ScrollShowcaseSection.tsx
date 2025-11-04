@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import FloatingWindow from "./FloatingWindow";
 import CommentModeAnimation from "./CommentModeAnimation";
+import DraftsStorage from "./DraftsStorage";
+import SchoolsGrid from "./SchoolsGrid";
 
 export default function ScrollShowcaseSection() {
   const [activeSection, setActiveSection] = useState(0);
@@ -147,6 +149,18 @@ export default function ScrollShowcaseSection() {
                   {index === 0 ? (
                     <div className="w-full aspect-video rounded-lg overflow-hidden">
                       <FloatingWindow />
+                    </div>
+                  ) : index === 1 ? (
+                    <div className="w-full aspect-video rounded-lg overflow-hidden">
+                      <CommentModeAnimation />
+                    </div>
+                  ) : index === 2 ? (
+                    <div className="w-full aspect-video rounded-lg overflow-hidden">
+                      <DraftsStorage />
+                    </div>
+                  ) : index === 3 ? (
+                    <div className="w-full aspect-video rounded-lg overflow-hidden">
+                      <SchoolsGrid />
                     </div>
                   ) : (
                     <div className="w-full aspect-video bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center">
@@ -301,6 +315,14 @@ export default function ScrollShowcaseSection() {
                     ) : index === 1 ? (
                       <div className="w-full h-full">
                         <CommentModeAnimation />
+                      </div>
+                    ) : index === 2 ? (
+                      <div className="w-full h-full">
+                        <DraftsStorage />
+                      </div>
+                    ) : index === 3 ? (
+                      <div className="w-full h-full">
+                        <SchoolsGrid />
                       </div>
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border border-gray-200 shadow-sm flex items-center justify-center">
