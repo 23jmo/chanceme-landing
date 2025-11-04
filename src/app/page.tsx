@@ -508,15 +508,15 @@ function PersonalStatement() {
 function TrustedBySection() {
   const schoolLogos = [
     "school_logos/basis.png",
-    "school_logos/brooklyntech.JPG",
+    "school_logos/brooklyntech.png",
     "school_logos/exeter.png",
-    "school_logos/harker.jpg",
+    "school_logos/harker.png",
     "school_logos/harvardwestlake.svg",
     "school_logos/kis.png",
-    "school_logos/nueva.jpeg",
+    "school_logos/nueva.png",
     "school_logos/sas.webp",
     "school_logos/tas.jpg",
-    "school_logos/thomasjefferson.jpg",
+    "school_logos/thomasjefferson.png",
   ];
 
   const firstGroupRef = useRef<HTMLDivElement | null>(null);

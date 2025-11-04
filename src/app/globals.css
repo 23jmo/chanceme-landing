@@ -163,6 +163,16 @@
   background-color: rgba(107, 114, 128, 0.5);
 }
 
+/* Hide scrollbars but maintain scroll functionality */
+.scrollbar-hide {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
 @keyframes marquee-scroll {
   0% {
     transform: translateX(0);
@@ -183,4 +193,13 @@
 
 .animate-scroll {
   animation: scroll 30s linear infinite;
+}
+
+@keyframes blink {
+  from, to {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
