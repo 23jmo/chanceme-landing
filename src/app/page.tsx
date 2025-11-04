@@ -19,6 +19,8 @@ import {
 import PersonalStatementCard from "@/components/PersonalStatementCard";
 import AOOpinionCard from "@/components/AOOpinionCard";
 import ScrollShowcaseSection from "@/components/ScrollShowcaseSection";
+import BentoSection from "@/components/BentoSection";
+import FeatureSection from "@/components/FeatureSection";
 
 export default function LandingPage() {
   return (
@@ -40,6 +42,8 @@ export default function LandingPage() {
         <PersonalStatement />
         <TrustedBySection />
         <ScrollShowcaseSection />
+        <BentoSection />
+        <FeatureSection />
         <FaqSection />
         <CtaSection />
       </motion.main>
@@ -74,13 +78,17 @@ function HeroSection() {
               className="text-5xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl text-center max-w-2xl mx-auto"
               variants={fadeInUp}
             >
-              Essays personalized for You and <span className="block sm:inline"><TypedText /></span>
+              Essays personalized for You and{" "}
+              <span className="block sm:inline">
+                <TypedText />
+              </span>
             </motion.h1>
             <motion.p
               className="max-w-md mx-auto text-muted-foreground md:text-lg lg:text-xl"
               variants={fadeInUp}
             >
-              Get personalized essay feedback and editing suggestions from AI agents.
+              Get personalized essay feedback and editing suggestions from AI
+              agents.
             </motion.p>
             <motion.div
               className="flex flex-col sm:flex-row gap-4 justify-center mt-8"
@@ -141,7 +149,6 @@ function HeroSection() {
   );
 }
 
-
 function PersonalStatement() {
   const DESIGN_W = 1200;
   const DESIGN_H = 800; // Increased height to accommodate expanded comments
@@ -169,10 +176,10 @@ function PersonalStatement() {
     const handleScroll = () => {
       setScrollY(window.scrollY);
     };
-    
+
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll(); // Initial call
-    
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -188,8 +195,9 @@ function PersonalStatement() {
 
   // Draft card dimensions (850px width from PersonalStatementCard)
   // Use wider design space on larger screens to allow more spacing
-  const effectiveDesignW = windowWidth >= 1400 ? 1300 : windowWidth >= 1100 ? 1250 : DESIGN_W;
-  
+  const effectiveDesignW =
+    windowWidth >= 1400 ? 1300 : windowWidth >= 1100 ? 1250 : DESIGN_W;
+
   const DRAFT_WIDTH = 850;
   const DRAFT_CENTER_X = effectiveDesignW / 2;
   const DRAFT_CENTER_Y = DESIGN_H / 2;
@@ -198,29 +206,31 @@ function PersonalStatement() {
   const COMMENT_WIDTH = 280;
   // Responsive spacing: more space on larger screens (in design space)
   const baseSpacing = 60;
-  let COMMENT_SPACING = windowWidth >= 1400 ? 100 : windowWidth >= 1200 ? 80 : baseSpacing;
-  
+  let COMMENT_SPACING =
+    windowWidth >= 1400 ? 100 : windowWidth >= 1200 ? 80 : baseSpacing;
+
   // Calculate ideal positions (outside draft card)
   let leftCommentX = DRAFT_LEFT - COMMENT_WIDTH - COMMENT_SPACING;
   let rightCommentX = DRAFT_RIGHT + COMMENT_SPACING;
-  
+
   // Check if total scaled width exceeds viewport width
   // If so, reduce spacing to allow comments to overlap draft card
-  const totalScaledWidth = (rightCommentX + COMMENT_WIDTH - leftCommentX) * scale;
+  const totalScaledWidth =
+    (rightCommentX + COMMENT_WIDTH - leftCommentX) * scale;
   const maxViewportWidth = windowWidth - 32; // Account for container padding
-  
+
   if (totalScaledWidth > maxViewportWidth) {
     // Reduce spacing to fit within viewport
     // Keep draft card width constant, only adjust comment positions
     const targetTotalWidth = maxViewportWidth / scale;
     const currentTotalWidth = rightCommentX + COMMENT_WIDTH - leftCommentX;
     const excess = currentTotalWidth - targetTotalWidth;
-    
+
     // Reduce spacing equally on both sides (may allow overlap)
     const spacingReduction = excess / 2;
     leftCommentX = leftCommentX + spacingReduction;
     rightCommentX = rightCommentX - spacingReduction;
-    
+
     // Ensure comments don't go outside design bounds (with small margin)
     const minLeftMargin = 10;
     const maxRightMargin = effectiveDesignW - COMMENT_WIDTH - 10;
@@ -233,7 +243,7 @@ function PersonalStatement() {
     leftCommentX = Math.max(minLeftMargin, leftCommentX);
     rightCommentX = Math.min(maxRightMargin, rightCommentX);
   }
-  
+
   const LEFT_COMMENT_X = leftCommentX;
   const RIGHT_COMMENT_X = rightCommentX;
 
@@ -278,9 +288,9 @@ function PersonalStatement() {
 
           {/* Floating comment cards positioned relative to draft */}
           {/* Top-left comment - Edit suggestion demo */}
-          <div 
-            style={{ 
-              position: "absolute", 
+          <div
+            style={{
+              position: "absolute",
               top: Math.max(20, DRAFT_CENTER_Y - 200),
               left: LEFT_COMMENT_X,
             }}
@@ -307,12 +317,25 @@ function PersonalStatement() {
                     args: {
                       query: "debate leadership",
                     },
-                    result: JSON.stringify({
-                      extracurriculars: [
-                        { name: "Debate Captain", hours: "10 hrs/week", description: "Led team of 25 students to regional championships" },
-                        { name: "Model UN President", hours: "5 hrs/week", description: "Organized school-wide conferences" }
-                      ]
-                    }, null, 2),
+                    result: JSON.stringify(
+                      {
+                        extracurriculars: [
+                          {
+                            name: "Debate Captain",
+                            hours: "10 hrs/week",
+                            description:
+                              "Led team of 25 students to regional championships",
+                          },
+                          {
+                            name: "Model UN President",
+                            hours: "5 hrs/week",
+                            description: "Organized school-wide conferences",
+                          },
+                        ],
+                      },
+                      null,
+                      2
+                    ),
                   },
                 },
                 {
@@ -323,12 +346,15 @@ function PersonalStatement() {
                     toolName: "make_edit_suggestion",
                     status: "completed",
                     args: {
-                      original_text: "I have always been passionate about many different things and I think that makes me a well-rounded person who would be great at college.",
+                      original_text:
+                        "I have always been passionate about many different things and I think that makes me a well-rounded person who would be great at college.",
                       context: "Debate Captain extracurricular",
                     },
                     editSuggestion: {
-                      original_text: "I have always been passionate about many different things and I think that makes me a well-rounded person who would be great at college.",
-                      suggested_text: "As Debate Captain, I learned to construct compelling arguments from limited information, organize team strategy sessions, and mentor newer members—skills that directly translate to collaborative academic work.",
+                      original_text:
+                        "I have always been passionate about many different things and I think that makes me a well-rounded person who would be great at college.",
+                      suggested_text:
+                        "As Debate Captain, I learned to construct compelling arguments from limited information, organize team strategy sessions, and mentor newer members—skills that directly translate to collaborative academic work.",
                     },
                   },
                 },
@@ -344,9 +370,9 @@ function PersonalStatement() {
           </div>
 
           {/* Top-right comment - Web search demo */}
-          <div 
-            style={{ 
-              position: "absolute", 
+          <div
+            style={{
+              position: "absolute",
               top: Math.max(20, DRAFT_CENTER_Y - 250),
               left: RIGHT_COMMENT_X,
             }}
@@ -377,19 +403,23 @@ function PersonalStatement() {
                       query: "Columbia University debate clubs organizations",
                       results: [
                         {
-                          title: "Columbia Debate Society | Columbia University",
+                          title:
+                            "Columbia Debate Society | Columbia University",
                           url: "https://debate.columbia.edu",
-                          snippet: "The Columbia Debate Society is one of the oldest student organizations on campus, competing in national and international tournaments.",
+                          snippet:
+                            "The Columbia Debate Society is one of the oldest student organizations on campus, competing in national and international tournaments.",
                         },
                         {
                           title: "Columbia Parliamentary Debate Association",
                           url: "https://cpda.columbia.edu",
-                          snippet: "CPDA hosts weekly debates and training sessions for students interested in parliamentary debate.",
+                          snippet:
+                            "CPDA hosts weekly debates and training sessions for students interested in parliamentary debate.",
                         },
                         {
                           title: "Model UN at Columbia",
                           url: "https://mun.columbia.edu",
-                          snippet: "Columbia's Model UN program offers students opportunities to engage in diplomatic simulations and develop public speaking skills.",
+                          snippet:
+                            "Columbia's Model UN program offers students opportunities to engage in diplomatic simulations and develop public speaking skills.",
                         },
                       ],
                     },
@@ -432,9 +462,9 @@ function PersonalStatement() {
           </div>
 
           {/* Bottom-left comment - positioned to the left, bottom */}
-          <div 
-            style={{ 
-              position: "absolute", 
+          <div
+            style={{
+              position: "absolute",
               top: Math.min(DESIGN_H - 150, DRAFT_CENTER_Y + 250),
               left: LEFT_COMMENT_X,
             }}
@@ -442,7 +472,9 @@ function PersonalStatement() {
             <AOOpinionCard
               commentTitle="Strong conclusion"
               scrollY={scrollY}
-              commentTop={getCommentTop(Math.min(DESIGN_H - 150, DRAFT_CENTER_Y + 250))}
+              commentTop={getCommentTop(
+                Math.min(DESIGN_H - 150, DRAFT_CENTER_Y + 250)
+              )}
               expandThreshold={600}
               commentReplies={[
                 {
@@ -510,7 +542,7 @@ function TrustedBySection() {
       window.removeEventListener("resize", compute);
     };
   }, []);
-  
+
   return (
     <motion.section
       className="w-full py-12 md:py-16 lg:py-20"
@@ -534,13 +566,18 @@ function TrustedBySection() {
           <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
           <div
             className="flex will-change-transform select-none hover:[animation-play-state:paused]"
-            style={{
-              width: 'max-content',
-              animation: `marquee-scroll ${duration}s linear infinite`,
-            } as React.CSSProperties}
+            style={
+              {
+                width: "max-content",
+                animation: `marquee-scroll ${duration}s linear infinite`,
+              } as React.CSSProperties
+            }
           >
             {/* Group A */}
-            <div ref={firstGroupRef} className="flex items-center gap-10 md:gap-14 pr-10 md:pr-14">
+            <div
+              ref={firstGroupRef}
+              className="flex items-center gap-10 md:gap-14 pr-10 md:pr-14"
+            >
               {schoolLogos.map((logo, i) => (
                 <div
                   key={`a-${i}`}
@@ -557,7 +594,10 @@ function TrustedBySection() {
               ))}
             </div>
             {/* Group B (duplicate) */}
-            <div className="flex items-center gap-10 md:gap-14 pr-10 md:pr-14" aria-hidden="true">
+            <div
+              className="flex items-center gap-10 md:gap-14 pr-10 md:pr-14"
+              aria-hidden="true"
+            >
               {schoolLogos.map((logo, i) => (
                 <div
                   key={`b-${i}`}
@@ -706,7 +746,8 @@ function CtaSection() {
               className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
               variants={fadeInUp}
             >
-              Get personalized feedback and real-time editing suggestions from our AI agent.
+              Get personalized feedback and real-time editing suggestions from
+              our AI agent.
             </motion.p>
           </motion.div>
           <motion.div
@@ -779,7 +820,9 @@ function Footer() {
             className="text-gray-400 max-w-md"
             variants={fadeInUp}
           >
-            Chance Me is an AI-powered draft editor that helps you write stronger college essays with personalized feedback and real-time editing suggestions.
+            Chance Me is an AI-powered draft editor that helps you write
+            stronger college essays with personalized feedback and real-time
+            editing suggestions.
           </motion.p>
 
           {/* Social media */}

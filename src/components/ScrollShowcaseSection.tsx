@@ -16,19 +16,23 @@ export default function ScrollShowcaseSection() {
   const sections = [
     {
       title: "Real-time Feedback",
-      description: "Get instant, contextual feedback on your essays as you write. Our AI agent understands your story and provides actionable suggestions.",
+      description:
+        "Get instant, contextual feedback on your essays as you write. Our AI agent understands your story and provides actionable suggestions.",
     },
     {
       title: "Profile Integration",
-      description: "The agent references your profile, activities, and background to give you personalized suggestions that align with your unique story.",
+      description:
+        "The agent references your profile, activities, and background to give you personalized suggestions that align with your unique story.",
     },
     {
       title: "Smart Editing",
-      description: "Automate repetitive tasks and focus on what matters—telling your story effectively. Our agent helps refine your writing style.",
+      description:
+        "Automate repetitive tasks and focus on what matters—telling your story effectively. Our agent helps refine your writing style.",
     },
     {
       title: "School-Specific Guidance",
-      description: "Receive feedback tailored to what your target schools are looking for. Each suggestion is crafted with admissions insights in mind.",
+      description:
+        "Receive feedback tailored to what your target schools are looking for. Each suggestion is crafted with admissions insights in mind.",
     },
   ];
 
@@ -36,10 +40,10 @@ export default function ScrollShowcaseSection() {
     const updateWindowWidth = () => {
       setWindowWidth(window.innerWidth);
     };
-    
+
     updateWindowWidth();
     window.addEventListener("resize", updateWindowWidth);
-    
+
     const handleScroll = () => {
       // Only enable scroll tracking on desktop (md and up)
       if (window.innerWidth < 768) {
@@ -52,7 +56,7 @@ export default function ScrollShowcaseSection() {
 
       const viewportHeight = window.innerHeight;
       const viewportCenter = viewportHeight / 2;
-      
+
       // Check which image section is currently most visible in viewport
       let activeIndex = 0;
       let maxVisibility = 0;
@@ -63,22 +67,23 @@ export default function ScrollShowcaseSection() {
           progress.push(0);
           return;
         }
-        
+
         const rect = ref.getBoundingClientRect();
         const elementCenter = rect.top + rect.height / 2;
         const distanceFromCenter = elementCenter - viewportCenter;
-        
+
         // Calculate progress: 0 = below viewport, 1 = at center, 2 = above viewport
         // Progress of 1 means the element is centered in viewport
-        const progressValue = 1 - (distanceFromCenter / (viewportHeight * 0.8));
+        const progressValue = 1 - distanceFromCenter / (viewportHeight * 0.8);
         const clampedProgress = Math.max(0, Math.min(2, progressValue));
         progress.push(clampedProgress);
-        
+
         // Calculate visibility for active section
         const visibleTop = Math.max(0, viewportHeight - rect.top);
         const visibleBottom = Math.max(0, rect.bottom);
         const visibleHeight = Math.min(visibleTop, visibleBottom, rect.height);
-        const visibility = visibleHeight / Math.min(rect.height, viewportHeight);
+        const visibility =
+          visibleHeight / Math.min(rect.height, viewportHeight);
 
         if (visibility > maxVisibility) {
           maxVisibility = visibility;
@@ -88,7 +93,7 @@ export default function ScrollShowcaseSection() {
 
       setActiveSection(activeIndex);
       setScrollProgress(progress);
-      
+
       // Calculate sticky text offset - move down earlier as we scroll
       // Use the first image's progress to determine when to start moving
       const firstProgress = progress[0] ?? 0;
@@ -105,7 +110,7 @@ export default function ScrollShowcaseSection() {
       } else {
         setStickyTopOffset(0);
       }
-      
+
       // Determine if we're halfway through cards (when third card is approaching center)
       // Trigger earlier - when third card (index 2) is getting close to center
       const thirdProgress = progress[2] ?? 0;
@@ -176,30 +181,36 @@ export default function ScrollShowcaseSection() {
               className="w-1/2 max-w-md lg:max-w-lg sticky h-[calc(100vh-8rem)] lg:h-[calc(100vh-12rem)] flex flex-col justify-start z-10 pr-4 md:pr-8 lg:pr-12 xl:pr-16 pt-0 pl-8 md:pl-16 lg:pl-24 xl:pl-32"
               style={{ 
                 top: `calc(4rem + ${stickyTopOffset}px)`,
-                transition: 'top 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                transition: "top 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
               }}
             >
               {/* Chat/Comment Toggle */}
               <div className="flex items-center gap-4 md:gap-6 mb-6 md:mb-8">
-                <span className={`text-2xl md:text-3xl font-bold lg:font-extrabold leading-none h-8 md:h-10 flex items-center transition-colors duration-300 ${
-                  !isCommentMode ? "text-gray-900" : "text-gray-400"
-                }`}>
+                <span
+                  className={`text-3xl md:text-4xl lg:text-5xl font-bold lg:font-extrabold leading-none tracking-tight flex items-center transition-colors duration-300 ${
+                    !isCommentMode ? "text-gray-900" : "text-gray-400"
+                  }`}
+                >
                   Chat
                 </span>
                 <button
-                  className="relative inline-flex h-8 w-14 md:h-10 md:w-16 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2"
+                  className="relative inline-flex h-32 w-10 md:h-12 md:w-40 lg:h-14 lg:w-48 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2"
                   style={{
-                    backgroundColor: isCommentMode ? '#3b82f6' : '#d1d5db',
+                    backgroundColor: isCommentMode ? "#3b82f6" : "#d1d5db",
                   }}
                   aria-label="Toggle between Chat and Comment"
                   tabIndex={-1}
                 >
                   <motion.span
-                    className="inline-block h-6 w-6 md:h-7 md:w-7 transform rounded-full bg-white shadow-lg"
+                    className="inline-block h-6 w-6 md:h-7 md:w-7 lg:h-8 lg:w-8 transform rounded-full bg-white shadow-lg"
                     animate={{
-                      x: isCommentMode ? 
-                        (windowWidth >= 768 ? 28 : 24) : 
-                        6,
+                      x: isCommentMode
+                        ? windowWidth >= 1024
+                          ? 156
+                          : windowWidth >= 768
+                          ? 128
+                          : 100
+                        : 4,
                     }}
                     transition={{
                       duration: 0.3,
@@ -207,35 +218,50 @@ export default function ScrollShowcaseSection() {
                     }}
                   />
                 </button>
-                <span className={`text-2xl md:text-3xl font-bold lg:font-extrabold leading-none h-8 md:h-10 flex items-center transition-colors duration-300 ${
-                  isCommentMode ? "text-gray-900" : "text-gray-400"
-                }`}>
+                <span
+                  className={`text-3xl md:text-4xl lg:text-5xl font-bold lg:font-extrabold leading-none tracking-tight flex items-center transition-colors duration-300 ${
+                    isCommentMode ? "text-gray-900" : "text-gray-400"
+                  }`}
+                >
                   Comment
                 </span>
               </div>
-              
+
               <div className="space-y-2 sm:space-y-3 md:space-y-4 lg:space-y-6">
                 {sections.map((section, index) => (
                   <motion.div
                     key={index}
                     initial={{ opacity: 0 }}
                     animate={{
-                      opacity: activeSection === index ? 1 : activeSection > index ? 0.3 : 0.5,
+                      opacity:
+                        activeSection === index
+                          ? 1
+                          : activeSection > index
+                          ? 0.3
+                          : 0.5,
                     }}
-                    transition={{ 
+                    transition={{
                       duration: 0.5,
-                      ease: [0.4, 0, 0.2, 1]
+                      ease: [0.4, 0, 0.2, 1],
                     }}
-                    className={`space-y-0.5 sm:space-y-1 md:space-y-2 ${activeSection === index ? "" : "pointer-events-none"}`}
+                    className={`space-y-0.5 sm:space-y-1 md:space-y-2 ${
+                      activeSection === index ? "" : "pointer-events-none"
+                    }`}
                   >
-                    <h3 className={`text-xs sm:text-sm md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl font-bold transition-colors duration-500 leading-tight ${
-                      activeSection === index ? "text-gray-900" : "text-gray-400"
-                    }`}>
+                    <h3
+                      className={`text-xs sm:text-sm md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl font-bold transition-colors duration-500 leading-tight ${
+                        activeSection === index
+                          ? "text-gray-900"
+                          : "text-gray-400"
+                      }`}
+                    >
                       {section.title}
                     </h3>
-                    <motion.p 
+                    <motion.p
                       className={`text-[10px] sm:text-xs md:text-sm lg:text-base xl:text-lg leading-tight ${
-                        activeSection === index ? "text-gray-700" : "text-gray-500"
+                        activeSection === index
+                          ? "text-gray-700"
+                          : "text-gray-500"
                       }`}
                       animate={{
                         opacity: activeSection === index ? 1 : 0,
@@ -250,9 +276,9 @@ export default function ScrollShowcaseSection() {
                         height: {
                           duration: 0.4,
                           ease: [0.4, 0, 0.2, 1],
-                        }
+                        },
                       }}
-                      style={{ overflow: 'hidden' }}
+                      style={{ overflow: "hidden" }}
                     >
                       {section.description}
                     </motion.p>
@@ -265,13 +291,13 @@ export default function ScrollShowcaseSection() {
             <div className="w-1/2 space-y-6 md:space-y-8 lg:space-y-12 overflow-visible pr-0 md:pr-12 lg:pr-24">
               {sections.map((section, index) => {
                 const progress = scrollProgress[index] ?? 0;
-                
+
                 // Calculate opacity and x transform based on scroll progress
                 // Progress ranges from 0 (below) to 2 (above), with 1 being centered
                 // Progressive horizontal movement throughout entire scroll range
                 let opacity = 0;
                 let xOffset = 0;
-                
+
                 if (progress < 0.3) {
                   // Below viewport: not visible
                   opacity = 0;
@@ -288,7 +314,7 @@ export default function ScrollShowcaseSection() {
                     // Fading out: 1.7 to 2, but maintain minimum of 0.3
                     opacity = Math.max(0.3, 1 - (progress - 1.7) / 0.3);
                   }
-                  
+
                   // Progressive horizontal movement: only move left, stay left once scrolled past
                   // At progress 0.3: x = 0
                   // At progress 1 (center): x = 20 (shifted right)
@@ -307,7 +333,7 @@ export default function ScrollShowcaseSection() {
                   opacity = 0.3;
                   xOffset = 20;
                 }
-                
+
                 return (
                   <motion.div
                     key={index}
@@ -346,4 +372,3 @@ export default function ScrollShowcaseSection() {
     </motion.section>
   );
 }
-
