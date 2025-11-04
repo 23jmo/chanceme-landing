@@ -206,7 +206,7 @@ function PersonalStatement() {
   const COMMENT_WIDTH = 280;
   // Responsive spacing: more space on larger screens (in design space)
   const baseSpacing = 60;
-  let COMMENT_SPACING =
+  const COMMENT_SPACING =
     windowWidth >= 1400 ? 100 : windowWidth >= 1200 ? 80 : baseSpacing;
 
   // Calculate ideal positions (outside draft card)

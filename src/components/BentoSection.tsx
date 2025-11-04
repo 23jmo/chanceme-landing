@@ -18,7 +18,10 @@ function GlassmorphicWrapper({
 }: {
   children: React.ReactNode;
   className?: string;
-  variants?: any;
+  variants?: {
+    hidden?: { opacity?: number; y?: number; scale?: number };
+    visible?: { opacity?: number; y?: number; scale?: number };
+  };
 }) {
   return (
     <motion.div

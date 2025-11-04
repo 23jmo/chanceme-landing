@@ -10,6 +10,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 // Image asset from Figma design
 const documentImage = "https://www.figma.com/api/mcp/asset/5de46b9a-4c3c-4b85-9db1-b29e1aab2535";
@@ -30,10 +31,12 @@ export default function EssayImportCard() {
       whileTap={{ scale: 0.98 }}
     >
       {/* Background document image */}
-      <img
+      <Image
         alt="Document interface preview"
         className="absolute inset-0 w-full h-full object-cover object-center rounded-[30px] pointer-events-none"
         src={documentImage}
+        fill
+        unoptimized
       />
 
       {/* Content overlay with gradient background */}

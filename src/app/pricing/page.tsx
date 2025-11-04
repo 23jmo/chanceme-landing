@@ -93,7 +93,7 @@ export default function PricingPage() {
                 className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl"
                 variants={fadeInUp}
               >
-                Whether you're using Chance Me for college essays, supplements, or just curious, it's free to use.
+                Whether you&apos;re using Chance Me for college essays, supplements, or just curious, it&apos;s free to use.
               </motion.p>
               
               {/* Billing Toggle */}

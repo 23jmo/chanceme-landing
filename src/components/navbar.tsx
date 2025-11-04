@@ -4,7 +4,6 @@ import React from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { Link as ScrollLink } from "react-scroll";
 import { motion, useAnimation } from "framer-motion";
 
 export default function Navbar() {

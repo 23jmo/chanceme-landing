@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { motion, useAnimationControls, useInView } from "framer-motion";
 import { Clover } from "lucide-react";
-import { RiUserLine, RiArrowUpLine } from "react-icons/ri";
+import { RiUserLine } from "react-icons/ri";
 
 // Custom hook for typewriter effect
 function useTypewriter(targetText: string, charsPerSecond: number = 18) {
@@ -108,7 +108,6 @@ export default function CommentModeAnimation() {
   const [buttonPosition, setButtonPosition] = useState({ top: 0, left: 0 });
   const [commentPosition, setCommentPosition] = useState({ top: 0, left: 0 });
   const [inputFocused, setInputFocused] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const [cursorPosition, setCursorPosition] = useState({ top: 0, left: 0 });
 
   // Check if component is in view
@@ -116,16 +115,6 @@ export default function CommentModeAnimation() {
     amount: 0.3,
     once: false,
   });
-
-  // Track mobile state
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
 
   // Auto-resize textarea and calculate cursor position
   useEffect(() => {
@@ -140,7 +129,6 @@ export default function CommentModeAnimation() {
     const style = window.getComputedStyle(textarea);
     const paddingLeft = parseFloat(style.paddingLeft) || 8;
     const paddingTop = parseFloat(style.paddingTop) || 6;
-    const lineHeight = parseFloat(style.lineHeight) || 16;
     const contentWidth = textarea.offsetWidth - paddingLeft - (parseFloat(style.paddingRight) || 8);
 
     // Build a mirror element that wraps identical to the textarea
