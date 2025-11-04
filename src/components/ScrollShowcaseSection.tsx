@@ -8,42 +8,33 @@ export default function ScrollShowcaseSection() {
   const [activeSection, setActiveSection] = useState(0);
   const [scrollProgress, setScrollProgress] = useState<number[]>([]);
   const [stickyTopOffset, setStickyTopOffset] = useState(0);
-  const [isCommentMode, setIsCommentMode] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
   const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const sections = [
     {
-      title: "Real-time Feedback",
+      title: "Chat Mode",
       description:
-        "Get instant, contextual feedback on your essays as you write. Our AI agent understands your story and provides actionable suggestions.",
+        "Have natural conversations with our AI agent about your essays. Ask questions, brainstorm ideas, and get guidance in a conversational format.",
     },
     {
-      title: "Profile Integration",
+      title: "Comment Mode",
       description:
-        "The agent references your profile, activities, and background to give you personalized suggestions that align with your unique story.",
+        "Receive inline comments and suggestions directly on your essay. Get contextual feedback that helps you refine your writing with precision.",
     },
     {
-      title: "Smart Editing",
+      title: "Storing Drafts",
       description:
-        "Automate repetitive tasks and focus on what matters—telling your story effectively. Our agent helps refine your writing style.",
+        "Never lose your work. All your drafts are automatically saved, so you can pick up where you left off and iterate on your essays with confidence.",
     },
     {
-      title: "School-Specific Guidance",
+      title: "Tracking all of your Schools",
       description:
-        "Receive feedback tailored to what your target schools are looking for. Each suggestion is crafted with admissions insights in mind.",
+        "Manage all your college applications in one place. Track deadlines, requirements, and progress for each school to stay organized throughout the application process.",
     },
   ];
 
   useEffect(() => {
-    const updateWindowWidth = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    updateWindowWidth();
-    window.addEventListener("resize", updateWindowWidth);
-
     const handleScroll = () => {
       // Only enable scroll tracking on desktop (md and up)
       if (window.innerWidth < 768) {
@@ -110,11 +101,6 @@ export default function ScrollShowcaseSection() {
       } else {
         setStickyTopOffset(0);
       }
-
-      // Determine if we're halfway through cards (when third card is approaching center)
-      // Trigger earlier - when third card (index 2) is getting close to center
-      const thirdProgress = progress[2] ?? 0;
-      setIsCommentMode(thirdProgress > 0.7);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -123,7 +109,6 @@ export default function ScrollShowcaseSection() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleScroll);
-      window.removeEventListener("resize", updateWindowWidth);
     };
   }, [sections.length]);
 
@@ -184,49 +169,6 @@ export default function ScrollShowcaseSection() {
                 transition: "top 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
               }}
             >
-              {/* Chat/Comment Toggle */}
-              <div className="flex items-center gap-4 md:gap-6 mb-6 md:mb-8">
-                <span
-                  className={`text-3xl md:text-4xl lg:text-5xl font-bold lg:font-extrabold leading-none tracking-tight flex items-center transition-colors duration-300 ${
-                    !isCommentMode ? "text-gray-900" : "text-gray-400"
-                  }`}
-                >
-                  Chat
-                </span>
-                <button
-                  className="relative inline-flex h-32 w-10 md:h-12 md:w-40 lg:h-14 lg:w-48 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2"
-                  style={{
-                    backgroundColor: isCommentMode ? "#3b82f6" : "#d1d5db",
-                  }}
-                  aria-label="Toggle between Chat and Comment"
-                  tabIndex={-1}
-                >
-                  <motion.span
-                    className="inline-block h-6 w-6 md:h-7 md:w-7 lg:h-8 lg:w-8 transform rounded-full bg-white shadow-lg"
-                    animate={{
-                      x: isCommentMode
-                        ? windowWidth >= 1024
-                          ? 156
-                          : windowWidth >= 768
-                          ? 128
-                          : 100
-                        : 4,
-                    }}
-                    transition={{
-                      duration: 0.3,
-                      ease: [0.4, 0, 0.2, 1],
-                    }}
-                  />
-                </button>
-                <span
-                  className={`text-3xl md:text-4xl lg:text-5xl font-bold lg:font-extrabold leading-none tracking-tight flex items-center transition-colors duration-300 ${
-                    isCommentMode ? "text-gray-900" : "text-gray-400"
-                  }`}
-                >
-                  Comment
-                </span>
-              </div>
-
               <div className="space-y-2 sm:space-y-3 md:space-y-4 lg:space-y-6">
                 {sections.map((section, index) => (
                   <motion.div
