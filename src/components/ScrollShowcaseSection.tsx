@@ -178,10 +178,9 @@ export default function ScrollShowcaseSection() {
           <div className="hidden md:flex flex-row gap-2 sm:gap-3 md:gap-4 lg:gap-8 xl:gap-12 overflow-visible">
             {/* Left Side - Sticky Content */}
             <div 
-              className="w-1/2 max-w-md lg:max-w-lg sticky h-[calc(100vh-8rem)] lg:h-[calc(100vh-12rem)] flex flex-col justify-start z-10 pr-4 md:pr-8 lg:pr-12 xl:pr-16 pt-0 pl-8 md:pl-16 lg:pl-24 xl:pl-32"
+              className="w-1/2 max-w-md lg:max-w-lg sticky self-start flex flex-col justify-start z-10 pr-4 md:pr-8 lg:pr-12 xl:pr-16 pt-0 pl-8 md:pl-16 lg:pl-24 xl:pl-32"
               style={{ 
-                top: `calc(4rem + ${stickyTopOffset}px)`,
-                transition: "top 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+                top: "12rem",
               }}
             >
               <div className="space-y-2 sm:space-y-3 md:space-y-4 lg:space-y-6">
@@ -245,7 +244,7 @@ export default function ScrollShowcaseSection() {
             </div>
 
             {/* Right Side - Horizontal Cards that scroll with page */}
-            <div className="w-1/2 space-y-6 md:space-y-8 lg:space-y-12 overflow-visible pr-0 md:pr-12 lg:pr-24">
+            <div className="w-1/2 space-y-6 md:space-y-8 lg:space-y-12 overflow-visible pr-0 md:pr-12 lg:pr-24 relative after:content-[''] after:block after:h-[300vh] after:pointer-events-none after:-mb-[300vh]">
               {sections.map((section, index) => {
                 const progress = scrollProgress[index] ?? 0;
 
