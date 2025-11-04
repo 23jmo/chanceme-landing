@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import {
   RiAddLine,
   RiGridLine,
@@ -36,8 +37,8 @@ const mockSchools: SchoolCard[] = [
     statusColor: "gray",
     essayCount: 10,
     essays: [
-      { title: "Personal Statement", wordCount: 628 },
-      { title: "Transfer Statement", wordCount: 450 },
+      { title: "Personal Statement", wordCount: 647 },
+      { title: "Transfer Statement", wordCount: 523 },
     ],
     moreCount: 8,
   },
@@ -49,7 +50,7 @@ const mockSchools: SchoolCard[] = [
     statusColor: "green",
     essayCount: 6,
     essays: [
-      { title: "Why Transfer to MIT?", wordCount: 300 },
+      { title: "Why Transfer to MIT?", wordCount: 287 },
       { title: "Transfer Statement", wordCount: 0 },
     ],
     moreCount: 4,
@@ -62,8 +63,8 @@ const mockSchools: SchoolCard[] = [
     statusColor: "blue",
     essayCount: 8,
     essays: [
-      { title: "Why Transfer to Stanford?", wordCount: 250 },
-      { title: "Personal Statement", wordCount: 650 },
+      { title: "Why Transfer to Stanford?", wordCount: 245 },
+      { title: "Personal Statement", wordCount: 621 },
     ],
     moreCount: 6,
   },
@@ -75,8 +76,8 @@ const mockSchools: SchoolCard[] = [
     statusColor: "green",
     essayCount: 5,
     essays: [
-      { title: "Personal Statement", wordCount: 650 },
-      { title: "Why Yale?", wordCount: 200 },
+      { title: "Personal Statement", wordCount: 592 },
+      { title: "Why Yale?", wordCount: 198 },
     ],
     moreCount: 3,
   },
@@ -88,8 +89,8 @@ const mockSchools: SchoolCard[] = [
     statusColor: "blue",
     essayCount: 7,
     essays: [
-      { title: "Personal Statement", wordCount: 650 },
-      { title: "Transfer Statement", wordCount: 500 },
+      { title: "Personal Statement", wordCount: 638 },
+      { title: "Transfer Statement", wordCount: 487 },
     ],
     moreCount: 5,
   },
@@ -101,8 +102,8 @@ const mockSchools: SchoolCard[] = [
     statusColor: "green",
     essayCount: 9,
     essays: [
-      { title: "Personal Statement", wordCount: 650 },
-      { title: "Why Columbia?", wordCount: 300 },
+      { title: "Personal Statement", wordCount: 605 },
+      { title: "Why Columbia?", wordCount: 312 },
     ],
     moreCount: 7,
   },
@@ -114,8 +115,8 @@ const mockSchools: SchoolCard[] = [
     statusColor: "blue",
     essayCount: 4,
     essays: [
-      { title: "Personal Statement", wordCount: 650 },
-      { title: "Why UPenn?", wordCount: 150 },
+      { title: "Personal Statement", wordCount: 584 },
+      { title: "Why UPenn?", wordCount: 156 },
     ],
     moreCount: 2,
   },
@@ -127,7 +128,7 @@ const mockSchools: SchoolCard[] = [
     statusColor: "green",
     essayCount: 6,
     essays: [
-      { title: "Why Transfer to Caltech?", wordCount: 400 },
+      { title: "Why Transfer to Caltech?", wordCount: 421 },
       { title: "Transfer Statement", wordCount: 0 },
     ],
     moreCount: 4,
@@ -140,8 +141,8 @@ const mockSchools: SchoolCard[] = [
     statusColor: "green",
     essayCount: 5,
     essays: [
-      { title: "Personal Statement", wordCount: 650 },
-      { title: "Why Brown?", wordCount: 250 },
+      { title: "Personal Statement", wordCount: 629 },
+      { title: "Why Brown?", wordCount: 267 },
     ],
     moreCount: 3,
   },
@@ -160,6 +161,27 @@ const getStatusColorClasses = (color: "gray" | "blue" | "green") => {
 
 const getInitial = (name: string): string => {
   return name.charAt(0).toUpperCase();
+};
+
+const getLogoPath = (schoolName: string): string | null => {
+  // Map school names to logo file names in /university_logos
+  const logoMap: Record<string, string> = {
+    "Harvard University": "harvard.png",
+    "MIT": "MIT.png",
+    "Stanford University": "stanford.avif",
+    "Yale University": "yale.png",
+    "Princeton University": "princeton.svg",
+    "Columbia University": "columbia.png",
+    "University of Pennsylvania": "upenn.png",
+    "California Institute of Technology": "caltech.png",
+    "Brown University": "brown.png",
+  };
+
+  const logoFileName = logoMap[schoolName];
+  if (logoFileName) {
+    return `/university_logos/${logoFileName}`;
+  }
+  return null;
 };
 
 export default function SchoolsGrid() {
@@ -227,10 +249,21 @@ export default function SchoolsGrid() {
               {/* Card Header */}
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2 flex-1 min-w-0">
-                  <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
-                    <span className="text-gray-700 font-semibold text-xs">
-                      {getInitial(school.name)}
-                    </span>
+                  <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0 overflow-hidden p-1">
+                    {getLogoPath(school.name) ? (
+                      <Image
+                        src={getLogoPath(school.name)!}
+                        alt={school.name}
+                        width={32}
+                        height={32}
+                        className="w-full h-full object-contain"
+                        unoptimized
+                      />
+                    ) : (
+                      <span className="text-gray-700 font-semibold text-xs">
+                        {getInitial(school.name)}
+                      </span>
+                    )}
                   </div>
                   <h3 className="text-sm font-bold text-gray-900 truncate">
                     {school.name}
@@ -292,7 +325,7 @@ export default function SchoolsGrid() {
                         {essay.title}
                       </span>
                       <span className="text-gray-500 ml-2 flex-shrink-0">
-                        {essay.wordCount}w
+                        {essay.wordCount} words
                       </span>
                     </div>
                   ))}
