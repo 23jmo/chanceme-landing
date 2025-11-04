@@ -5,6 +5,8 @@ import {
   fadeInUp,
   staggerContainer,
   popIn,
+  fadeInLeft,
+  fadeInRight,
 } from "@/components/framer-animations";
 import Image from "next/image";
 
@@ -63,21 +65,37 @@ export default function BentoSection() {
         {/* Section header */}
         <motion.div
           className="text-left mb-12 md:mb-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
           variants={fadeInUp}
         >
-          <h2 className="text-4xl tracking-tighter md:text-5xl lg:text-6xl font-bold text-gray-900">
-            No waiting
+          <h2 className="text-2xl tracking-tighter md:text-4xl lg:text-5xl font-bold text-gray-900">
+            Write your RDs better than your EDs
           </h2>
         </motion.div>
 
-        {/* Bento container - using flex layout to respect natural aspect ratios */}
-        {/* Bento1: 687x345 (1.99:1), Bento2: 687x345 (1.99:1), Bento3: 657x729 (0.9:1) */}
-        {/* Width ratio: Bento1/2 (687) : Bento3 (657) ≈ 51% : 49% */}
-        <div className="flex flex-col md:flex-row gap-4 md:gap-6">
-          {/* Left column - contains Bento1 and Bento2 stacked */}
-          <div className="flex flex-col gap-4 md:gap-6 md:w-[51%]">
-            {/* Bento 1 - Top, maintains 687x345 aspect ratio */}
-            <div className="relative w-full" style={{ aspectRatio: '687/345' }}>
+        {/* Bento container - all images have same width (2216px), using natural aspect ratios */}
+        {/* Bento1: 2216x1412 (1.57:1), Bento2: 2216x1380 (1.61:1), Bento3: 2216x2916 (0.76:1) */}
+        {/* All images displayed at equal width, maintaining their aspect ratios */}
+        <motion.div
+          className="flex flex-col md:flex-row gap-4 md:gap-6"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={staggerContainer}
+        >
+          {/* Left column - contains Bento1 and Bento2 stacked, same width as Bento3 */}
+          <motion.div
+            className="flex flex-col gap-4 md:gap-6 md:w-[50%]"
+            variants={staggerContainer}
+          >
+            {/* Bento 1 - Top, maintains 2216x1412 aspect ratio */}
+            <motion.div
+              className="relative w-full"
+              style={{ aspectRatio: "2216/1412" }}
+              variants={fadeInLeft}
+            >
               <GlassmorphicWrapper className="flex flex-col overflow-hidden p-0">
                 <div className="relative w-full h-full">
                   <Image
@@ -86,13 +104,20 @@ export default function BentoSection() {
                     fill
                     className="object-contain"
                     priority
+                    quality={100}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    unoptimized
                   />
                 </div>
               </GlassmorphicWrapper>
-            </div>
+            </motion.div>
 
-            {/* Bento 2 - Bottom, maintains 687x345 aspect ratio */}
-            <div className="relative w-full" style={{ aspectRatio: '687/345' }}>
+            {/* Bento 2 - Bottom, maintains 2216x1380 aspect ratio */}
+            <motion.div
+              className="relative w-full"
+              style={{ aspectRatio: "2216/1380" }}
+              variants={fadeInLeft}
+            >
               <GlassmorphicWrapper className="flex flex-col overflow-hidden p-0">
                 <div className="relative w-full h-full">
                   <Image
@@ -101,16 +126,25 @@ export default function BentoSection() {
                     fill
                     className="object-contain"
                     priority
+                    quality={100}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    unoptimized
                   />
                 </div>
               </GlassmorphicWrapper>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
-          {/* Right column - contains Bento3 */}
-          <div className="flex flex-col gap-4 md:gap-6 md:w-[49%]">
-            {/* Bento 3 - Right side, maintains 657x729 aspect ratio */}
-            <div className="relative w-full" style={{ aspectRatio: '657/729' }}>
+          {/* Right column - contains Bento3, same width as left column */}
+          <motion.div
+            className="flex flex-col gap-4 md:gap-6 md:w-[50%]"
+            variants={fadeInRight}
+          >
+            {/* Bento 3 - Right side, maintains 2216x2916 aspect ratio */}
+            <div
+              className="relative w-full"
+              style={{ aspectRatio: "2216/2916" }}
+            >
               <GlassmorphicWrapper className="flex flex-col overflow-hidden p-0">
                 <div className="relative w-full h-full">
                   <Image
@@ -119,12 +153,15 @@ export default function BentoSection() {
                     fill
                     className="object-contain"
                     priority
+                    quality={100}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    unoptimized
                   />
                 </div>
               </GlassmorphicWrapper>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );
