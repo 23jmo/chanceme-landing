@@ -27,7 +27,7 @@ export default function LandingPage() {
     <motion.div
       initial="hidden"
       animate="visible"
-      className="flex min-h-screen flex-col bg-cover bg-no-repeat pt-16"
+      className="flex flex-col bg-cover bg-no-repeat pt-16"
       style={{
         backgroundImage: "url('/absbg.png')",
         backgroundPosition: "center 20%",
@@ -51,6 +51,7 @@ export default function LandingPage() {
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8, duration: 0.6 }}
+        className="mt-auto"
       >
         <Footer />
       </motion.div>
@@ -553,7 +554,7 @@ function TrustedBySection() {
           className="text-center text-lg md:text-xl lg:text-2xl font-medium text-gray-600 mb-4 md:mb-6 tracking-normal"
           variants={fadeInUp}
         >
-          Trusted by
+          Trusted by students at
         </motion.p>
         <motion.div
           className="flex items-center justify-center mb-8 md:mb-10"
@@ -647,9 +648,9 @@ function FaqSection() {
         "Yes, we offer a free tier with limited features to help you get started. Upgrade to our pro tier for higher agent quotas, unlimited drafts, and priority support.",
     },
     {
-      question: "Why should I trust Chance Me?",
+      question: "Why should I trust Drafted?",
       answer:
-        "Chance Me was developed by two Ivy League transfer computer science students who have been through the admissions process a total of 4 times. We know firsthand how important essays are, how long the process can take, and the lack of quality resources available to students. We built this tool to solve the problems we faced ourselves.",
+        "Drafted was developed by two Ivy League transfer computer science students who have been through the admissions process a total of 4 times. We know firsthand how important essays are, how long the process can take, and the lack of quality resources available to students. We built this tool to solve the problems we faced ourselves.",
     },
     {
       question: "Will you sell my data?",
@@ -809,20 +810,20 @@ function Footer() {
           >
             <Image
               src="/logo.png"
-              alt="Chance Me Logo"
+              alt="Drafted Logo"
               width={70}
               height={70}
               className="w-[50px] h-[50px] md:w-[70px] md:h-[70px] object-contain"
             />
-            <span className="text-2xl md:text-3xl font-bold">Chance Me</span>
+            <span className="text-2xl md:text-3xl font-bold">Drafted</span>
           </motion.div>
           <motion.p
             className="text-gray-400 max-w-md"
             variants={fadeInUp}
           >
-            Chance Me is an AI-powered draft editor that helps you write
-            stronger college essays with personalized feedback and real-time
-            editing suggestions.
+            Drafted is an AI-powered draft editor that helps you write stronger
+            college essays with personalized feedback and real-time editing
+            suggestions.
           </motion.p>
 
           {/* Social media */}
@@ -871,7 +872,7 @@ function Footer() {
             className="mt-4 text-gray-400"
             variants={fadeInUp}
           >
-            &copy; {new Date().getFullYear()} Chance Me. All rights reserved.
+            &copy; {new Date().getFullYear()} Drafted. All rights reserved.
           </motion.div>
         </motion.div>
 

@@ -8,8 +8,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Chance Me",
-  description: "Chance Me",
+  title: "Drafted",
+  description: "Drafted",
   icons: {
     icon: "/logo.png",
     apple: "/logo.png",

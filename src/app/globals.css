@@ -6,7 +6,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+    "SF Pro Text", system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -116,9 +117,19 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    margin: 0;
+    padding: 0;
+    height: auto;
+  }
   body {
-    @apply bg-background text-foreground;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: auto;
+    background: transparent;
+    @apply text-foreground;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+      "SF Pro Text", system-ui, sans-serif;
     overflow-x: hidden;
   }
 }
@@ -196,7 +207,8 @@
 }
 
 @keyframes blink {
-  from, to {
+  from,
+  to {
     opacity: 1;
   }
   50% {

@@ -59,7 +59,7 @@ export default function EssayImportCard() {
           
           {/* Description text */}
           <p className="font-normal text-[16px] leading-normal text-black max-w-[785px] whitespace-pre-wrap">
-            Work with your essays as they are, Chance Me brings in all your existing essays in one click
+            Work with your essays as they are, Drafted brings in all your existing essays in one click
           </p>
         </div>
       </div>

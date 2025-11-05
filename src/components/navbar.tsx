@@ -86,7 +86,7 @@ export default function Navbar() {
               >
                 <Image
                   src="/logo.png"
-                  alt="Chance Me Logo"
+                  alt="Drafted Logo"
                   width={52}
                   height={52}
                   className="object-contain"
@@ -99,7 +99,7 @@ export default function Navbar() {
                   initial={{ opacity: 0 }}
                   transition={{ delay: 0.3 }}
                 >
-                  <span className="hidden font-medium md:inline">Chance Me</span>
+                  <span className="hidden font-medium md:inline">Drafted</span>
                 </motion.span>
               </button>
             </motion.div>
