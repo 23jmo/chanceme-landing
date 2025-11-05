@@ -10,7 +10,6 @@ import SchoolsGrid from "./SchoolsGrid";
 export default function ScrollShowcaseSection() {
   const [activeSection, setActiveSection] = useState(0);
   const [scrollProgress, setScrollProgress] = useState<number[]>([]);
-  const [stickyTopOffset, setStickyTopOffset] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
   const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -87,23 +86,6 @@ export default function ScrollShowcaseSection() {
 
       setActiveSection(activeIndex);
       setScrollProgress(progress);
-
-      // Calculate sticky text offset - move down earlier as we scroll
-      // Use the first image's progress to determine when to start moving
-      const firstProgress = progress[0] ?? 0;
-      if (firstProgress > 0.2 && firstProgress < 1.5) {
-        // As screenshot approaches center, move sticky text down earlier
-        // Progress from 0.2 to 1 maps to moving from 0 to max offset
-        const moveProgress = Math.min(1, (firstProgress - 0.2) / 0.8);
-        const maxOffset = window.innerHeight * 0.2; // Move down up to 20% of viewport
-        setStickyTopOffset(maxOffset * moveProgress);
-      } else if (firstProgress >= 1.5) {
-        // Once scrolled past, keep it at max offset
-        const maxOffset = window.innerHeight * 0.2;
-        setStickyTopOffset(maxOffset);
-      } else {
-        setStickyTopOffset(0);
-      }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -177,9 +159,9 @@ export default function ScrollShowcaseSection() {
           {/* Desktop Layout - Sticky Scroll */}
           <div className="hidden md:flex flex-row gap-2 sm:gap-3 md:gap-4 lg:gap-8 xl:gap-12 overflow-visible">
             {/* Left Side - Sticky Content */}
-            <div 
+            <div
               className="w-1/2 max-w-md lg:max-w-lg sticky self-start flex flex-col justify-start z-10 pr-4 md:pr-8 lg:pr-12 xl:pr-16 pt-0 pl-8 md:pl-16 lg:pl-24 xl:pl-32"
-              style={{ 
+              style={{
                 top: "12rem",
               }}
             >
@@ -278,7 +260,7 @@ export default function ScrollShowcaseSection() {
                   if (progress < 1) {
                     // Moving left as approaching center, but starting from right
                     const leftProgress = (progress - 0.3) / 0.7; // 0 to 1 as progress goes from 0.3 to 1
-                    xOffset = 20 - (60 * leftProgress); // Start at 20, move to -40, but we'll keep it at 20
+                    xOffset = 20 - 60 * leftProgress; // Start at 20, move to -40, but we'll keep it at 20
                     xOffset = 20; // Keep it more to the right
                   } else {
                     // Scrolled past: stay at right position
@@ -305,7 +287,7 @@ export default function ScrollShowcaseSection() {
                       ease: "easeOut",
                     }}
                     className="w-full h-[500px] md:h-[550px] lg:h-[600px] flex items-center overflow-hidden"
-                    style={{ width: 'calc(100% + 250px)', marginLeft: '-50px' }}
+                    style={{ width: "calc(100% + 250px)", marginLeft: "-50px" }}
                   >
                     {index === 0 ? (
                       <div className="w-full h-full">
