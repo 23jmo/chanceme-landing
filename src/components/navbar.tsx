@@ -82,25 +82,15 @@ export default function Navbar() {
             >
               <button
                 onClick={() => window.location.href = "/"}
-                className="flex cursor-pointer items-center space-x-2 h-full"
+                className="flex cursor-pointer items-center h-full"
               >
                 <Image
-                  src="/logo.png"
+                  src="/titlelogo.png"
                   alt="Drafted Logo"
-                  width={52}
-                  height={52}
+                  width={120}
+                  height={40}
                   className="object-contain"
                 />
-                <motion.span
-                  className={`font-bold text-black transition-all duration-300 leading-none flex items-center ${
-                    scrolled ? "text-xs md:text-sm lg:text-base" : "text-sm md:text-base lg:text-lg"
-                  }`}
-                  animate={{ opacity: 1 }}
-                  initial={{ opacity: 0 }}
-                  transition={{ delay: 0.3 }}
-                >
-                  <span className="hidden font-medium md:inline">Drafted</span>
-                </motion.span>
               </button>
             </motion.div>
             
@@ -149,7 +139,7 @@ export default function Navbar() {
                   scrolled ? "" : ""
                 }`}
                 onClick={() =>
-                  window.open("https://tally.so/r/nGk2jj", "_blank")
+                  window.open("https://app.drafted.college/register", "_blank")
                 }
               >
                 Sign up
@@ -168,7 +158,7 @@ export default function Navbar() {
                     : "bg-yellow-400/50 text-black hover:bg-yellow-400/70 hover:shadow-[0_0_15px_rgba(255,215,0,0.5)]"
                 }`}
                 onClick={() =>
-                  window.open("https://tally.so/r/nGk2jj", "_blank")
+                  window.open("https://app.drafted.college/register", "_blank")
                 }
               >
                 Try for free

@@ -101,7 +101,7 @@ function HeroSection() {
                 whileTap="tap"
               >
                 <Link
-                  href="https://tally.so/r/nGk2jj"
+                  href="https://app.drafted.college/register"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="
@@ -125,7 +125,7 @@ function HeroSection() {
                 whileTap="tap"
               >
                 <Link
-                  href="https://tally.so/r/nGk2jj"
+                  href="https://app.drafted.college/register"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="
@@ -760,9 +760,9 @@ function CtaSection() {
             <Button
               size="lg"
               className="gap-1 text-black bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-300 hover:scale-105 transition-all duration-300 ease-in-out shadow-[0_0_15px_rgba(255,215,0,0.5)] hover:shadow-[0_0_20px_rgba(255,215,0,0.7)] animate-pulse"
-              onClick={() => window.open("https://tally.so/r/nGk2jj", "_blank")}
+              onClick={() => window.open("https://app.drafted.college/register", "_blank")}
             >
-              Try for free
+              Sign up and try for free
               <ArrowRight className="h-4 w-4" />
             </Button>
           </motion.div>
