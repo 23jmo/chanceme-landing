@@ -37,7 +37,6 @@ interface FloatingCommentProps {
   replies?: ReplyItem[];
   position?: { top: number; left: number };
   isExpanded?: boolean;
-  resolved?: boolean;
   scrollY?: number; // Scroll position for auto-expand
   commentTop?: number; // Absolute top position of comment in viewport
   expandThreshold?: number; // Scroll threshold for expansion (default: 400)
@@ -49,7 +48,6 @@ const FloatingComment = ({
   replies = [],
   position = { top: 0, left: 0 },
   isExpanded: controlledExpanded,
-  resolved = false,
   scrollY = 0,
   commentTop,
   expandThreshold = 400,
@@ -310,12 +308,6 @@ const FloatingComment = ({
               {/* Conversation Display */}
               <div className="space-y-1">
                 {replies.map((reply, index) => {
-                  // Check if next item is a tool and current is user, to show AI header before tool
-                  const nextItem = replies[index + 1];
-                  const showAIHeaderBeforeTool = 
-                    reply.type === "user" && 
-                    nextItem?.type === "tool";
-
                   // Handle tool items
                   if (reply.type === "tool" && reply.toolItem) {
                     const prevItem = replies[index - 1];

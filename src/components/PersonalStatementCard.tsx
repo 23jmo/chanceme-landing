@@ -6,7 +6,7 @@ import { RiFileTextLine, RiSchoolLine } from "react-icons/ri";
 // Draft editor matching chance-me design
 const PersonalStatementCard = () => {
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 w-[850px]">
+    <div className="bg-white rounded-lg border border-gray-300 w-[850px]" style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.1)' }}>
       {/* macOS Header */}
       <div className="flex items-center gap-2 px-4 py-2 border-b border-gray-200 bg-gray-50 rounded-t-lg">
         {/* Traffic Light Buttons */}
@@ -69,8 +69,8 @@ const PersonalStatementCard = () => {
               <span className="bg-yellow-200/40 rounded px-1">
                 Growing up in a small town where opportunities were scarce, I
                 learned early that success requires both determination and
-                creativity. When our school's debate team was disbanded due to
-                budget cuts, I didn't accept defeat.
+                creativity. When our school&apos;s debate team was disbanded due to
+                budget cuts, I didn&apos;t accept defeat.
               </span>
             </p>
 
@@ -108,7 +108,7 @@ const PersonalStatementCard = () => {
 
             {/* Additional paragraph - no highlight */}
             <p>
-              Through my involvement in debate and community organizing, I've developed a particular interest in how effective communication shapes public discourse and drives social change. At Columbia, I'm excited to explore courses in media studies and political communication that will deepen my understanding of these dynamics. The interdisciplinary approach to learning at Columbia aligns perfectly with my goal of understanding how different fields intersect to create meaningful impact.
+              Through my involvement in debate and community organizing, I&apos;ve developed a particular interest in how effective communication shapes public discourse and drives social change. At Columbia, I&apos;m excited to explore courses in media studies and political communication that will deepen my understanding of these dynamics. The interdisciplinary approach to learning at Columbia aligns perfectly with my goal of understanding how different fields intersect to create meaningful impact.
             </p>
 
             {/* Sixth paragraph - matches "Strong conclusion" comment (bottom-left) */}
