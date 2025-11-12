@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -25,9 +26,13 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistMono.variable} antialiased`}
-        style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif' }}
+        style={{
+          fontFamily:
+            '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif',
+        }}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   );
