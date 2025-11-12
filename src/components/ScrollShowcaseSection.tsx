@@ -12,6 +12,13 @@ export default function ScrollShowcaseSection() {
   const [scrollProgress, setScrollProgress] = useState<number[]>([]);
   const sectionRef = useRef<HTMLElement>(null);
   const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
+  // We hold the latest active index in a ref so the scroll handler can respect the pause buffer.
+  const activeSectionRef = useRef<number>(0);
+
+  useEffect(() => {
+    // Keep the ref in sync with React state. This supports the pause logic without extra renders.
+    activeSectionRef.current = activeSection;
+  }, [activeSection]);
 
   const sections = [
     {
@@ -35,6 +42,8 @@ export default function ScrollShowcaseSection() {
         "Manage all your college applications in one place. Track deadlines, requirements, and progress for each school to stay organized throughout the application process.",
     },
   ];
+  // Each desktop feature segment reserves this much scroll distance so the card feels sticky.
+  const DESKTOP_SEGMENT_HEIGHT = 4500; // Pixels of scroll travel allocated per desktop section. 5x multiplier keeps each card sticky much longer.
 
   useEffect(() => {
     const handleScroll = () => {
@@ -55,15 +64,19 @@ export default function ScrollShowcaseSection() {
       let maxVisibility = 0;
       const progress: number[] = [];
 
+      const centerOffsets: number[] = [];
+
       imageRefs.current.forEach((ref, index) => {
         if (!ref) {
           progress.push(0);
+          centerOffsets.push(Number.POSITIVE_INFINITY);
           return;
         }
 
         const rect = ref.getBoundingClientRect();
         const elementCenter = rect.top + rect.height / 2;
         const distanceFromCenter = elementCenter - viewportCenter;
+        centerOffsets.push(distanceFromCenter);
 
         // Calculate progress: 0 = below viewport, 1 = at center, 2 = above viewport
         // Progress of 1 means the element is centered in viewport
@@ -83,6 +96,23 @@ export default function ScrollShowcaseSection() {
           activeIndex = index;
         }
       });
+
+      // We delay switching the active section until the next section sits inside a small buffer.
+      // This creates the requested "pause" effect while scrolling between sections.
+      const pauseBuffer = viewportHeight * 0.12; // 12% of viewport height feels natural in testing.
+      const currentActiveIndex = activeSectionRef.current ?? 0;
+      const candidateIndex = activeIndex;
+
+      if (candidateIndex !== currentActiveIndex) {
+        const candidateDistance = Math.abs(centerOffsets[candidateIndex] ?? Number.POSITIVE_INFINITY);
+        const currentDistance = Math.abs(centerOffsets[currentActiveIndex] ?? Number.POSITIVE_INFINITY);
+        const currentIsFar = currentDistance > viewportHeight * 0.45;
+        const candidateInsideBuffer = candidateDistance <= pauseBuffer;
+
+        if (!candidateInsideBuffer && !currentIsFar) {
+          activeIndex = currentActiveIndex;
+        }
+      }
 
       setActiveSection(activeIndex);
       setScrollProgress(progress);
@@ -111,48 +141,52 @@ export default function ScrollShowcaseSection() {
           {/* Mobile Layout - Static Cards */}
           <div className="md:hidden space-y-8">
             {sections.map((section, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
-                className="bg-white rounded-lg border border-gray-200 shadow-sm p-6"
-              >
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">
-                      {section.title}
-                    </h3>
-                    <p className="text-sm text-gray-700 leading-relaxed">
-                      {section.description}
-                    </p>
+              <div key={index} className="space-y-6">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  className="bg-white rounded-lg border border-gray-200 shadow-sm p-6"
+                >
+                  <div className="space-y-4">
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900 mb-2">
+                        {section.title}
+                      </h3>
+                      <p className="text-sm text-gray-700 leading-relaxed">
+                        {section.description}
+                      </p>
+                    </div>
+                    {index === 0 ? (
+                      <div className="w-full aspect-video rounded-lg overflow-hidden">
+                        <FloatingWindow />
+                      </div>
+                    ) : index === 1 ? (
+                      <div className="w-full aspect-video rounded-lg overflow-hidden">
+                        <CommentModeAnimation />
+                      </div>
+                    ) : index === 2 ? (
+                      <div className="w-full aspect-video rounded-lg overflow-hidden">
+                        <DraftsStorage />
+                      </div>
+                    ) : index === 3 ? (
+                      <div className="w-full aspect-video rounded-lg overflow-hidden">
+                        <SchoolsGrid />
+                      </div>
+                    ) : (
+                      <div className="w-full aspect-video bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center">
+                        <span className="text-gray-400 text-sm">
+                          Screenshot {index + 1}
+                        </span>
+                      </div>
+                    )}
                   </div>
-                  {index === 0 ? (
-                    <div className="w-full aspect-video rounded-lg overflow-hidden">
-                      <FloatingWindow />
-                    </div>
-                  ) : index === 1 ? (
-                    <div className="w-full aspect-video rounded-lg overflow-hidden">
-                      <CommentModeAnimation />
-                    </div>
-                  ) : index === 2 ? (
-                    <div className="w-full aspect-video rounded-lg overflow-hidden">
-                      <DraftsStorage />
-                    </div>
-                  ) : index === 3 ? (
-                    <div className="w-full aspect-video rounded-lg overflow-hidden">
-                      <SchoolsGrid />
-                    </div>
-                  ) : (
-                    <div className="w-full aspect-video bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center">
-                      <span className="text-gray-400 text-sm">
-                        Screenshot {index + 1}
-                      </span>
-                    </div>
-                  )}
-                </div>
-              </motion.div>
+                </motion.div>
+                {index < sections.length - 1 && (
+                  <div className="w-full h-px bg-gray-200" />
+                )}
+              </div>
             ))}
           </div>
 
@@ -167,66 +201,70 @@ export default function ScrollShowcaseSection() {
             >
               <div className="space-y-2 sm:space-y-3 md:space-y-4 lg:space-y-6">
                 {sections.map((section, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0 }}
-                    animate={{
-                      opacity:
-                        activeSection === index
-                          ? 1
-                          : activeSection > index
-                          ? 0.3
-                          : 0.5,
-                    }}
-                    transition={{
-                      duration: 0.5,
-                      ease: [0.4, 0, 0.2, 1],
-                    }}
-                    className={`space-y-0.5 sm:space-y-1 md:space-y-2 ${
-                      activeSection === index ? "" : "pointer-events-none"
-                    }`}
-                  >
-                    <h3
-                      className={`text-xs sm:text-sm md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl font-bold transition-colors duration-500 leading-tight ${
-                        activeSection === index
-                          ? "text-gray-900"
-                          : "text-gray-400"
-                      }`}
-                    >
-                      {section.title}
-                    </h3>
-                    <motion.p
-                      className={`text-[10px] sm:text-xs md:text-sm lg:text-base xl:text-lg leading-tight ${
-                        activeSection === index
-                          ? "text-gray-700"
-                          : "text-gray-500"
-                      }`}
+                  <div key={index} className="space-y-4">
+                    <motion.div
+                      initial={{ opacity: 0 }}
                       animate={{
-                        opacity: activeSection === index ? 1 : 0,
-                        height: activeSection === index ? "auto" : 0,
+                        opacity:
+                          activeSection === index
+                            ? 1
+                            : activeSection > index
+                            ? 0.3
+                            : 0.5,
                       }}
                       transition={{
-                        opacity: {
-                          duration: 0.5,
-                          ease: [0.4, 0, 0.2, 1],
-                          delay: activeSection === index ? 0.1 : 0,
-                        },
-                        height: {
-                          duration: 0.4,
-                          ease: [0.4, 0, 0.2, 1],
-                        },
+                        duration: 0.5,
+                        ease: [0.4, 0, 0.2, 1],
                       }}
-                      style={{ overflow: "hidden" }}
+                      className={`space-y-0.5 sm:space-y-1 md:space-y-2 ${
+                        activeSection === index ? "" : "pointer-events-none"
+                      }`}
                     >
-                      {section.description}
-                    </motion.p>
-                  </motion.div>
+                      <h3
+                        className={`text-xs sm:text-sm md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl font-bold transition-colors duration-500 leading-tight ${
+                          activeSection === index
+                            ? "text-gray-900"
+                            : "text-gray-400"
+                        }`}
+                      >
+                        {section.title}
+                      </h3>
+                      <motion.p
+                        className={`text-[10px] sm:text-xs md:text-sm lg:text-base xl:text-lg leading-tight ${
+                          activeSection === index
+                            ? "text-gray-700"
+                            : "text-gray-500"
+                        }`}
+                        animate={{
+                          opacity: activeSection === index ? 1 : 0,
+                          height: activeSection === index ? "auto" : 0,
+                        }}
+                        transition={{
+                          opacity: {
+                            duration: 0.5,
+                            ease: [0.4, 0, 0.2, 1],
+                            delay: activeSection === index ? 0.1 : 0,
+                          },
+                          height: {
+                            duration: 0.4,
+                            ease: [0.4, 0, 0.2, 1],
+                          },
+                        }}
+                        style={{ overflow: "hidden" }}
+                      >
+                        {section.description}
+                      </motion.p>
+                    </motion.div>
+                    {index < sections.length - 1 && (
+                      <div className="w-full h-px bg-gray-200" />
+                    )}
+                  </div>
                 ))}
               </div>
             </div>
 
             {/* Right Side - Horizontal Cards that scroll with page */}
-            <div className="w-1/2 space-y-6 md:space-y-8 lg:space-y-12 overflow-visible pr-0 md:pr-12 lg:pr-24 relative after:content-[''] after:block after:h-[300vh] after:pointer-events-none after:-mb-[300vh]">
+            <div className="w-1/2 flex flex-col gap-0 overflow-visible pr-0 md:pr-12 lg:pr-24 relative after:content-[''] after:block after:h-[300vh] after:pointer-events-none after:-mb-[300vh]">
               {sections.map((section, index) => {
                 const progress = scrollProgress[index] ?? 0;
 
@@ -273,46 +311,58 @@ export default function ScrollShowcaseSection() {
                 }
 
                 return (
-                  <motion.div
+                  <div
                     key={index}
                     ref={(el) => {
                       imageRefs.current[index] = el;
                     }}
-                    animate={{
-                      opacity,
-                      x: xOffset,
-                    }}
-                    transition={{
-                      duration: 0.3,
-                      ease: "easeOut",
-                    }}
-                    className="w-full h-[500px] md:h-[550px] lg:h-[600px] flex items-center overflow-hidden"
-                    style={{ width: "calc(100% + 250px)", marginLeft: "-50px" }}
+                    className="relative flex flex-col"
+                    style={{ height: DESKTOP_SEGMENT_HEIGHT }}
                   >
-                    {index === 0 ? (
-                      <div className="w-full h-full">
-                        <FloatingWindow />
-                      </div>
-                    ) : index === 1 ? (
-                      <div className="w-full h-full">
-                        <CommentModeAnimation />
-                      </div>
-                    ) : index === 2 ? (
-                      <div className="w-full h-full">
-                        <DraftsStorage />
-                      </div>
-                    ) : index === 3 ? (
-                      <div className="w-full h-full">
-                        <SchoolsGrid />
-                      </div>
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border border-gray-200 shadow-sm flex items-center justify-center">
-                        <span className="text-gray-400 text-sm md:text-base">
-                          Screenshot {index + 1}
-                        </span>
-                      </div>
-                    )}
-                  </motion.div>
+                    {/* Sticky wrapper keeps the card pinned while the user scrolls through the reserved segment height.
+                        top-44 (~11rem) aligns with the left column sticky offset so both sides move together. */}
+                    <div className="sticky top-44 flex flex-col gap-6">
+                      <motion.div
+                        animate={{
+                          opacity,
+                          x: xOffset,
+                        }}
+                        transition={{
+                          duration: 0.3,
+                          ease: "easeOut",
+                        }}
+                        className="w-full h-[500px] md:h-[550px] lg:h-[600px] flex items-center overflow-hidden"
+                        style={{ width: "calc(100% + 250px)", marginLeft: "-50px" }}
+                      >
+                        {index === 0 ? (
+                          <div className="w-full h-full">
+                            <FloatingWindow />
+                          </div>
+                        ) : index === 1 ? (
+                          <div className="w-full h-full">
+                            <CommentModeAnimation />
+                          </div>
+                        ) : index === 2 ? (
+                          <div className="w-full h-full">
+                            <DraftsStorage />
+                          </div>
+                        ) : index === 3 ? (
+                          <div className="w-full h-full">
+                            <SchoolsGrid />
+                          </div>
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border border-gray-200 shadow-sm flex items-center justify-center">
+                            <span className="text-gray-400 text-sm md:text-base">
+                              Screenshot {index + 1}
+                            </span>
+                          </div>
+                        )}
+                      </motion.div>
+                      {index < sections.length - 1 && (
+                        <div className="w-full h-px bg-gray-200" />
+                      )}
+                    </div>
+                  </div>
                 );
               })}
             </div>
