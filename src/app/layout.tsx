@@ -8,8 +8,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://drafted.college"),
   title: "Drafted",
   description: "Drafted",
+  alternates: {
+    canonical: "/",
+  },
   icons: {
     icon: "/logo.png",
     apple: "/logo.png",
