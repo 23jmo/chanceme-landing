@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, useMotionValue } from "framer-motion";
 import FloatingWindow from "./FloatingWindow";
 import CommentModeAnimation from "./CommentModeAnimation";
 import DraftsStorage from "./DraftsStorage";
@@ -12,6 +12,9 @@ export default function ScrollShowcaseSection() {
   const [scrollProgress, setScrollProgress] = useState<number[]>([]);
   const sectionRef = useRef<HTMLElement>(null);
   const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const indicatorTop = useMotionValue(0);
+  const titleRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const sections = [
     {
@@ -55,6 +58,9 @@ export default function ScrollShowcaseSection() {
       let maxVisibility = 0;
       const progress: number[] = [];
 
+      // Arrays to store centers for smooth scrolling calculation
+      const imageCenters: number[] = [];
+
       imageRefs.current.forEach((ref, index) => {
         if (!ref) {
           progress.push(0);
@@ -64,6 +70,8 @@ export default function ScrollShowcaseSection() {
         const rect = ref.getBoundingClientRect();
         const elementCenter = rect.top + rect.height / 2;
         const distanceFromCenter = elementCenter - viewportCenter;
+        
+        imageCenters.push(rect.top + window.scrollY + rect.height / 2);
 
         // Calculate progress: 0 = below viewport, 1 = at center, 2 = above viewport
         // Progress of 1 means the element is centered in viewport
@@ -86,6 +94,45 @@ export default function ScrollShowcaseSection() {
 
       setActiveSection(activeIndex);
       setScrollProgress(progress);
+
+      // Calculate smooth indicator position
+      const currentScrollY = window.scrollY + viewportCenter;
+      
+      // Find which two sections we are between
+      let smoothIndex = 0;
+      if (imageCenters.length > 0) {
+        if (currentScrollY <= imageCenters[0]) {
+          smoothIndex = 0;
+        } else if (currentScrollY >= imageCenters[imageCenters.length - 1]) {
+          smoothIndex = imageCenters.length - 1;
+        } else {
+          for (let i = 0; i < imageCenters.length - 1; i++) {
+            if (currentScrollY >= imageCenters[i] && currentScrollY < imageCenters[i + 1]) {
+              const progress = (currentScrollY - imageCenters[i]) / (imageCenters[i + 1] - imageCenters[i]);
+              smoothIndex = i + progress;
+              break;
+            }
+          }
+        }
+      }
+
+      // Calculate indicator top position based on smoothIndex
+      // Map the smoothIndex (0 to sections.length-1) to the track height
+      if (trackRef.current) {
+        const trackHeight = trackRef.current.offsetHeight;
+        // We want the indicator to travel the full height of the track
+        // When smoothIndex is 0, top is 0
+        // When smoothIndex is max, top is trackHeight - indicatorHeight
+        // Or just map proportional to index
+        const progress = smoothIndex / (sections.length - 1);
+        
+        // Refine: The track starts at the first item and ends at the last item ideally
+        // But here the track is the full vertical line
+        // Let's map 0 -> 0 and max -> max
+        const targetTop = progress * (trackHeight - 24); // 24 is approx indicator height
+        
+        indicatorTop.set(targetTop);
+      }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -165,28 +212,28 @@ export default function ScrollShowcaseSection() {
                 top: 0,
               }}
             >
-              <div className="space-y-8 relative">
+              <div className="space-y-8 relative" ref={trackRef}>
                 {/* Vertical Line Track */}
                 <div className="absolute left-0 top-2 bottom-2 w-0.5 bg-gray-100 rounded-full" />
                 
+                {/* Active Indicator Pill - Smooth Moving */}
+                <motion.div 
+                  style={{ top: indicatorTop }}
+                  className="absolute left-[-1px] h-6 w-1 rounded-full bg-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.5)]"
+                />
+
                 {sections.map((section, index) => (
                   <motion.div
                     key={index}
+                    ref={(el) => {
+                      titleRefs.current[index] = el;
+                    }}
                     initial={{ opacity: 0.5 }}
                     animate={{
                       opacity: activeSection === index ? 1 : 0.4,
                     }}
                     className="relative pl-8"
                   >
-                    {/* Active Indicator Pill */}
-                    {activeSection === index && (
-                      <motion.div 
-                        layoutId="activeSectionIndicator"
-                        className="absolute left-[-1px] top-1.5 h-6 w-1 rounded-full bg-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.5)]"
-                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                      />
-                    )}
-
                     <h3
                       className={`text-xl md:text-2xl lg:text-3xl font-bold tracking-tight mb-3 transition-colors duration-300 cursor-pointer ${
                         activeSection === index
@@ -210,12 +257,12 @@ export default function ScrollShowcaseSection() {
                         opacity: activeSection === index ? 1 : 0,
                       }}
                       transition={{
-                        height: { duration: 0.4, ease: "anticipate" },
-                        opacity: { duration: 0.3, delay: 0.1 }
+                        height: { duration: 0.3, ease: "easeInOut" },
+                        opacity: { duration: 0.2, delay: activeSection === index ? 0.1 : 0 }
                       }}
                       className="overflow-hidden"
                     >
-                      <p className="text-base md:text-lg text-gray-600 leading-relaxed font-medium pr-4">
+                      <p className="text-base md:text-lg text-gray-600 leading-relaxed font-medium pr-4 pb-4">
                         {section.description}
                       </p>
                     </motion.div>
