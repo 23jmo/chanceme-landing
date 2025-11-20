@@ -207,7 +207,7 @@ export default function ScrollShowcaseSection() {
           <div className="hidden md:flex flex-row gap-2 sm:gap-3 md:gap-4 lg:gap-8 xl:gap-12 overflow-visible">
             {/* Left Side - Sticky Content */}
             <div
-              className="w-1/2 max-w-md lg:max-w-lg sticky self-start flex flex-col justify-center h-screen z-10 pl-8 md:pl-12 lg:pl-20"
+              className="w-1/2 max-w-md lg:max-w-lg sticky self-start flex flex-col justify-center h-screen z-10 pl-8 md:pl-12 lg:pl-20 pb-15"
               style={{
                 top: 0,
               }}
