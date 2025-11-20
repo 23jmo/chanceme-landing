@@ -160,66 +160,65 @@ export default function ScrollShowcaseSection() {
           <div className="hidden md:flex flex-row gap-2 sm:gap-3 md:gap-4 lg:gap-8 xl:gap-12 overflow-visible">
             {/* Left Side - Sticky Content */}
             <div
-              className="w-1/2 max-w-md lg:max-w-lg sticky self-start flex flex-col justify-start z-10 pr-4 md:pr-8 lg:pr-12 xl:pr-16 pt-0 pl-8 md:pl-16 lg:pl-24 xl:pl-32"
+              className="w-1/2 max-w-md lg:max-w-lg sticky self-start flex flex-col justify-center h-screen z-10 pl-8 md:pl-12 lg:pl-20"
               style={{
-                top: "12rem",
+                top: 0,
               }}
             >
-              <div className="space-y-2 sm:space-y-3 md:space-y-4 lg:space-y-6">
+              <div className="space-y-8 relative">
+                {/* Vertical Line Track */}
+                <div className="absolute left-0 top-2 bottom-2 w-0.5 bg-gray-100 rounded-full" />
+                
                 {sections.map((section, index) => (
                   <motion.div
                     key={index}
-                    initial={{ opacity: 0 }}
+                    initial={{ opacity: 0.5 }}
                     animate={{
-                      opacity:
-                        activeSection === index
-                          ? 1
-                          : activeSection > index
-                          ? 0.3
-                          : 0.5,
+                      opacity: activeSection === index ? 1 : 0.4,
                     }}
-                    transition={{
-                      duration: 0.5,
-                      ease: [0.4, 0, 0.2, 1],
-                    }}
-                    className={`space-y-0.5 sm:space-y-1 md:space-y-2 ${
-                      activeSection === index ? "" : "pointer-events-none"
-                    }`}
+                    className="relative pl-8"
                   >
+                    {/* Active Indicator Pill */}
+                    {activeSection === index && (
+                      <motion.div 
+                        layoutId="activeSectionIndicator"
+                        className="absolute left-[-1px] top-1.5 h-6 w-1 rounded-full bg-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.5)]"
+                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                      />
+                    )}
+
                     <h3
-                      className={`text-xs sm:text-sm md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl font-bold transition-colors duration-500 leading-tight ${
+                      className={`text-xl md:text-2xl lg:text-3xl font-bold tracking-tight mb-3 transition-colors duration-300 cursor-pointer ${
                         activeSection === index
-                          ? "text-gray-900"
-                          : "text-gray-400"
+                          ? "text-black"
+                          : "text-gray-400 hover:text-gray-600"
                       }`}
+                      onClick={() => {
+                        const element = imageRefs.current[index];
+                        if (element) {
+                          element.scrollIntoView({ behavior: "smooth", block: "center" });
+                        }
+                      }}
                     >
                       {section.title}
                     </h3>
-                    <motion.p
-                      className={`text-[10px] sm:text-xs md:text-sm lg:text-base xl:text-lg leading-tight ${
-                        activeSection === index
-                          ? "text-gray-700"
-                          : "text-gray-500"
-                      }`}
+                    
+                    <motion.div
+                      initial={false}
                       animate={{
-                        opacity: activeSection === index ? 1 : 0,
                         height: activeSection === index ? "auto" : 0,
+                        opacity: activeSection === index ? 1 : 0,
                       }}
                       transition={{
-                        opacity: {
-                          duration: 0.5,
-                          ease: [0.4, 0, 0.2, 1],
-                          delay: activeSection === index ? 0.1 : 0,
-                        },
-                        height: {
-                          duration: 0.4,
-                          ease: [0.4, 0, 0.2, 1],
-                        },
+                        height: { duration: 0.4, ease: "anticipate" },
+                        opacity: { duration: 0.3, delay: 0.1 }
                       }}
-                      style={{ overflow: "hidden" }}
+                      className="overflow-hidden"
                     >
-                      {section.description}
-                    </motion.p>
+                      <p className="text-base md:text-lg text-gray-600 leading-relaxed font-medium pr-4">
+                        {section.description}
+                      </p>
+                    </motion.div>
                   </motion.div>
                 ))}
               </div>
